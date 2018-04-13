@@ -24,17 +24,26 @@ class IndexController extends HomeBaseController
     public function index(){
         $shop=session('shop');
         $banners=Db::name('banner')->where('shop',$shop['id'])->order('sort asc')->column('id,pic,link');
-        
+        //最新订单
         $orders=Db::name('order')
         ->order('buy_time desc')
         ->where('status','in','3,4')
         ->limit('10')
         ->column('id,uname,money0,name,code0,month,status');
+        
+        $indices=Db::name('stock_indice')->column('id,name,count,num,percent');
         $this->assign('html_title','首页');
         $this->assign('html_flag','index');
         $this->assign('banners',$banners);
         $this->assign('orders',$orders);
+        $this->assign('indices',$indices);
         return $this->fetch();
+    }
+    /* 首页查询指数 */
+    public function ajax_indice(){
+         
+        $indices=Db::name('stock_indice')->column('id,count,num,percent');
+        $this->success('获取成功','',$indices);
     }
     /* 前台我的信息*/
     public function my(){

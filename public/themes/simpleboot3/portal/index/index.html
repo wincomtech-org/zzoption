@@ -52,23 +52,21 @@
 		</div>
 <!--		指数-->
 		<div class="zhishu">
-			<div>
-				<p>上证指数</p>
-				<p>1869.48</p>
-				<p>+<span>4.86</span>+<span>0.26</span>%</p>
-			</div> 
-			<span></span>
-			<div>
-				<p>深证成指</p>
-				<p>1143.9</p>
-				<p>+<span>66.10</span>+<span>0.60</span>%</p>
+		<foreach name="indices" item="vo">
+			<div class="indice{$vo.id}">
+				<p>{$vo.name}</p>
+				<p class="indice_count">{$vo.count}</p>
+				<p>
+					<span class="indice_num">{$vo.num}</span>
+					<span class="indice_percent">{$vo.percent}</span>%
+				</p>
 			</div>
+		<neq name="vo.id" value="3">
 			<span></span>
-			<div>
-				<p>创业板指</p>
-				<p>3306.28</p>
-				<p>+<span>15.64</span>+<span>0.48</span>%</p>
-			</div>
+		</neq>
+			
+		</foreach> 
+			 
 		</div>
 <!--		咸鸭蛋询价-->
 		<div class="xydan">
@@ -107,4 +105,24 @@
 	</div>
 	
 <!--	底部-->
-	<include file="public@foot"/>
+<include file="public@foot"/>
+ 
+<script>
+//setInterval(indice,3000);
+var indice_url="{:url('portal/index/ajax_indice')}";
+function indice(){
+	$.post(indice_url,{'id':0},function(data){
+		var indices=data.data;
+		 var obj;
+		if(data.code==1){
+			 for(var indice in indices){
+				 obj=$('.indice'+indice);
+				 obj.find('.indice_count').text(indices[indice]['count']);
+				 obj.find('.indice_num').text(indices[indice]['num']);
+				 obj.find('.indice_percent').text(indices[indice]['percent']);
+			 }
+		}
+	},'json');
+	 
+}
+</script>
