@@ -1,0 +1,205 @@
+html,body,p,ul,ol{margin:0;padding:0;margin:auto;font-family: 微软雅黑;}
+body{font-size:0.2rem}
+img{vertical-align: top;}
+ol,ul{list-style: none}
+ input::-webkit-input-placeholder{ color:#9f9f9f;text-align: center}
+html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+a{text-decoration: none}
+body{background:#f3f3f3; padding-bottom: 1rem;}
+.touxiang{
+	height:3.34rem;
+	background:#7cb3de;
+	position:relative;
+}
+.touxiang>a:nth-child(1)>img{
+	width:1.41rem;
+	height:1.40rem;
+	border-radius: 50%;
+	position: absolute;
+	left:0;right:0;
+	margin: auto;
+	top:0.36rem;
+}
+.touxiang>p{
+	font-size: 0.3rem;
+	color:#fff;
+	position: absolute;
+	top:1.95rem;
+	left:0;right:0;
+	text-align: center;
+	margin: auto;
+}
+.touxiang>a:nth-child(3){
+	display: block;
+	position: absolute;
+	left:0;right:0;
+	top:2.57rem;
+	margin: auto;
+	font-size:0.22rem;
+	color:#fff;
+	text-indent: 0.55rem;
+	line-height: 0.42rem;
+	width:1.8rem;
+	height:0.42rem;
+	border-radius:0.42rem;
+	border:0.02rem solid #fff;
+}
+.touxiang>a:nth-child(3)>span:first-child{
+	display:inline-block;
+	position:absolute;
+	top:0;bottom:0;
+	left:0.2rem;
+	width:0.24rem;
+	height:0.24rem;
+	margin: auto;
+	background:url(../img/bianji.png) no-repeat center bottom;
+	background-size:contain;
+}
+
+/*中间部分*/
+.body_sss{
+	margin-bottom: 0.1rem;
+}
+.body_sss>ul{
+	height:2.25rem;
+	background:#fff;
+	padding:0 0.22rem;
+	display:flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+}
+.body_sss>ul>a>li{
+	width:1.25rem;
+	height:1.22rem;
+	text-align: center;
+	line-height: 2rem;
+}
+.body_sss>ul>a:nth-child(1)>li{
+	background:url(../img/czjl.png) center top no-repeat;
+	background-size:0.64rem 0.60rem;
+}
+.body_sss>ul>a:nth-child(3)>li{
+	background:url(../img/xiaox.png) center top no-repeat;
+	background-size:0.60rem 0.60rem;
+}
+.body_sss>ul>a:nth-child(5)>li{
+	background:url(../img/xufang.png) center top no-repeat;
+	background-size:0.66rem 0.60rem;
+}
+.body_sss>ul>a:nth-child(7)>li{
+	background:url(../img/qiandai.png) center top no-repeat;
+	background-size:0.47rem 0.60rem;
+}
+.body_sss>ul>a>li>span{
+	font-size:0.24rem;
+	color:#333333;
+}
+.body_sss>ul>span{
+	width:0.02rem;
+	height:1.05rem;
+	background:#f3f3f3;
+}
+/*客服/。。。。。*/
+.small_func{
+	
+}
+.small_func>ul>a{
+	color:#333333;
+	font-size:0.26rem;
+}
+.small_func>ul>a>li{
+	height:1.09rem;
+	border-bottom: 0.02rem solid #f3f3f3;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+	padding:0 0.4rem;
+	background: #FFF;
+}
+.small_func>ul>a>li>span{
+	display:inline-block;
+	height:1rem;
+}
+.small_func>ul>a>li>.span1{
+	width:0.8rem;
+}
+.small_func>ul>a>li>.span2{
+	width:5rem;
+	line-height: 1rem;
+}
+.small_func>ul>a>li>.span3{
+	width:0.5rem;
+	background:url(../img/right_jiantou.png) center no-repeat;
+	background-size:0.17rem 0.3rem;
+}
+.small_func>ul>a:nth-child(1)>li>.span1{
+	background:url(../img/kefu.png) center no-repeat;
+	background-size:0.44rem 0.44rem;
+}
+.small_func>ul>a:nth-child(2)>li>.span1{
+	background:url(../img/tishi.png) center no-repeat;
+	background-size:0.47rem 0.44rem;
+}
+.small_func>ul>a:nth-child(3)>li>.span1{
+	background:url(../img/gywm.png) center no-repeat;
+	background-size:0.45rem 0.37rem;
+}
+
+
+
+
+/*底部*/
+.footer{
+	width:100%;
+	height:0.98rem;
+	position: fixed;
+	bottom: 0;
+	background:#fff
+}
+.footer>ol{
+	width:6.7rem;
+	margin: auto;
+	display:flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+.footer>ol>a{
+	text-decoration: none;
+	color:#666666;
+	width:25%;
+	height:0.86rem;
+	line-height: 0.46rem;
+	text-align: center;
+	font-weight: 600;
+	font-size:0.2rem
+}
+.footer>ol>a>li{
+	width:100%;
+}
+.footer>ol>a>li>span{
+	display:block;
+	width:0.5rem;
+	height:0.48rem;
+	margin:0.05rem auto 0 auto;
+}
+.footer>ol>a:nth-child(1)>li>span{
+	background:url(../img/sy_s.png) center no-repeat;
+	background-size: contain;
+}
+.footer>ol>a:nth-child(2)>li>span{
+	background:url(../img/jy.png) center no-repeat;
+	background-size: contain;
+}
+.footer>ol>a:nth-child(3)>li>span{
+	background:url(../img/zx.png) center no-repeat;
+	background-size: contain;
+}
+.footer>ol>a:nth-child(4)>li>span{
+	background:url(../img/wode_s.png) center no-repeat;
+	background-size: contain;
+}
+
+
+

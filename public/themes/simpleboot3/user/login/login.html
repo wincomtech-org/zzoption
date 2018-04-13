@@ -1,0 +1,72 @@
+<include file="public@head"/>
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/login.css">
+</head>
+<body>
+	<div class="one">
+		<a class="small_ss" href="/"></a>
+	</div>
+	<div class="two"></div>
+	<div class="three">
+		<div>
+			<span></span>
+			<input type="text" name="tel" placeholder="请输入手机号">
+		</div>
+		<div>
+			<span></span>
+			<input type="password" name="psw" placeholder="请输入密码">
+		</div>
+		<div class="login_rigster" style="border:none;">
+			<a href="{:url('user/login/pass')}">忘记密码</a>
+			<a href="{:url('user/register/register')}">立即注册</a>
+		</div>
+		<input class="tijiao" type="button" value="登录">
+	</div>
+</body>
+</html>
+<script>
+// 注册提交
+$('.tijiao').click(function(){
+ 	 
+ 	var password=$.trim($('input[name=psw]').val()); 
+ 	var tel=$.trim($('input[name=tel]').val());
+  
+    /*  if(tel== '' || isPhoneNo(tel) == false){
+         $('input[name="tel"]').focus();
+         alert('提示：请输入正确手机号');
+         return false;
+     }else  if(password == '' || isPassword(password) == false){
+         $('input[name="password"]').focus();
+         alert('提示：请输入6位数字密码');
+         return false;
+     }   */
+      
+    
+ 	$('.tijiao').prop('disabled','disabled');
+    $('.tijiao').val('正在登录');
+   
+    $.ajax({
+        type: 'POST',
+        url: "{:url('user/login/ajax_login')}",
+        dataType: 'json',
+        data: {'tel':tel,'password':password},
+        success: function(data){ 
+        	if(data.code==1){
+				//返回上一页并刷新
+				self.location=data.url;
+			}else{
+				$('.tijiao').prop('disabled',false);
+				$('.tijiao').val('登录');
+				msg(data.msg);
+			}
+        },
+        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
+      	 
+        	$('.tijiao').prop('disabled',false);
+			$('.tijiao').val('登录');
+        	 
+        	msg('服务器连接失败',event.responseText);
+        }
+    });
+	return false;
+ });
+</script>

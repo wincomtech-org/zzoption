@@ -1,0 +1,77 @@
+<include file="public@head" />
+ 
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/my.css">
+	<script> 
+		sessionStorage.removeItem("href_s");
+		sessionStorage.setItem("href_s","./my.html");
+	</script>
+	 
+</head>
+<body>
+<!--	头部头像地方-->
+	<div class="touxiang">
+		<a href="{:url('user/info/info')}">
+			<img src="{:cmf_get_image_url($user.avatar)}"  alt="">
+		</a>
+		<p>{$user.user_nickname|default=$user.mobile}</p>
+		<a href="{:url('user/info/info')}">
+			<span></span>
+			<span>用户信息</span>
+		</a>
+	</div>
+<!--	中间部分开始-->
+	<div class="body_sss">
+		<ul>
+			<a href="./put.html">
+				<li>
+					<span>充值提现</span>
+				</li>
+			</a>
+			
+			<span></span>
+			<a href="./Mynews.html">
+				<li>
+					<span>我的消息</span>
+				</li>
+				</a>
+			<span></span>
+			<a href="./Join.html">
+				<li>
+					<span>招商加盟</span>
+				</li>
+			</a>
+			<span></span>
+			<a href="./capital_details.html">
+				<li>
+					<span>资金明细</span>
+				</li>
+			</a>
+		</ul>
+	</div>
+<!--	客服。。。。。-->
+	<div class="small_func">
+		<ul>
+			<a href="">
+				<li>
+					<span class="span1"></span>
+					<span class="span2">在线客服</span>
+					<span class="span3"></span>
+				</li>
+			</a>
+			<a href="{:url('portal/index/point')}">
+				<li>
+					<span class="span1"></span>
+					<span class="span2">风险提示</span>
+					<span class="span3"></span>
+				</li>
+			</a>
+			<a href="{:url('portal/index/about')}">
+				<li>
+					<span class="span1"></span>
+					<span class="span2">关于我们</span>
+					<span class="span3"></span>
+				</li>
+			</a>
+		</ul>
+	</div>
+<include file="public@foot"/>

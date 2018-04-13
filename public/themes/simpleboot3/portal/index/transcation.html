@@ -1,0 +1,127 @@
+<include file="public@head" />
+  
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
+ <script type="text/javascript" src="__TMPL__/public/assets/js/transaction.js"></script>
+</head>
+<body>
+<!--	顶部-->
+	<div class="header">
+		<p>交易</p>
+		<a href="{:url('portal/guide/help')}"></a>
+	</div>
+<!--	切换栏-->
+	<div class="body_s">
+		<ul>
+			<li class="bh_s"><a href="javascript:void(0)">询价</a></li>
+			<li><a href="javascript:void(0)">买入</a></li>
+			<li><a href="javascript:void(0)">持仓</a></li>
+			<li><a href="javascript:void(0)">自选</a></li>
+			<li><a href="javascript:void(0)">查询</a></li>
+		</ul>
+		<div class="show_g">
+<!--			询价-->
+			<div style="display:block" class="shows_1">
+				<div>
+					<p>股票名称：</p>
+					<input class="input1" type="text" placeholder="输入股票名称/代码">
+				</div>
+				<div>
+					<p>方向：</p>
+					<bottom>买涨</bottom>
+				</div>
+				<div>
+					<p>名义本金：</p>
+					<ol>
+					<foreach name="money_off" item="vo">
+						<li class="">{$vo}万</li>
+					</foreach>
+					<foreach name="money_on" item="vo" k="key">
+						<li class="<eq name='key' value='0'>red</eq>">{$vo}万</li>
+					</foreach>
+						 
+					</ol>
+<!--					清除浮动-->
+					<div style="clear: both;"></div>
+				</div>
+				<div>
+					<p>行权周期：</p>
+					<ol>
+					<foreach name="day" item="vo" k="key">
+						<li class="<eq name='key' value='0'>red</eq>">{$vo}月</li>
+					</foreach>
+						 
+					</ol>
+				</div>
+				<div>
+					<span></span>
+					<p>
+						我已阅读并同意<a href="{:url('portal/guide/aggrement',['name'=>'transaction'])}">{$guide}</a>期权有风险，入市须谨慎！
+					</p>
+				</div>
+				<div>
+					<input class="tijiao" type="submit" value="确定">
+				</div>
+			</div>
+<!--			买入-->
+			<div class="shows_2">
+				<div>
+					<span>股票/代码</span>
+					<span>名义金</span>
+					<span>周期</span>
+					<span>权利金</span>
+					<span>状态</span>
+				</div>
+				<div>
+<!--					改变的数据-->
+					 
+				</div>
+				
+			</div>
+<!--			持仓-->
+			<div class="shows_3">
+				<div>
+					<span>股票/代码</span>
+					<span>名义本金</span>
+					<span>购买日</span>
+				</div>
+				<div>
+<!--					改变的数据-->
+					 
+				</div>
+			</div>
+<!--			自选-->
+			<div class="shows_4">
+				<div>
+					<span>股票/代码</span>
+					<span>现价</span>
+					<span>涨跌幅</span>
+				</div>
+				<div>
+<!--					改变的数据-->
+					 
+				</div>
+			</div>
+			<div class="shows_5">
+				<div>
+					<a href="./inquiry_record.html">
+						询价历史
+						<span></span>
+					</a>
+				</div>
+				
+				<div>
+					<a href="./flat_record.html">
+						平仓历史
+						<span></span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<include file="public@foot"/>
+<script>
+$('.tijiao').click(function(){
+	location.href="{:url('user/login/login')}";
+});
+</script>

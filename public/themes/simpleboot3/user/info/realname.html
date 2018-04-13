@@ -1,0 +1,97 @@
+<include file="public@head" />
+  
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+	 
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+	</head>
+
+	<body>
+		<div class="point">
+			<div class="alltop">
+				<div class="top">
+					<a href="{:url('info')}">
+						<div class="t_left">
+
+						</div>
+					</a>
+					<div class="t_right">
+						<span>实名认证</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="name">
+			<div class="myname">
+				<input type="text" name="uname" id="" value="{$user.user_nickname}" placeholder="请输入姓名" />
+			</div>
+		</div>
+		<div class="name">
+			<div class="myname">
+				<input type="text" name="idcard" id="" value="{$user.user_login}" placeholder="请输入身份证号" />
+			</div>
+		</div>
+		<div class="name">
+			<div class="myname">
+				<input type="text" name="bank" id="" value="{$user.bank_card}" placeholder="请输入银行卡号" />
+			</div>
+
+		</div>
+
+		<div class="n_button">
+			<a href="javascript:void(0);">
+				<button type="button">提交</button>
+			</a>
+		</div>
+	</body>
+
+</html>
+<script>
+// 提交
+ 
+$('button').click(function(){
+	 var obj=$(this);
+	 var text=['提交','正在提交'];
+ 	 
+ 	var name=$.trim($('input[name=uname]').val());
+ 	var idcard=$.trim($('input[name=idcard]').val());
+ 	var bank=$.trim($('input[name=bank]').val());
+    /*  if(tel== '' || isPhoneNo(tel) == false){
+         $('input[name="tel"]').focus();
+         alert('提示：请输入正确手机号');
+         return false;
+     }else  if(password == '' || isPassword(password) == false){
+         $('input[name="password"]').focus();
+         alert('提示：请输入6位数字密码');
+         return false;
+     }   */
+      
+    
+    
+     button_click(obj,1,text[1]);
+   
+    $.ajax({
+        type: 'POST',
+        url: "{:url('user/info/ajax_name')}",
+        dataType: 'json',
+        data: {'name':name,'idcard':idcard,'bank':bank},
+        success: function(data){ 
+        	if(data.code==1){
+				//返回上一页并刷新
+				self.location=data.url;
+			}else{
+				 button_click(obj,0,text[0]);
+				 
+				msg(data.msg);
+			}
+        },
+        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
+      	    
+        	 button_click(obj,0,text[0]);
+        	msg('服务器连接失败',event.responseText);
+        }
+    });
+	return false;
+ });
+</script>

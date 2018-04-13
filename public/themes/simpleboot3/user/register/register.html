@@ -1,0 +1,108 @@
+<include file="public@head"/>
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/login.css">
+</head>
+<body>
+	<div class="one">
+		<a class="small_ss" href="{:url('user/login/login')}"></a>
+	</div>
+	<div class="two"></div>
+	<div class="three">
+		<div>
+			<span></span>
+			<input type="text" name="tel" placeholder="请输入手机号">
+		</div>
+		<div>
+			<span></span>
+			<input type="password" name="psw" placeholder="请输入密码">
+		</div>
+		<div class="gysgt1">
+			<span></span>
+			<input type="text" name="code" placeholder="请输入机构代码">
+		</div>
+		<div class="gysgt2">
+			<span></span>
+			<input type="text" name="sms" placeholder="请输入验证码">
+			<button id="sms">点击发送</button>
+		</div>
+		<input class="tijiao" type="button" value="注册">
+	</div>
+</body>
+</html>
+<script> 
+$('#sms').click(function(){ 
+      
+   	var tel=$.trim($('input[name=tel]').val()); 
+   	var code=$.trim($('input[name=code]').val()); 
+   	var psw=$.trim($('input[name=psw]').val()); 
+   	if(tel=='' || isPhoneNo(tel) == false){ 
+  		alert('请先填写正确的手机号码');
+  		return false;
+   	}
+   	if(psw == '' || isPassword(psw) == false){
+        $('input[name="psw"]').focus();
+        alert('密码格式为6-20为英文字母或数字');
+        return false;
+    }
+   	if(code == '' || isCode(code) == false){
+        $('input[name="code"]').focus();
+        alert('请输入正确的机构码');
+        return false;
+    }
+   	 
+   	$.ajax({
+           type: 'POST',
+           url: "{:url('user/register/sendmsg')}",
+           dataType: 'json',
+           data:{'tel':tel},
+           success: function(data){ 
+           	 
+        	if(data.code==1){
+                    settime();
+           	}else{  
+           		alert(data.msg); 
+           	} 
+           },
+           error: function(){
+           	alert('服务器连接失败'); 
+           }
+       }); 
+   	return false;  
+});
+
+
+ 
+ // 注册提交
+$('.tijiao').click(function(){
+ 	var code=$.trim($('input[name=code]').val());
+ 	var password=$.trim($('input[name=psw]').val()); 
+ 	var tel=$.trim($('input[name=tel]').val());
+ 	var sms=$.trim($('input[name=sms]').val());
+  /* 
+     if(tel== '' || isPhoneNo(tel) == false){
+         $('input[name="tel"]').focus();
+         alert('提示：请输入正确手机号');
+         return false;
+     }else  if(password == '' || isPassword(password) == false){
+         $('input[name="password"]').focus();
+         alert('提示：请输入6位数字密码');
+         return false;
+     }else  if(sms == '' || isSms(sms) == false){
+         $('input[name="sms"]').focus();
+         alert('短信验证码错误');
+         return false;
+     }  */
+      
+     $.post("{:url('user/register/ajax_register')}",
+ 		 {'code':code,'password':password,'tel':tel,'sms':sms},
+ 		 function(data){  
+ 		  	 if(data.code==1){
+ 				//返回上一页并刷新
+ 				self.location=data.url;
+ 			} else{
+ 				alert(data.msg);
+ 			} 
+ 	});
+ 	return false;
+ });
+    
+</script>

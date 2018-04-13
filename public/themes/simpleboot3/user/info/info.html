@@ -1,0 +1,136 @@
+<include file="public@head" />
+<link rel="stylesheet" type="text/css"
+	href="__TMPL__/public/assets/css/user.css" />
+<link rel="stylesheet" type="text/css"
+	href="__TMPL__/public/assets/css/point.css" />
+<link rel="stylesheet" type="text/css"
+	href="__TMPL__/public/assets/css/top.css" />
+
+
+
+</head>
+
+<body style="background: #fff">
+	<div class="point">
+		<div class="alltop">
+			<div class="top">
+				<a href="{:url('portal/index/my')}">
+					<div class="t_left"></div>
+				</a>
+				<div class="t_right">
+					<span>用户信息</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<label for="file" class="alluser">
+		<div class="user">
+			<div class="">
+				<div class="u_tip"></div>
+				<!--file 隐藏起来  触发onchange事件-->
+				<input type="file" name="file" accept="image/*" id="file"
+					style="display: none;" onchange="previewFile()" />
+
+			</div>
+
+			<div class="u_user">
+				<img src="{:cmf_get_image_url($user.avatar)}" id="userImg" />
+			</div>
+
+			<div class="u_text">
+				<span>头像</span>
+			</div>
+
+		</div>
+	</label>
+
+	<div class="top_c"></div>
+	<a href="{:url('user/info/realname')}">
+		<div class="alluser" style="color: #333333">
+			<div class="u_mess">
+				<div class="u_tip"></div>
+				<div class="u_text_r">
+					<span><eq name="user.is_name" value="1">已认证<else/>未认证</eq></span>
+				</div>
+				<div class="u_text">
+					<span>实名认证</span>
+				</div>
+			</div>
+		</div>
+	</a>
+	<div class="alluser">
+		<div class="u_mess">
+			<div class="u_tip1"></div>
+			<div class="u_text_r1">
+				<span>{$user.user_nickname}</span>
+			</div>
+			<div class="u_text">
+				<span>用户名</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="alluser">
+		<div class="u_mess">
+			<div class="u_tip"></div>
+			<div class="u_text_r">
+				<span>{$user.mobile}</span>
+			</div>
+			<div class="u_text">
+				<span>手机号</span>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+<script type="text/javascript">
+	var click=0;
+	function previewFile() {
+		if(click==0){
+ 			click=1;
+ 		}else{
+ 			return false;
+ 		}
+		var preview = document.querySelector('img');
+		var file = document.querySelector('input[type=file]').files[0];
+		var reader = new FileReader();
+		reader.onloadend = function() {
+			preview.src = reader.result;
+		}
+
+		if (file) {
+			reader.readAsDataURL(file); 
+		} else {
+			click=0;
+			return false;
+		}
+		//组装表单数据
+ 		var fordata=new FormData();
+ 		fordata.append("avatar1",file);
+ 		 
+ 		//ajax
+ 		$.ajax({
+ 			"url":"{:url('user/info/ajax_avatar')}",
+ 			"type":"POST",
+ 			"processData":false,
+ 			"contentType":false,
+ 			"data":fordata,
+ 			"dataType":"json",
+ 			"error":function(){
+ 				alert('服务器连接失败'); 
+ 				click=0;
+ 			},
+ 			"success":function(data){
+ 				 
+ 				if(data.code==1){
+            		 location.href=data.url; 
+            	}else{ 
+            		alert(data.msg);
+            	}
+ 				click=0;
+ 			}
+ 		});
+	}
+</script>

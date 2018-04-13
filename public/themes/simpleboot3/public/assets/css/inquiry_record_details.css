@@ -1,0 +1,95 @@
+html,body,p,ul,ol{margin:0;padding:0;margin:auto;font-family: 微软雅黑;}
+body{font-size:0.2rem}
+img{vertical-align: top;}
+ol,ul{list-style: none}
+html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+body{background:#f3f3f3}
+.nav{
+	width:100%;
+	height:0.88rem;
+	font-size: 0.3rem;
+	text-align: center;
+	line-height: 0.88rem;
+	background:#fff;
+	position: relative;
+}
+.nav>a>span{
+	display: inline-block;
+	position: absolute;
+	top:0;bottom:0;
+	left:0.5rem;
+	margin: auto;
+	width:0.19rem;
+	height:0.33rem;
+	background:url(../img/left_jiantou.png) no-repeat;
+	background-size: contain;
+}
+.name_tou{
+	height:0.9rem;
+	background:#fff;
+	line-height: 0.9rem;
+	border-bottom: 0.02rem solid #f3f3f3;
+	box-sizing: border-box;
+	padding-left: 0.86rem;
+}
+.name_tou>p:nth-child(1){
+	display: inline-block;
+	width:2rem;
+	font-size: 0.27rem;
+	color:#333333;
+}
+.name_tou>p:nth-child(2){
+	display: inline-block;
+	font-size:0.22rem;
+	color:#c9c9c9
+}
+
+.xiangxi{
+	box-sizing: border-box;
+	padding:0 0.75rem;
+	background:#fff;
+}
+.xiangxi>div{
+	width:6rem;
+	height:0.7rem;
+	line-height: 0.7rem;
+	padding:0 0.08rem;
+	border-bottom: 0.02rem solid #f3f3f3;
+}
+.xiangxi>div:last-child{
+	border:none;
+}
+.xiangxi>div>span:nth-child(1){
+	display: inline-block;
+	width:2rem;
+}
+.xiangxi>div>span:nth-child(2){
+	display: inline-block;
+	width:2rem;
+}
+.xiangxi>.div1>span{
+	font-size: 0.26rem;
+	color:#333333;
+}
+.xiangxi>.div2>span{
+	font-size: 0.22rem;
+	color:#858585;
+}
+.wenxin>p{
+	text-align: center;
+	color:#ababab;
+	font-size:0.18rem;
+	padding:0.22rem;
+}
+.wenxin>div>bottom{
+	display:block;
+	width:1.85rem;
+	height:0.5rem;
+	background:#cd4650;
+	text-align: center;
+	line-height: 0.5rem;
+	color:#fff;
+	letter-spacing: 0.05rem;
+	border-radius: 0.06rem;
+	margin: auto;
+}

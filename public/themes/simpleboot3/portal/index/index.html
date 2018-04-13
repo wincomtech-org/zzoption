@@ -1,0 +1,110 @@
+<include file="public@head" />
+	<script src="__TMPL__/public/assets/js/index.js"></script>
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/index.css">
+</head>
+<body>
+<!--	头部搜索-->
+	<div class="header">
+		<div>
+			<input type="text" placeholder="请输入股票代码，进行搜索">
+			<span></span>
+		</div>
+		<div>
+			<a href="/"><span></span></a>
+			<span></span>
+		</div>
+	</div>
+<!--	内容-->
+	<div class="body_s">
+<!--		图片-->
+		<div class="imgs">
+			<ul>
+	 		<foreach name="banners" item="vo">
+	 			<li>
+					<a href="{$vo.link}"><img src="{:cmf_get_image_url($vo.pic)}" width="100%" alt=""></a>
+				</li>
+	 		</foreach>
+			</ul>		 
+			 
+		</div>
+<!--		询价，我的课程。。。。。。-->
+		<div class="func">
+			<ol>
+				<a href="{'portal/index/transcation'}">
+					<li>
+						<span></span>
+						<p>询价</p>
+					</li>
+				</a>
+				<a href="{:url('portal/guide/help')}">
+					<li>
+						<span></span>
+						<p>新手课堂</p>
+					</li>
+				</a>
+				<a href="{:url('user/msg/index')}">
+					<li>
+						<span></span>
+						<p>我的消息</p>
+					</li>
+				</a>
+			</ol>
+		</div>
+<!--		指数-->
+		<div class="zhishu">
+			<div>
+				<p>上证指数</p>
+				<p>1869.48</p>
+				<p>+<span>4.86</span>+<span>0.26</span>%</p>
+			</div> 
+			<span></span>
+			<div>
+				<p>深证成指</p>
+				<p>1143.9</p>
+				<p>+<span>66.10</span>+<span>0.60</span>%</p>
+			</div>
+			<span></span>
+			<div>
+				<p>创业板指</p>
+				<p>3306.28</p>
+				<p>+<span>15.64</span>+<span>0.48</span>%</p>
+			</div>
+		</div>
+<!--		咸鸭蛋询价-->
+		<div class="xydan">
+			<div>
+				<div></div>
+				<div>
+					<div>
+					<foreach name="orders" item="vo">
+						<div>
+							<p>{$vo.uname}买入：<span class="span1">名义本金{$vo.money0}</span>万</p>
+							<p>
+								<span class="span1">【买涨】</span>
+								<span>{$vo.name}（{$vo.code0}）{$vo.month}个月</span>
+							</p>
+						</div>
+					</foreach>
+						 
+					 </div>
+				</div>
+			</div>
+		</div>
+<!--		咨询-->
+		<div class="zixun">
+			<div style="width:100%"><span></span>股市资讯</div>	
+<!--			最新内容-->
+			<a href="/">
+				<div class="text">
+					<p><span>网易财经</span>&nbsp;&nbsp;<span>2月28日</span></p>
+					<p>
+						<span>午间看新闻：沪指震荡上涨0.17% 工业互联网再爆发</span> 
+					</p>
+				</div>
+			</a>
+			 
+		</div>
+	</div>
+	
+<!--	底部-->
+	<include file="public@foot"/>

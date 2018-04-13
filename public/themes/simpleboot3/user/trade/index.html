@@ -1,0 +1,108 @@
+<include file="public@head" />
+  
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
+ <script type="text/javascript" src="__TMPL__/public/assets/js/transaction.js"></script>
+</head>
+<body>
+<!--	顶部-->
+	<div class="header">
+		<p>交易</p>
+		<a href="{:url('portal/guide/help')}"></a>
+	</div>
+<!--	切换栏-->
+	<div class="body_s">
+		<ul>
+			<li class="bh_s"><a href="{:url('index')}">询价</a></li>
+			<li><a href="{:url('buy')}">买入</a></li>
+			<li><a href="{:url('store')}">持仓</a></li>
+			<li><a href="{:url('collect')}">自选</a></li>
+			<li><a href="{:url('query')}">查询</a></li>
+		</ul>
+		<div class="show_g">
+<!--			询价-->
+			<div style="display:block" class="shows_1">
+				<div>
+					<p>股票名称：</p>
+					<input class="input1" type="text" placeholder="输入股票名称/代码" value="{$stock.name|default=''}">
+				</div>
+				<div>
+					<p>方向：</p>
+					<bottom>买涨</bottom>
+				</div>
+				<div>
+					<p>名义本金：</p>
+					<ol>
+					<foreach name="money_off" item="vo">
+						<li class="">{$vo}万</li>
+					</foreach>
+					<foreach name="money_on" item="vo" k="key">
+						<li class="<eq name='key' value='0'>red</eq>">{$vo}万</li>
+					</foreach>
+						 
+					</ol>
+<!--					清除浮动-->
+					<div style="clear: both;"></div>
+				</div>
+				<div>
+					<p>行权周期：</p>
+					<ol>
+					<foreach name="day" item="vo" k="key">
+						<li class="<eq name='key' value='0'>red</eq>">{$vo}月</li>
+					</foreach>
+						 
+					</ol>
+				</div>
+				<div>
+					<span></span>
+					<p>
+						我已阅读并同意<a href="{:url('portal/guide/aggrement',['name'=>'transaction'])}">{$guide}</a>期权有风险，入市须谨慎！
+					</p>
+				</div>
+				<div>
+					<input class="tijiao" type="button" value="确定">
+				</div>
+			</div>
+ 
+			 
+		 
+		</div>
+	</div>
+	
+<include file="public@foot"/>
+<script>
+// 提交
+ 
+$('.tijiao').click(function(){
+	 var obj=$(this);
+	 var text=['确定','正在提交'];
+ 	 
+ 	var code0='sh600000';
+ 	var month=3;
+ 	var money=100;
+    
+     button_click(obj,1,text[1],2);
+   
+    $.ajax({
+        type: 'POST',
+        url: "{:url('user/trade/ajax_inquire')}",
+        dataType: 'json',
+        data: {'code0':code0,'month':month,'money':money},
+        success: function(data){ 
+        	if(data.code==1){
+				//返回上一页并刷新
+				self.location=data.url;
+			}else{
+				 button_click(obj,0,text[0],2);
+				 
+				msg(data.msg);
+			}
+        },
+        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
+      	    
+        	 button_click(obj,0,text[0],2);
+        	msg('服务器连接失败',event.responseText);
+        }
+    });
+	return false;
+ });
+</script>

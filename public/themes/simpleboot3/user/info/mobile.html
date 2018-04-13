@@ -1,0 +1,113 @@
+<include file="public@head" />
+</head>
+<body class='backg-gray1'>
+    <section class='hasBackGray'>
+       
+        <form action="" >
+            <ul class="ul-2nd backg-white ">
+                <li class='li-2nd'>
+                    <span class='li-2nd-tit'>+86</span>
+                    <div class="li-2nd-con">
+                        <input type="text" placeholder='请输入你要更换的手机号' name='tel' required>
+                    </div>
+                </li>
+                <li class='li-2nd '>
+                    <div class="li-2nd-con">
+                        <input type="password" placeholder='请输入密码' name='password' maxlength="6" required>
+                        
+                    </div>
+                </li>
+                <li class='li-2nd hasYZ'>
+                     <div class="li-2nd-con">  
+                        <input type="text" placeholder='请输入验证码' name='identifying_code' required>
+                      </div>  
+                   
+                     <a href="javascript:void(0);" class="div-btn backg-blue border-radius-10 identiCode">获取验证码</a>   
+                </li>
+               
+            </ul>
+         
+            <p class='error-tip height-37 width-90'></p>
+            <button class="width-90 height-37 btn-border-blue border-radius-4 margTop-2" type='submit' onClick='return formModifPhone(this.form)' >确认提交</button>
+        </form>
+    </section>
+   
+   <include file="public@foot" />  
+    <script>
+    
+    $('a.identiCode').click(function(){ 
+    	$('.error-tip').text('');
+        var obj=$(this);
+    	var tel=$.trim($('input[name=tel]').val()); 
+    	var psw=$.trim($('input[name="password"]').val()); 
+    	send_msg(tel,psw,obj); 
+    });
+
+	function send_msg(tel,psw){ 
+		if(psw=='' || isPassword(psw)==false){ 
+			$('.error-tip').text('请先填写正确的密码');
+			return false;
+		}
+		if(tel=='' || isPhoneNo(tel) == false){ 
+			$('.error-tip').text('请先填写正确的手机号码');
+			return false;
+		}
+		 
+		$.ajax({
+	        type: 'POST',
+	        url: "{:url('user/register/sendmsg')}",
+	        dataType: 'json',
+	        data:{'tel':tel,'psw':psw,'type':'mobile'},
+	        success: function(data){
+	        	if(data.msg=='success'){
+	        		 settime(obj);
+	        	}else{
+	        		$('.error-tip').text(data.msg); 
+	        		if(data.url!=''){
+	           	       location.href=data.url; 
+	           	    }
+	        	} 
+	        },
+	        error: function(){
+	        	$('.error-tip').text('服务器连接失败'); 
+	        }
+	    });
+		return false;
+	}
+
+        function formModifPhone(form){
+           
+            var tel=$('input[name="tel"]').val();
+            var password=$('input[name="password"]').val()
+            var identifying_code=$('input[name="identifying_code"]').val()
+
+            if($.trim(tel) == '' || isPhoneNo(tel) == false){
+
+                $('input[name="tel"]').focus();
+                $('.error-tip').html('提示：请输入正确手机号');
+                return false;
+
+            }else if($.trim(password) == '' || isPassword(password) == false){
+
+                $('input[name="password"]').focus();
+                $('.error-tip').html('提示：请输入正确6位数字密码');
+                return false;
+
+            }else if($.trim(identifying_code).length != 6 ){
+ 
+                $('input[name="identifying_code"]').focus();
+                $('.error-tip').html('提示：请输入正确验证码');
+                return false;
+            }
+            $.post("{:url('user/info/ajax_mobile')}",
+           		 {'code':identifying_code,'tel':tel,'psw':password},
+           		 function(data){ 
+           			 $('.error-tip').text(data.msg); 
+           			 if(data.url!=''){
+                   	     location.href=data.url; 
+                   	 }
+           	});
+           	return false;
+        }
+    </script>
+ 

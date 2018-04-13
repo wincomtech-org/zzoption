@@ -1,0 +1,43 @@
+.aboutus{
+	margin: 0.5rem auto;
+	width: 4rem;
+	
+	margin-bottom: 0.35rem;
+}
+
+.code{
+	background-image: url(../img/code.png);
+	width: 100%;
+	height: 4rem;
+	background-size: cover;
+}
+
+.c_txt {
+	margin-top: 0.24rem;
+	width: 100%;
+	font-size: 0.27rem;
+	text-align: center;
+
+	
+}
+
+.c_a{
+	width: 100%;
+	text-align: center;
+}
+
+.c_a a{
+	font-size: 0.34rem;
+	color:#CD4650 ;
+	
+	font-weight: 600;
+}
+
+.c_text{
+	margin: 0 auto;
+	width: 5.47rem;
+	font-size: 0.27rem;
+	text-align: center;
+	color: #666;
+	margin-top: 0.45rem;
+} 

@@ -1,0 +1,55 @@
+<include file="public@head" />
+</head>
+<body class='backg-gray1'>
+    <section class='hasBackGray'>
+       
+        <form action="" >
+            <ul class="ul-2nd backg-white ">
+                <li class='li-2nd'>
+                    <span class='li-2nd-tit'>更换手机号</span>
+                    <div class="li-2nd-con hasArr">
+                        <a href="{:url('user/info/mobile')}">
+                            <input type="text" value='{$user.mobile}' name='tel' class='tet-right' readonly>
+                        </a>
+                        <b class="icons icon_mess icon_arr"></b>
+                    </div>
+                    
+                </li>
+                <li class='li-2nd '>
+                    <span class='li-2nd-tit'>修改密码</span>
+                    <div class="li-2nd-con hasArr">
+                        <a href="{:url('user/info/psw')}">
+                             <input type="text" value='******' readonly class='tet-right'> 
+                         </a>
+                         <b class="icons icon_mess icon_arr"></b>
+                    </div>
+                    
+                </li>
+               
+            </ul>
+         
+            <p class='error-tip height-37 width-90'></p>
+            <a href="javascript:void();" class="width-90 height-37 btn-border-blue border-radius-4 margTop-2 tet-center" type='submit' >退出登录</a>
+        </form>
+    </section>
+   <include file="public@foot" />   
+    <script>
+       
+        $('.btn-border-blue').click(function(){ 
+            var div_head='<div class="pop_up border-radius-10" style="">'
+            var tit='<p>提示</p>';
+            var content=' <p>你确定要退出吗？</p>';
+            var _div='<ul class="pop_up_ul">';
+            var _btn1='<li><a href="javascript:psw_hide();" class="blue-text">取消</a></li>';
+            var url="{:url('user/index/logout')}";
+            var _btn2=' <li><a href="'+url+'" class="blue-text">确定</a></li>';
+            var _div_end=' </ul>';
+            var div_end='</div>';
+            
+            var alert_div=div_head+tit+content+_div+_btn1+_btn2+_div_end+div_end;
+          
+            $('body').append(alert_div);
+            return false;
+        });
+    </script>
+ 

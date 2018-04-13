@@ -1,0 +1,29 @@
+<include file="public@head" />
+ 	<link rel="stylesheet" href="__TMPL__/public/assets/css/transaction_help.css">
+</head>
+<body>
+<!--	头部-->
+	<div class="nav">
+		<a href="/"><span></span></a>
+		了解期权交易
+	</div>
+	<foreach name="list" item="vo" k="key"> 
+		<div class="div">
+			{$key}
+		</div>
+	 
+		<div class="div_s">
+		<foreach name="vo" item="vv" >
+			<div>
+				<a href="{:url('info',['id'=>$vv.id])}">
+					{$vv.title}
+					<span></span>
+				</a>
+			</div>
+		</foreach>
+			 
+		</div>
+	</foreach>
+  
+</body>
+</html>

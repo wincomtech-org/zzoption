@@ -1,0 +1,126 @@
+<include file="public@header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:url('index')}">网站配置</a></li>
+			 
+		</ul>
+
+		<form method="post" class="form-horizontal js-ajax-form margin-top-20"
+			action="{:url('editPost')}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">网站标题<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="zztitle"
+						value="{$info.zztitle}" required>
+				</div>
+			</div>
+ 			 
+			<div class="form-group">
+				<label class="col-sm-2 control-label">公司名称<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="company"
+						value="{$info.company}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">联系方式1<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="tel1"
+						value="{$info.tel1}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">联系方式2<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="tel2"
+						value="{$info.tel2}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">借款范围(如100-6000)<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="paper_money"
+						value="{$info.paper_money}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">借款时间节点(如7-14-21)<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="paper_day"
+						value="{$info.paper_day}" required>
+				</div>
+			</div>
+			 <div class="form-group">
+				<label class="col-sm-2 control-label">借款年利率(整数百分值)<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="number" min="0" step="1"  class="form-control" name="rate"
+						value="{$info.rate}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">逾期年利率(整数百分值)<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="number" min="0" step="1" class="form-control" name="rate_overdue"
+						value="{$info.rate_overdue}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">支付宝姓名<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text"  class="form-control" name="pay_ali_name"
+						value="{$info.pay_ali.name}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">支付宝账户<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text"  class="form-control" name="pay_ali_id"
+						value="{$info.pay_ali.id}" required>
+				</div>
+			</div>
+		 
+			<div class="form-group">
+				<label class="col-sm-2 control-label">开户银行<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text"  class="form-control" name="pay_bank_title"
+						value="{$info.pay_bank.title}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">银行账户姓名<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text"  class="form-control" name="pay_bank_name"
+						value="{$info.pay_bank.name}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">银行账户卡号<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text"  class="form-control" name="pay_bank_id"
+						value="{$info.pay_bank.id}" required>
+				</div>
+			</div>
+			 
+			 
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+				 
+					<button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+					<a class="btn btn-default" href="{:url('index')}">{:lang('BACK')}</a>
+				</div>
+			</div>
+			 <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+				 <p>利率为0-99的整数</p>
+				 <p>借款范围为最小值-最大值，建议都是100的整数倍</p>
+				 <p>可选借款时间用-分隔，必须为大于0的整数</p>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+	 
+</body>
+</html>

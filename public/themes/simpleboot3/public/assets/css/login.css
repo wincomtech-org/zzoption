@@ -1,0 +1,102 @@
+html,body,p,ul,ol{margin:0;padding:0;margin:auto;font-family: 微软雅黑;}
+body{font-size:0.2rem}
+img{vertical-align: top;}
+ol,ul{list-style: none}
+ input::-webkit-input-placeholder{ color:#9f9f9f;font-size:0.3rem;letter-spacing: 0.02rem;}
+html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+body{padding-bottom: 1rem;}
+a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
+.one{
+	height:1rem;
+	background:url(../img/left_jiantou.png) 0.5rem center no-repeat;
+	background-size:0.19rem 0.34rem;
+}
+.one>.small_ss{
+	display: block;
+	height:100%;
+	width:1.45rem;
+}
+.two{
+	height:3.87rem;
+	background:url(../img/login_logo.png) center no-repeat;
+	background-size: 2.5rem 2.49rem;
+}
+.three{
+	box-sizing: border-box;
+	padding:0 0.65rem;
+}
+.three>div{
+	border-bottom:0.02rem solid #c3c3c3 ;
+	margin-top:0.4rem;
+}
+.three>div>span{
+	display: inline-block;
+	width:1rem;
+	height:0.65rem;
+	vertical-align: bottom
+}
+.three>div>input{
+	width:3.82rem;
+	height:0.65rem;
+	outline: none;
+	border: none;
+	font-size:0.3rem;
+	background:rgba(0,0,0,0.00);
+}
+.three>div:nth-child(1)>span{
+	background:url(../img/xiaoshouji.png) 0.5rem center no-repeat;
+	background-size: 0.22rem 0.36rem;
+}
+.three>div:nth-child(2)>span{
+	background:url(../img/mimasuo.png) 0.45rem center no-repeat;
+	background-size: 0.31rem 0.33rem;
+}
+.three>.gysgt1>span{
+	background:url(../img/key.png) 0.45rem center no-repeat;
+	background-size: 0.31rem 0.33rem;
+}
+.three>.gysgt2>span{
+	background:url(../img/test.png) 0.45rem center no-repeat;
+	background-size: 0.31rem 0.33rem;
+}
+.three>.gysgt2>input{
+	width:3rem;
+}
+.three>.gysgt2>button{
+	background:#cd4650;
+	border-radius:0.06rem;
+	border:none;
+	padding:0.1rem 0.3rem;
+	outline: none;
+	font-size:0.14rem;
+	color:#fcf3f3;
+	letter-spacing: 0.02rem;
+}
+.three>.login_rigster{
+	width:5rem;
+	height:0.7rem;
+	margin: auto;
+	line-height: 0.7rem;
+}
+.three>.login_rigster>a:nth-child(1){
+	float: left;
+	color:#999999
+}
+.three>.login_rigster>a:nth-child(2){
+	float: right;
+	color:#d0525c
+}
+.tijiao{
+	display: block;
+	width:4.95rem;
+	height:0.76rem;
+	border-radius: 0.06rem;
+	background:#d0525c;
+	font-size:0.35rem;
+	color:#fff;
+	text-align: center;
+	outline: none;
+	border: none;
+	line-height: 0.76rem;
+	margin:0.6rem auto;
+}

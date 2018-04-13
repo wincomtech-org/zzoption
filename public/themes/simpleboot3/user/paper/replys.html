@@ -1,0 +1,102 @@
+<include file="public@head" />
+</head>
+<body class='backg-gray1'>
+    <section class='hasBackGray'>
+        <ul class="ul_2nd height-37 backg-white hasActive">
+            <li >
+                <a href="{:url('user/paper/lists')}">借款记录</a>
+            </li>
+            <li class='active'>
+                <a href="{:url('user/paper/replys')}">还款记录</a>
+            </li>
+        </ul>
+        <div class="bill_con">
+            <ul class='lists-ul'>
+            	 
+                <foreach name="list" item="vo">  
+                <li class='lists-li'>
+                    <dl>
+                        <dt>借款时间</dt>
+                        <dd>{$vo.start_time|date='Y-m-d',###}</dd>
+                    </dl>
+                    <dl>
+                        <dt>借款金额</dt>
+                        <dd>{$vo.money}</dd>
+                    </dl>
+                    <dl>
+                        <dt>还款期限</dt>
+                        <dd>{$vo.end_time|date='Y-m-d',###}</dd>
+                    </dl>
+                    <dl>
+                        <dt>还款时间</dt>
+                        <dd>{$vo.insert_time|date='Y-m-d H:i',###}</dd>
+                    </dl>
+                    <dl>
+                        <dt>还款金额</dt>
+                        <dd>{$vo.final_money}</dd>
+                    </dl>
+                   
+                    <dl>
+                        <dt>还款状态</dt>
+                        <dd>
+                        	<switch name="vo.status">
+                        		<case value="0">申请还款</case>
+                        		<case value="1">还款成功</case>
+                        		<case value="2">还款失败</case> 
+                   			</switch>
+                   		 
+                   		</dd>
+                    </dl>
+                    
+                    <dl>
+                        <dt>详情</dt>
+                        <dd>{$vo.dsc}</dd>
+                    </dl>
+                </li>
+               </foreach>
+               <foreach name="list_old" item="vo">  
+                <li class='lists-li'>
+                    <dl>
+                        <dt>借款时间</dt>
+                        <dd>{$vo.start_time|date='Y-m-d',###}</dd>
+                    </dl>
+                    <dl>
+                        <dt>借款金额</dt>
+                        <dd>{$vo.money}</dd>
+                    </dl>
+                    <dl>
+                        <dt>还款期限</dt>
+                        <dd>{$vo.end_time|date='Y-m-d',###}</dd>
+                    </dl>
+                    <dl>
+                        <dt>还款时间</dt>
+                        <dd>{$vo.insert_time|date='Y-m-d H:i',###}</dd>
+                    </dl>
+                    <dl>
+                        <dt>还款金额</dt>
+                        <dd>{$vo.final_money}</dd>
+                    </dl>
+                   
+                    <dl>
+                        <dt>还款状态</dt>
+                        <dd>
+                        	<switch name="vo.status">
+                        		<case value="0">申请还款</case>
+                        		<case value="1">还款成功</case>
+                        		<case value="2">还款失败</case> 
+                   			</switch>
+                   		 
+                   		</dd>
+                    </dl>
+                    
+                    <dl>
+                        <dt>详情</dt>
+                        <dd>{$vo.dsc}</dd>
+                    </dl>
+                </li>
+               </foreach>
+            </ul>
+        </div>
+    </section>
+   
+    <include file="public@foot" />

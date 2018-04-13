@@ -1,0 +1,86 @@
+<include file="public@head" />
+  
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
+ <script type="text/javascript" src="__TMPL__/public/assets/js/transaction.js"></script>
+</head>
+<body>
+<!--	顶部-->
+	<div class="header">
+		<p>交易</p>
+		<a href="{:url('portal/guide/help')}"></a>
+	</div>
+<!--	切换栏-->
+	<div class="body_s">
+		<ul>
+			<li ><a href="{:url('index')}">询价</a></li>
+			<li class="bh_s"><a href="{:url('buy')}">买入</a></li>
+			<li><a href="{:url('store')}">持仓</a></li>
+			<li><a href="{:url('collect')}">自选</a></li>
+			<li><a href="{:url('query')}">查询</a></li>
+		</ul>
+		<div class="show_g">
+ <!--			买入-->
+			<div style="display:block" class="shows_2"  >
+				<div>
+					<span>代码/股票</span>
+					<span>名义金</span>
+					<span>周期</span>
+					<span>权利金</span>
+					<span>状态</span>
+				</div>
+				<div>
+<!--					改变的数据-->
+				<foreach name="list" item="vo">
+					 <div>
+						<span>{$vo.code}/{$vo.name}</span>
+						<span>{$vo.money0}</span>
+						<span>{$vo.month}个月</span>
+						<span>{$vo.money1}元</span>
+					 
+					<eq name="vo.status" value="1">
+						<span class="sp_red">买入</span>
+					<else/>
+						<span class="">{$order_status[$vo.status]}</span>
+					</eq>
+					 
+					</div>
+				</foreach>
+				</div>
+				
+			</div>
+			 
+		 
+		</div>
+	</div>
+	
+<include file="public@foot"/>
+<script>
+// 提交
+ $('.shows_2').show();
+$('.sp_red').click(function(){
+	msg('买入');
+	  return false;
+    $.ajax({
+        type: 'POST',
+        url: "{:url('user/trade/ajax_ask')}",
+        dataType: 'json',
+        data: {'code':code,'month':month,'money':money},
+        success: function(data){ 
+        	if(data.code==1){
+				//返回上一页并刷新
+				self.location=data.url;
+			}else{
+				 button_click(obj,0,text[0],2);
+				 
+				msg(data.msg);
+			}
+        },
+        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
+      	    
+        	 button_click(obj,0,text[0],2);
+        	msg('服务器连接失败',event.responseText);
+        }
+    });
+	return false;
+ });
+</script>

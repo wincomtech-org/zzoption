@@ -1,0 +1,74 @@
+<include file="public@head" />
+</head>
+<body>
+    <!-- <section class='main'> -->
+        <header class='form-header'>
+            <p class='header-p'>Welcome {$zztitle}</p>
+        </header>
+        <div class="width-90">
+            <div class="div-tit">
+                账号登录
+            </div>
+            <form action="">
+                <ul class="form-ul">
+                    <li class='form-li height-37'>
+                        <input type="text" name='tel' placeholder='请输入正确手机号' >
+                    </li>
+                    <li class='form-li  height-37'>
+                        <input type="password" name='password' placeholder='请输入6位数字密码' maxlength='6'  >
+                    </li>
+                  
+                    <li class='form-li  height-37 form-has-btn'>
+                        <input type="text"  name='identifying_code' placeholder='请输入图片验证码'  > 
+                          <captcha  font-size="20px"/>  
+                    </li>
+                    
+              
+                    <li class='clearfix'>
+                        <a href="{:url('user/register/register')}" class='red-line lf'>新用户注册</a>
+                        <a href="{:url('user/login/findPass')}" class='red-line rt'>忘记密码？</a>
+                    </li>
+                    <p class='height-37 error-tip'></p>
+                </ul>
+                <button class="width-100 height-37 btn-border-blue border-radius-4" type='submit' onClick="return formLogin(this.form)">登录</button>
+               
+            </form>
+        </div>
+    <!-- </section> -->
+   <include file="public@foot" /> 
+    <script>
+        // 登录表单提交
+        function formLogin(form){
+            var tel=$('input[name="tel"]').val();
+            var password=$('input[name="password"]').val();
+            var identifying_code=$('input[name="identifying_code"]').val();
+
+            if($.trim(tel) == '' || isPhoneNo(tel) == false){
+                $('input[name="tel"]').focus();
+                $('.error-tip').html('提示：请输入正确手机号');
+                return false;
+            }else if($.trim(password) == '' || isPassword(password) == false){
+                $('input[name="password"]').focus();
+                $('.error-tip').html('提示：请输入正确6位数字');
+                return false;
+            }else if($.trim(identifying_code).length != 4 ){
+                $('input[name="identifying_code"]').focus();
+                $('.error-tip').html('提示：请输入正确验证码');
+                return false;
+            }
+            $('.error-tip').text('正在登录'); 
+            $.post("{:url('user/login/ajaxLogin')}",
+           		 {'password':password,'captcha':identifying_code,'tel':tel},
+           		 function(data){
+           			$('.error-tip').text(data.msg); 
+           		  	 if(data.code==1){
+           				//返回上一页并刷新
+           				self.location=data.url;
+           			}else{  
+           				$('.captcha').attr('src',$('.captcha').attr('src')+'1');
+           			} 
+           	});
+           	return false;
+        }
+    </script>     
+ 

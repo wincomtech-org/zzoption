@@ -1,0 +1,141 @@
+<include file="public@head" />
+</head>
+<body>
+    <!-- <section class='main'> -->
+        <header class='form-header'>
+            <p class='header-p'>Welcome {$zztitle}</p>
+        </header>
+        <div class="width-90">
+            <div class="div-tit">
+                账号注册
+            </div>
+            <form action="">
+                <ul class="form-ul">
+                    <li class='form-li height-37'>
+                        <input type="text" name='tel' placeholder='请输入正确手机号' required>
+                    </li>
+                    <li class='form-li height-37'>
+                            <input type="text"  name='identity_num' placeholder='请输入身份证号码' required>
+                    </li>
+                    <li class='form-li  height-37'>
+                        <input type="password" name='password' placeholder='请输入6位数字密码' maxlength='6'  required>
+                    </li>
+                    <li class='form-li  height-37'>
+                            <input type="password" name='password_repeat' placeholder='请再次填写密码' maxlength='6'  required>
+                    </li>
+                     <li class='form-li  height-37 form-has-btn'>
+                        <input type="text"  name='identifying_code' placeholder='请输入图片验证码'  > 
+                          <captcha  font-size="20px"/>  
+                    </li>
+                    <li class='form-li  height-37 form-has-btn'>
+                        <input type="text"   placeholder='请输入短信验证码' name="sms" required>
+                        
+                        <a href="javascript:void(0);" class="div-btn backg-blue border-radius-10 identiCode">获取验证码</a>   
+                    </li>
+                    <p class='height-37 error-tip'></p>
+                </ul>
+                <button class="width-100 height-37 btn-border-blue border-radius-4 " type='submit'  onClick="return formValidate(this.form);">注册</button>
+                <p class='tip height-37 gray'>注册即代表您同意<a href="{:url('portal/guide/agreement',['name'=>'user'])}" class='blue-text'> &lt;&lt;用户协议&gt;&gt; </a></p>
+            </form>
+        </div>
+    <!-- </section> -->
+<include file="public@foot" />    
+    <script>
+    $('a.identiCode').click(function(){ 
+    	$('.error-tip').text('');
+        var obj=$(this);
+    	var tel=$.trim($('input[name=tel]').val()); 
+    	var idcard=$.trim($('input[name=identity_num]').val()); 
+    	var pic=$('input[name="identifying_code"]').val();  
+    	send_msg(tel,pic,idcard,obj);
+        
+    });
+
+
+
+    function send_msg(tel,pic,idcard,obj){ 
+    	if(tel=='' || isPhoneNo(tel) == false){ 
+    		$('.error-tip').text('请先填写正确的手机号码');
+    		return false;
+    	}
+    	if(idcard == '' || isCardNo(idcard) == false){
+            $('input[name="identity_num"]').focus();
+            $('.error-tip').html('提示：请输入正确的身份证号码');
+            return false;
+        }
+    	if(pic.length != 4 ){
+            $('input[name="identifying_code"]').focus();
+            $('.error-tip').html('提示：请输入正确的图片验证码');
+            return false;
+        }
+    	$.ajax({
+            type: 'POST',
+            url: "{:url('user/register/sendmsg')}",
+            dataType: 'json',
+            data:{'tel':tel,'idcard':idcard,'pic':pic},
+            success: function(data){ 
+            	$('.captcha').attr('src',$('.captcha').attr('src')+'1');
+            	if(data.msg=='success'){ 
+                     settime(obj);
+            	}else{  
+            		$('.error-tip').text(data.msg); 
+            	} 
+            },
+            error: function(){
+            	$('.error-tip').text('服务器连接失败'); 
+            }
+        });
+    	
+    	return false; 
+    }   
+        // 注册表单提交
+        function formValidate(form){
+        	var idcard=$.trim($('input[name=identity_num]').val());
+        	var password=$.trim($('input[name=password]').val()); 
+        	var tel=$.trim($('input[name=tel]').val());
+        	var sms=$.trim($('input[name=sms]').val());
+        	var pic=$('input[name="identifying_code"]').val();
+            if(tel== '' || isPhoneNo(tel) == false){
+                $('input[name="tel"]').focus();
+                $('.error-tip').html('提示：请输入正确手机号');
+                return false;
+            }else  if(idcard== '' || isCardNo(idcard) == false){
+                $('input[name="identity_num"]').focus();
+                $('.error-tip').html('提示：请输入正确的身份证号码');
+                return false;
+            }else  if(password == '' || isPassword(password) == false){
+                $('input[name="password"]').focus();
+                $('.error-tip').html('提示：请输入6位数字密码');
+                return false;
+            }else  if($.trim($('input[name="password_repeat"]').val()) == '' ||  $.trim($('input[name="password"]').val()) != $.trim($('input[name="password_repeat"]').val()) || isPassword($('input[name="password_repeat"]').val()) == false){
+                $('input[name="password_repeat"]').focus();
+                $('.error-tip').html('提示：两次密码不一致');
+                return false;
+            } 
+            if(pic.length != 4 ){
+                $('input[name="identifying_code"]').focus();
+                $('.error-tip').html('提示：请输入正确的图片验证码');
+                return false;
+            }
+            if(sms=='' || isSms(sms)==false){
+            	$('.error-tip').text('短信验证码错误');
+            	$('input[name=sms]').focus()
+            	return false;
+            }
+            
+            $('.error-tip').text('正在注册');
+            $.post("{:url('user/register/ajaxRegister')}",
+        		 {'idcard':idcard,'password':password,'tel':tel,'sms':sms,'pic':pic},
+        		 function(data){ 
+        			 $('.error-tip').text(data.msg); 
+        		  	 if(data.code==1){
+        				//返回上一页并刷新
+        				self.location="{:url('portal/index/info')}";
+        			} 
+        		  	$('.captcha').attr('src',$('.captcha').attr('src')+'1');
+        	});
+        	return false;
+        }
+        
+    </script>
+ 

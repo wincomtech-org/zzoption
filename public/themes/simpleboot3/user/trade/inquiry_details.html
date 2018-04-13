@@ -1,0 +1,109 @@
+<include file="public@head"/>
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/inquiry_record_details.css">
+</head>
+<body>
+	<div class="nav">
+		<a href="{:url('inquire_record')}"><span></span></a>
+		询价详情
+	</div>
+	<div class="name_tou">
+		<p>{$order.name}</p>
+		<p>订单编号：{$order.oid}</p>
+	</div>
+	<div class="xiangxi">
+		<div class="div1">
+			<span>股票代码</span>
+			<span>名义本金</span>
+			<span>权利金</span>
+		</div>
+		<div class="div2">
+			<span>{$order.code}</span>
+			<span>{$order.money0}元</span>
+			<span>{$order.money1}元</span>
+		</div>
+		<div class="div1">
+			<span>购买日</span>
+			<span>到期日</span>
+			<span>行权日</span>
+		</div>
+		<div class="div2">
+		<gt name="order.status" value="2">
+			<span>{$order.buy_time|date='Y-m-d',###}</span>
+			<span>{$order.end_time|date='Y-m-d',###}</span>
+		<gt name="order.status" value="5">
+			<span>{$order.sell_time|date='Y-m-d',###}</span>
+		<else/>
+			<span>/</span>
+		</gt>
+			
+		<else/>
+			<span>/</span>
+			<span>/</span> 
+			<span>/</span>
+		</gt>
+		</div>
+		<div class="div1">
+			<span>期初价</span>
+		<gt name="order.status" value="5">
+			<span>期末价</span>
+			<span>实际盈利</span>
+			
+		<else/>
+			<span>当前价</span>
+			<span>预计盈利</span>
+		</gt>
+			 
+		</div>
+		<div class="div2">
+			<span>{$order.price1}元</span>
+			<span>{$order.price2}元</span>
+			<span>{$order.money2}元</span>
+		</div>
+	</div>
+<!--	温馨提示-->
+	<div class="wenxin">
+		<p>温馨提示：预计盈利不代表实际盈利，以实际成交价格为准</p>
+		<div>
+		<eq name="order.status" value="4">
+			<bottom class="tijiao">行权</bottom>
+		<else/>
+			<bottom>{$order.status_name}</bottom> 
+		</eq>
+		</div>
+	</div>
+
+</body>
+</html>
+<script>
+var id="{$order.id}";
+ 
+$('.tijiao').click(function(){
+	 var obj=$(this);
+	 var text=['行权','正在提交'];
+	 
+	 
+    button_click(obj,1,text[1]);
+  
+   $.ajax({
+       type: 'POST',
+       url: "{:url('user/trade/ajax_sell')}",
+       dataType: 'json',
+       data: {'id':id},
+       success: function(data){ 
+       	if(data.code==1){
+				//返回上一页并刷新
+				self.location=data.url;
+			}else{
+				button_click(obj,0,text[0]); 
+				msg(data.msg);
+			}
+       },
+       error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
+     	    
+       	 button_click(obj,0,text[0]);
+       	msg('服务器连接失败',event.responseText);
+       }
+   });
+	return false;
+});
+</script>

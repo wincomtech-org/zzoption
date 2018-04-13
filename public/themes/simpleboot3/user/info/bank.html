@@ -1,0 +1,101 @@
+<include file="public@head" />
+</head>
+<body class='backg-gray1'>
+    <section class='hasBackGray'>
+        <div id="gongao" class='backg-blue'> 
+            <div  id="scroll_div" class="scroll_div"> 
+                <div id="scroll_begin"> 
+                    温馨提示：你填写的银行卡须是本人名下的借记卡（储蓄卡）,这是实名认证的最后一步
+                </div> 
+                <div id="scroll_end"></div> 
+            </div> 
+        </div> 
+        <form action="" >
+            <ul class="ul-2nd backg-white ul_2nd_toLong">
+                <li class='li-2nd'>
+                    <span class='li-2nd-tit'>持卡人姓名</span>
+                    <div class="li-2nd-con">
+                        <input type="text" placeholder='请输入您的真实姓名' name='identity_name'  value="{$user.user_nickname}" <eq name="user.is_name" value="1">readonly</eq>>
+                    </div>
+                </li>
+                <li class='li-2nd '>
+                    <span class='li-2nd-tit'>持卡人身份证号</span>
+                    <div class="li-2nd-con">
+                        <input type="text" placeholder='请输入您的真实身份证号' name='identity_num'  value="{$user.user_login}" <eq name="user.is_name" value="1">readonly</eq>>
+                    </div>
+                </li>
+               
+            </ul>
+            <ul class="ul-2nd backg-white ul_2nd_toLong">
+                <li class='li-2nd'>
+                    <span class='li-2nd-tit'>开户银行</span>
+                    <div class="li-2nd-con">
+                        <input type="text" placeholder='请输入卡户银行全称' name='bank_deposit'  value="{$user.bank_name}" required>
+                    </div>
+                </li>
+                <li class='li-2nd'>
+                    <span class='li-2nd-tit'>银行卡号</span>
+                    <div class="li-2nd-con">
+                        <input type="text" placeholder='请输入银行卡卡号' name='bank_num' value="{$user.bank_card}" required>
+                    </div>
+                </li>
+            </ul>
+            <p class='error-tip height-37 width-90'></p>
+            <button class="width-90 height-37 btn-border-blue border-radius-4 margTop-2" type='submit' onClick="return formCash(this.form)">确认提交</button>
+        </form>
+    </section>
+   
+    <include file="public@foot" />    
+    <script>
+      
+        ScrollImgLeft();
+
+        function formCash(form){
+            var identity_name=$('input[name="identity_name"]').val();
+            var identity_num=$('input[name="identity_num"]').val();
+            var bank_deposit=$('input[name="bank_deposit"]').val();
+            var bank_num=$('input[name="bank_num"]').val();
+
+
+            if($.trim(identity_name)=='' ||  isChinaName(identity_name) == false){
+                alert(12)
+                $('.error-tip').html('请输入持卡人正确姓名');
+                $('input[name="identity_name"]').focus();
+                return false;
+
+            }else  if($.trim(identity_num)=='' ||  isCardNo(identity_num) == false){
+              
+                $('.error-tip').html('请输入持卡人正确身份证');
+                $('input[name="identity_num"]').focus();
+                return false;
+
+            }else if($.trim(bank_deposit).length <= 10 ){
+             
+                $('.error-tip').html('请输入银行卡详细信息');
+                $('input[name="bank_deposit"]').focus();
+                return false;
+            }else if($.trim(bank_num)=='' || isBank(bank_num) == false ){
+                $('.error-tip').html('请输入正确银行卡号');
+                $('input[name="bank_num"]').focus();
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: "{:url('user/info/ajax_bank')}",
+                dataType: 'json',
+                data:{'name':identity_name,'idcard':identity_num,'bank_name':bank_deposit,'bank_card':bank_num},
+                success: function(data){ 
+                	$('.error-tip').text(data.msg);
+                	if(data.url!=''){
+                		location.href=data.url; 
+                	} 
+                },
+                error: function(xhr, type){
+                	$('.error-tip').text('服务器连接失败'); 
+                	 
+                }
+            });
+   		 	return false;
+        }
+    </script>
+ 

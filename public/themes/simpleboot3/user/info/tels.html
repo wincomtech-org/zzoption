@@ -1,0 +1,338 @@
+<include file="public@head" />
+ 
+</head>
+<body>
+    <section class='hasBackGray'>
+        <div class="form-2nd">
+            <!-- <p class='height-37  scroll-p'>请确保您填入的事您本人真实信息，否则会导致放款失败哦</p> -->
+            <div id="gongao" class='backg-blue'> 
+                <div  id="scroll_div" class="scroll_div"> 
+                    <div id="scroll_begin"> 
+                        请确保您填入的是您本人真实信息，否则会导致放款失败哦
+                    </div> 
+                    <div id="scroll_end"></div> 
+                </div> 
+            
+            </div> 
+            <form action="">
+                <ol>
+                    <li class='emergency backg-white '>
+                        <p class='li-2nd'>紧急联系人一<b class="icons icon_mess icon_arr"></b></p>
+                        <ul class="ul-2nd father"  style='display:none;'>
+                            <li class='li-2nd '>
+                                <span class='li-2nd-tit'>与本人关系</span>
+                                <div class="li-2nd-con ">
+                                    <input type="text" value='父亲' name='relationship_1' readonly>
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>姓名</span>
+                                <div class="li-2nd-con">
+                                    <input type="text"   name='username1' value="{$tels.name1|default=''}">
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>联系方式</span>
+                                <div class="li-2nd-con">
+                                    <input type="text" name='contact_way1' value="{$tels.tel1|default=''}">
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class='emergency backg-white '>
+                        <p class='li-2nd'>紧急联系人二<b class="icons icon_mess icon_arr"></b></p>
+                        <ul class="ul-2nd mom"  style='display:none;'>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>与本人关系</span>
+                                <div class="li-2nd-con ">
+                                    <input type="text" value='母亲' name='relationship_2' readonly>
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>姓名</span>
+                                <div class="li-2nd-con">
+                                    <input type="text"  name='username2' value="{$tels.name2|default=''}">
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>联系方式</span>
+                                <div class="li-2nd-con">
+                                    <input type="text"  name='contact_way2' value="{$tels.tel2|default=''}">
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class='emergency backg-white '>
+                        <p class='li-2nd'>紧急联系人三<b class="icons icon_mess icon_arr"></b></p>
+                        <ul class="ul-2nd "  style='display:none;'>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>与本人关系</span>
+                                <div class="li-2nd-con">
+                                    <input type="text" value='朋友1' name='relationship_3' readonly>
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>姓名</span>
+                                <div class="li-2nd-con">
+                                    <input type="text"  name='username3' value="{$tels.name3|default=''}">
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>联系方式</span>
+                                <div class="li-2nd-con">
+                                    <input type="text"  name='contact_way3' value="{$tels.tel3|default=''}">
+                                </div>
+                            </li>
+                        </ul>
+                    </li> 
+
+                    <li class='emergency backg-white '>
+                        <p class='li-2nd'>紧急联系人四<b class="icons icon_mess icon_arr"></b></p>
+                        <ul class="ul-2nd " style='display:none;'>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>与本人关系</span>
+                                <div class="li-2nd-con">
+                                    <input type="text" value='朋友2' name='relationship_4' readonly>
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>姓名</span>
+                                <div class="li-2nd-con">
+                                    <input type="text"   name='username4' value="{$tels.name4|default=''}" >
+                                </div>
+                            </li>
+                            <li class='li-2nd'>
+                                <span class='li-2nd-tit'>联系方式</span>
+                                <div class="li-2nd-con">
+                                    <input type="text"  name='contact_way4' value="{$tels.tel4|default=''}">
+                                </div>
+                            </li>
+                        </ul>
+                    </li> 
+                </ol>
+                
+                <p class='height-37 error-tip width-90'></p>
+            
+                <button class="width-90 height-37 btn-border-blue border-radius-4" type='submit' onClick="return formEmergency(this.form)">提交</button>
+            </form>
+        </div>
+   </section> 
+    <include file="public@foot" />   
+    <script>
+      
+        // 滚动条
+        ScrollImgLeft();
+
+ 
+        // 紧急联系人表单提交
+       function formEmergency(form){
+           
+            // 巴巴   
+            var fatharName=$('input[name="username1"]').val();
+            var fatharTel=$('input[name="contact_way1"]').val();
+
+            // 麻麻
+            var momName=$('input[name="username2"]').val();
+            var momTel=$('input[name="contact_way2"]').val();
+
+            // 朋友1
+            var friendly1Name = $('input[name="username3"]').val();
+            var friendly1Tel = $('input[name="contact_way3"]').val();
+
+            // 朋友2
+            var friendly2Name = $('input[name="username4"]').val();
+            var friendly2Tel = $('input[name="contact_way4"]').val();
+
+
+            if(fatharName =='' && fatharTel =='' && momName =='' && momTel =='' ){
+
+                $('.error-tip').html('提示：父母双方至少填一方信息');
+
+                return false;
+
+            }else{
+
+                if(fatharName !=''|| fatharTel !=''){
+
+                    if($.trim(fatharName) == '' || isChinaName(fatharName) == false){
+                            
+                        $('input[name="username1"]').focus();
+
+                        $('.error-tip').html('提示：请输入父亲姓名');
+
+                        return false;
+
+                    }else if($.trim(fatharTel) == '' ||  isPhoneNo(fatharTel)==false){
+
+                        $('input[name="contact_way1"]').focus();
+
+                        $('.error-tip').html('提示：请正确输入父亲手机号');
+
+                        return false;
+
+                    }else  if(momName !=''|| momTel !=''){
+
+                        if($.trim(momName) == '' || isChinaName(momName) == false){
+
+                            $('input[name="username2"]').focus();
+
+                            $('.error-tip').html('提示：请输入母亲姓名');
+
+                            return false;
+
+                        }else if($.trim(momTel) == '' ||  isPhoneNo(momTel)==false){
+
+                            $('input[name="contact_way2"]').focus();
+                            
+                            $('.error-tip').html('提示：请正确输入母亲手机号');
+
+                            return false;
+                        }else if($.trim(friendly1Name) == '' || isChinaName(friendly1Name) == false){
+            
+
+                            $('input[name="username3"]').focus();
+
+                            $('.error-tip').html('提示：请输入朋友1姓名');
+
+                            return false;
+
+                        }else if($.trim(friendly1Tel) == '' ||  isPhoneNo(friendly1Tel)==false){
+
+                            $('input[name="contact_way3"]').focus();
+
+                            $('.error-tip').html('提示：请输入正确朋友1手机号');
+
+                            return false;
+
+                        }else  if($.trim(friendly2Name) == '' || isChinaName(friendly2Name) == false){
+
+                            $('input[name="username4"]').focus();
+
+                            $('.error-tip').html('提示：请输入朋友2姓名');
+
+                            return false;
+
+                        }else if($.trim(friendly2Tel) == '' ||  isPhoneNo(friendly2Tel)==false){
+
+                            $('input[name="contact_way4"]').focus();
+
+                            $('.error-tip').html('提示：请正确输入朋友2手机号');
+
+                            return false;
+
+                        }
+                    
+                    }else if($.trim(friendly1Name) == '' || isChinaName(friendly1Name) == false){
+            
+
+                        $('input[name="username3"]').focus();
+
+                        $('.error-tip').html('提示：请输入朋友1姓名');
+
+                        return false;
+
+                    }else if($.trim(friendly1Tel) == '' ||  isPhoneNo(friendly1Tel)==false){
+
+                        $('input[name="contact_way3"]').focus();
+
+                        $('.error-tip').html('提示：请输入正确朋友1手机号');
+
+                        return false;
+
+                    }else  if($.trim(friendly2Name) == '' || isChinaName(friendly2Name) == false){
+
+                        $('input[name="username4"]').focus();
+
+                        $('.error-tip').html('提示：请输入朋友2姓名');
+
+                        return false;
+
+                    }else if($.trim(friendly2Tel) == '' ||  isPhoneNo(friendly2Tel)==false){
+
+                        $('input[name="contact_way4"]').focus();
+
+                        $('.error-tip').html('提示：请正确输入朋友2手机号');
+
+                        return false;
+
+                    }
+                    
+
+                }else if(momName !=''|| momTel !=''){
+
+                    if($.trim(momName) == '' || isChinaName(momName) == false){
+                        
+                        $('input[name="username2"]').focus();
+
+                        $('.error-tip').html('提示：请输入母亲姓名');
+
+                        return false;
+
+                    }else if($.trim(momTel) == '' ||  isPhoneNo(momTel)==false){
+
+                        $('input[name="contact_way2"]').focus();
+                        
+                        $('.error-tip').html('提示：请正确输入母亲手机号');
+
+                        return false;
+                    }else if($.trim(friendly1Name) == '' || isChinaName(friendly1Name) == false){
+        
+
+                        $('input[name="username3"]').focus();
+
+                        $('.error-tip').html('提示：请输入朋友1姓名');
+
+                        return false;
+
+                    }else if($.trim(friendly1Tel) == '' ||  isPhoneNo(friendly1Tel)==false){
+
+                        $('input[name="contact_way3"]').focus();
+
+                        $('.error-tip').html('提示：请输入正确朋友1手机号');
+
+                        return false;
+
+                    }else  if($.trim(friendly2Name) == '' || isChinaName(friendly2Name) == false){
+
+                        $('input[name="username4"]').focus();
+
+                        $('.error-tip').html('提示：请输入朋友2姓名');
+
+                        return false;
+
+                    }else if($.trim(friendly2Tel) == '' ||  isPhoneNo(friendly2Tel)==false){
+
+                        $('input[name="contact_way4"]').focus();
+
+                        $('.error-tip').html('提示：请正确输入朋友2手机号');
+
+                        return false;
+
+                    } 
+                }  
+            }
+            
+            $.ajax({
+                type: 'POST',
+                url: "{:url('user/info/ajax_tels')}",
+                dataType: 'json',
+                data:{'name1':fatharName,'tel1':fatharTel,'name2':momName,'tel2':momTel,'name3':friendly1Name,'tel3':friendly1Tel,'name4':friendly2Name,'tel4':friendly2Tel},
+                success: function(data){ 
+                	$('.error-tip').text(data.msg);
+                	if(data.url!=''){
+                		location.href=data.url; 
+                	} 
+                },
+                error: function(xhr, type){
+                	$('.error-tip').text('服务器连接失败'); 
+                	 
+                }
+            });
+   		 return false;
+            
+        } 
+
+
+  
+    </script>
+ 

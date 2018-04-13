@@ -1,0 +1,132 @@
+<include file="public@head" />
+</head>
+<body>
+<header class='form-header'>
+            <p class='header-p'>Welcome {$zztitle}</p>
+        </header>
+        <div class="width-90">
+            <div class="div-tit">
+               找回密码
+            </div>
+            <form action="">
+                <ul class="form-ul">
+                    <li class='form-li height-37'>
+                        <input type="text" name='tel' placeholder='请输入正确手机号' required>
+                    </li>
+                    <li class='form-li height-37'>
+                            <input type="text"  name='identity_num' placeholder='请输入身份证号码' required>
+                    </li>
+                    <li class='form-li  height-37'>
+                        <input type="password" name='password' placeholder='请输入新6位数字密码' maxlength='6' required>
+                    </li>
+                     <li class='form-li  height-37'>
+                        <input type="password" name='password1' placeholder='确认新密码' maxlength='6' required>
+                    </li>
+                    <li class='form-li  height-37 form-has-btn'>
+                        <input type="text" name='identifying_code' placeholder='请输入图片验证码' maxlength='4' required>
+                        <captcha  font-size="20px"/> 
+                        
+                    </li>
+                    <li class='form-li  height-37 form-has-btn'>
+                        <input type="text"  name='sms' placeholder='请输入短信验证码' required>
+                        
+                           <a href="javascript:void(0);" class="div-btn backg-blue border-radius-10 identiCode">获取验证码</a>   
+                            
+                    </li>
+                    
+                    <p class='height-37 error-tip'></p>
+                </ul>
+                <button class="width-100 height-37 btn-border-blue border-radius-4" type='submit' onClick="return formFindPass(this.form)">提交</button>
+            </form>
+        </div>
+    
+ <include file="public@foot" />
+ <script>
+    
+ $('a.identiCode').click(function(){ 
+    $('.error-tip').text('');
+    var obj=$(this);  
+    var tel=$.trim($('input[name=tel]').val()); 
+    var code=$.trim($('input[name=identifying_code]').val()); 
+    var idcard=$.trim($('input[name=identity_num]').val()); 
+    send_msg(tel,idcard,code,obj);
+});
+    
+function send_msg(tel,idcard,code,obj){ 
+	if(tel=='' || isPhoneNo(tel) == false){ 
+		$('.error-tip').text('请先填写正确的手机号码');
+		return false;
+	}
+	 if(idcard == '' || isCardNo(idcard) == false){
+         $('input[name="identity_num"]').focus();
+         $('.error-tip').html('提示：请输入正确的身份证号码');
+         return false;
+     }
+	if(code=='' || code.length != 4){ 
+		$('.error-tip').text('请先填写正确的图片验证码');
+		return false;
+	}
+	$.ajax({
+        type: 'POST',
+        url: "{:url('user/register/sendmsg')}",
+        dataType: 'json',
+        data:{'tel':tel,'idcard':idcard,'type':'find','pic':code},
+        success: function(data){
+        	if(data.msg=='success'){
+        		  settime(obj);
+        	}else{
+        		$('.error-tip').text(data.msg); 
+        		$('.captcha').attr('src',$('.captcha').attr('src')+'1');
+        	} 
+        },
+        error: function(){
+        	$('.error-tip').text('服务器连接失败'); 
+        }
+    });
+	return false;
+}   
+ 
+
+
+  // 找回密码表单验证
+  function formFindPass(form){
+	    var tel=$.trim($('input[name=tel]').val());
+		var pic=$.trim($('input[name=identifying_code]').val());
+		var code=$.trim($('input[name=sms]').val());
+		var psw=$.trim($('input[name=password]').val());
+		var psw1=$.trim($('input[name=password1]').val());
+		var idcard=$.trim($('input[name=identity_num]').val()); 
+         if(tel == '' || isPhoneNo(tel) == false){
+             $('input[name="tel"]').focus();
+             $('.error-tip').html('提示：请输入正确手机号');
+             return false;
+         }else if(idcard == '' || isCardNo(idcard) == false){
+             $('input[name="identity_num"]').focus();
+             $('.error-tip').html('提示：请输入正确的身份证号码');
+             return false;
+         }else if(psw == '' || isPassword(psw) == false){
+             $('input[name="password"]').focus();
+             $('.error-tip').html('提示：请输入正确6位数字');
+             return false;
+         }else if(psw1 == '' || psw1 != psw ){
+             $('input[name="password1"]').focus();
+             $('.error-tip').html('提示：两次密码不一致');
+             return false;
+         }else if(pic.length != 4 ){
+             $('input[name="identifying_code"]').focus();
+             $('.error-tip').html('提示：请输入正确验证码');
+             return false;
+         }
+         $.post("{:url('user/login/ajax_findpsw')}",
+        		 {'code':code,'pic':pic,'tel':tel,'psw':psw},
+        		 function(data){ 
+        			 $('.error-tip').text(data.msg); 
+        		  	 if(data.code==1){  
+        				self.location="{:url('user/login/login')}";
+        			}else{  
+        				$('.captcha').attr('src',$('.captcha').attr('src')+'1');
+        			} 
+        	});
+        	return false;
+       }
+</script>

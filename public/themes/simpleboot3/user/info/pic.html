@@ -1,0 +1,103 @@
+<include file="public@head"/> 
+ 
+</head>
+<body>
+    <section class='hasBackGray'>
+        <div class="form-2nd">
+           
+            <div id="gongao" class='backg-blue'> 
+                <div  id="scroll_div" class="scroll_div"> 
+                    <div id="scroll_begin"> 
+                        需要您提交一下照片，以验证您的身份，照片必须小于2M
+                    </div> 
+                    <div id="scroll_end"></div> 
+                </div> 
+            
+            </div> 
+            <form action="{:url('user/info/ajax_pic')}" method="post" enctype="multipart/form-data">
+                
+                <ul class='ul_deuce'>
+                    <li class='deuce_li photos-li'>
+                        <p class='gray'>拍摄身份证正面的照片</p>
+                        <div class="photos_div backg-white border-radius-10">
+                            <label class="input_div" for=''></label>
+                            <input type="file" class='camera' id='camera1' name='camera1'>
+                            <img src="{:cmf_get_image_url($pic[1])}" alt="">
+                                
+                        </div>
+                    </li>
+                    <li class='deuce_li  photos-li'>
+                        <p class='gray'>拍摄身份证反面的照片</p>
+                        <div class="photos_div backg-white border-radius-10">
+                            <label class="input_div" for=''></label>
+                            <input type="file" class='camera' id='camera2' name='camera2'>
+                            <img src="{:cmf_get_image_url($pic[2])}" alt="">
+                        </div>
+                    </li>
+                </ul>
+                <div class='  photos-li  big_camera'>
+                    <p class='gray'>拍摄本人与身份证合影</p>
+                    <div class="photos_div backg-white border-radius-10">
+                        <label class="input_div" for=''></label>
+                        <input type="file" class='camera' id='camera3' name='camera3'>
+                        <img src="{:cmf_get_image_url($pic[3])}" alt="">
+                            
+                    </div>
+                </div>
+                <p class='height-37 error-tip width-90'></p>
+            
+                <button class="width-90 height-37 btn-border-blue border-radius-4" type='submit' onClick="return formIdentity(this.form)">提交</button>
+            </form>
+        </div>
+   </section> 
+   <include file="public@foot"/> 
+ 
+    <script>
+     
+      // 滚动条
+      ScrollImgLeft();
+
+      var click=1;
+      $('.camera').change(function() {
+            var file = this.files[0];
+            var size=parseInt("{$Think.config.avatar_size}");
+            if(file.size>size){
+                click=1;
+                $('.error-tip').text('图片大小不能超过2M');
+            }else{
+                click=0;
+            }
+
+        });
+       
+      
+        // 身份证
+       function formIdentity(form){
+    	   if(click==0){
+    			click=1;
+              
+    		}else{
+    			return false;
+    		}
+            var    camera1=$('input[name="camera1"]').val();
+            var    camera2=$('input[name="camera2"]').val();
+            var    camera3=$('input[name="camera3"]').val();
+             if(camera1==''){
+                $('.error-tip').html('请上传身份证正面照');
+                click=0;
+                return false;
+            }else if(camera2==''){
+                $('.error-tip').html('请上传身份证反面照');
+                click=0;
+                return false;
+            }else if(camera3==''){
+                $('.error-tip').html('请上传手持身份证照片');
+                click=0;
+                return false;
+            } 
+			$('.error-tip').text('正在上传');
+           
+       }
+    </script>
+</body>
+</html>

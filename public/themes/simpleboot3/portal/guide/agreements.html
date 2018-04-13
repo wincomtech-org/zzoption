@@ -1,0 +1,20 @@
+  <include file="public@head" />
+</head>
+<body>
+    <section class='hasBackGray'>
+        <ul class="list-one">
+        <foreach name="list" item="vo" k="key">
+        	<li class='list-one-li height-37 backg-white'>
+                <a href="{:url('portal/guide/agreement',['id'=>$vo.id])}">
+                    {$vo.title}
+                    <b class="icons icon_mess icon_arr"></b>
+                    </a>
+            </li>
+        </foreach>
+            
+        
+        </ul>
+    </section>
+    
+
+      <include file="public@foot" />

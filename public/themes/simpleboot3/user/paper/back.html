@@ -1,0 +1,86 @@
+<include file="public@head" />
+ 
+</head>
+<body>
+    <section class='hasBackGray'>
+        <div class="form-2nd">
+           
+            <form action="{:url('user/paper/ajax_back')}" method="post" enctype="multipart/form-data">
+                <ol>
+                    <li class='emergency backg-white '>
+                        <p class='li-2nd'><span class='icons icon_mess icon_mess_15'></span>友情提示</p>
+                        <p class='friend_tip'>请您选择下面任一付款方式进行还款，还款时请您备注
+                                您的姓名并付款后截图账单详情上传到该页面，我们将
+                                尽快核对相关信息，确认后还款成功。
+                        </p>
+                         <p class='friend_tip'> 借款￥{$info.money},需还款￥{$info.final_money}
+                        </p>
+                     
+                    </li>
+                    <li class='emergency backg-white '>
+                        <p class='li-2nd'><span class='icons icon_mess icon_mess_16'></span>付款方式<b class="icons icon_mess icon_arr"></b></p>
+                        <ul class="ul-2nd ">
+                            <div class="pay_methods">
+                                <div class="group_method clearfix  width-90">
+                                    <div class="left-radio">
+                                        <label><input type="radio" value='1' name='radio'><span>√</span></label>
+                                    </div>
+                                    <div class="group_con">
+                                        <p><span>支付宝账号</span>{$ali.id}</p>
+                                        <p><span>用户姓名</span>{$ali.name}</p>
+                                    </div>
+                                </div>
+                                <div class="group_method clearfix width-90">
+                                    <div class="left-radio">
+                                        <label><input type="radio" value='2'  name='radio' ><span>√</span></label>
+                                    </div>
+                                    <div class="group_con">
+                                        <p><span>银行卡号</span>{$bank.id}</p>
+                                        <p><span>持卡人姓名</span>{$bank.name}</p>
+                                        <p><span>开户银行</span>{$bank.title}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class='emergency backg-white '>
+                        <p class='li-2nd'><span class='icons icon_mess icon_mess_17'></span>上传付款截图</p>
+                        <div class='  photos-li  middle_camera '>
+                            <div class="photos_div backg-white border-radius-10 width-90">
+                                <label class="input_div" for=''></label>
+                                <input type="file" class='camera' id='camera4' name='camera4'>
+                                <img src="" alt="">
+                            </div>
+                        </div>
+                    </li> 
+                </ol>
+               
+                <p class='height-37 error-tip width-90 '></p>
+            	<input type="hidden" name="id" value="{$info.id}"/>
+            	<input type="hidden" name="final_money" value="{$info.final_money}"/>
+                <button class="width-90 height-37 btn-border-blue border-radius-4" type='submit' onClick="return formRepay(this.form)">提交</button>
+                <p class='height-37'></p>
+            </form>
+        </div>
+   </section> 
+   <include file="public@foot" />
+    <script>
+       
+        // 借款--还款
+       function formRepay(form){
+           var radio_input=$('input[name="radio"]:checked').val();
+           var camera=$('#camera4').val()
+        //    console.log(radio_input,camera)
+        //    return false;
+           if(radio_input == undefined){
+               $('.error-tip').html('请选择付款方式')
+               return false;
+           }else if(camera ==''){
+                $('.error-tip').html('请上传支付截图')
+               return false;
+           }
+           $('.error-tip').html('正在上传');
+            
+       }
+    </script>
+ 

@@ -1,0 +1,92 @@
+html,body,p,ul,ol{margin:0;padding:0;margin:auto;font-family: 微软雅黑;}
+body{font-size:0.2rem}
+img{vertical-align: top;}
+ol,ul{list-style: none}
+ input::-webkit-input-placeholder{ color:#9f9f9f;font-size:0.3rem;letter-spacing: 0.02rem;}
+html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);background:#f3f3f3;}
+body{padding-bottom: 1rem;}
+a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
+.dingbu{
+	position: relative;
+	border-bottom:0.02rem solid #c3c3c3;
+	background:#fff;
+}
+.dingbu>a{
+	display:inline-block;
+	width:0.5rem;
+	height:0.9rem;
+	background:url(../img/left_jiantou.png) center no-repeat;
+	background-size:0.19rem 0.34rem;
+	position: absolute;
+	left:0.4rem;
+	
+}
+.dingbu>p{
+	height:0.9rem;
+	line-height: 0.9rem;
+	text-align: center;
+	font-size: 0.3rem;
+	color:#333333;
+	font-weight: 600;
+}
+.nav_ssy{
+	box-sizing: border-box;
+	padding:0 0.5rem;
+	background:#fff;
+	margin-bottom: 0.2rem;
+}
+.nav_ssy>ol{
+	height:1.1rem;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+.nav_ssy>ol>li{
+	width:1.42rem;
+	height:1.1rem; 
+	text-align: center;
+	line-height: 1.1rem;
+	font-size: 0.26rem;
+	color:#333333;
+	position: relative;
+}
+.nav_ssy>ol>li>span{
+	display: block;
+	width:50%;
+	height:0.05rem;
+	margin: auto;
+	position: absolute;
+	left:0;right:0;
+	bottom:0.06rem;
+}
+.nav_ssy>ol>.red_ss{
+	color:#cd4650;
+}
+.nav_ssy>ol>.red_ss>span{
+	background:#cd4650;
+}
+.show_zong{
+	background:#fff;
+}
+.show_zong>div{
+	display:none;
+}
+.show_zong>div>div{
+	padding:0.15rem 0.5rem;
+	border-bottom: 0.2rem solid #f3f3f3;
+}
+.show_zong>div>div>a>p:nth-child(1){
+	font-size:0.26rem;
+	color:#696969;
+}
+.show_zong>div>div>a>p:nth-child(2){
+	font-size:0.20rem;
+	color:#a7a7a7;
+	margin-top:0.1rem;
+}
+
+
+
+
+
+

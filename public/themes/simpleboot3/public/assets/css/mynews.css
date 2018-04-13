@@ -1,0 +1,38 @@
+
+.my{
+	height: 2.22rem;
+	background-color: white;
+}
+
+.mynews_c{
+	 width: 80%;
+	 padding: 0.41rem 0;
+     margin: 0 auto;
+}
+
+.mynews{
+	
+	height: 1.11rem;
+	line-height:0.56rem;
+}
+
+.my_txt{
+	font-size: 0.28rem;
+	width: 90%;
+	float: left;
+	color: #333;
+	margin-top: -0.11rem;	
+}
+
+#xtnews{
+	border-bottom: 0.02rem solid #F3F3F3;
+}
+
+.m_tip{
+   float: right;
+   
+   width:0.17rem;
+   height: 0.30rem;
+   background-image:url(../img/tip1.png) ;
+   background-size: cover;
+}

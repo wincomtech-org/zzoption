@@ -1,0 +1,55 @@
+<include file="public@head" />
+  
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
+ <script type="text/javascript" src="__TMPL__/public/assets/js/transaction.js"></script>
+</head>
+<body>
+<!--	顶部-->
+	<div class="header">
+		<p>交易</p>
+		<a href="{:url('portal/guide/help')}"></a>
+	</div>
+<!--	切换栏-->
+	<div class="body_s">
+		<ul>
+			<li ><a href="{:url('index')}">询价</a></li>
+			<li ><a href="{:url('buy')}">买入</a></li>
+			<li class="bh_s"><a href="{:url('store')}">持仓</a></li>
+			<li><a href="{:url('collect')}">自选</a></li>
+			<li><a href="{:url('query')}">查询</a></li>
+		</ul>
+		<div class="show_g">
+ <!--			买入-->
+			<div style="display:block" class="shows_3">
+				<div>
+					<span>代码/股票</span>
+					<span>名义本金</span>
+					<span>周期</span>
+					<span>购买日</span>
+				</div>
+				<div>
+<!-- 改变的数据-->
+				<foreach name="list" item="vo">
+					<a href="{:url('order',['id'=>$vo.id])}">
+						 <div class=""> 
+							<span>{$vo.code}/{$vo.name}</span>
+							<span>{$vo.money0}</span>
+							<span>{$vo.month}个月</span>
+							<span>{$vo.buy_time|date='Y-m-d',###}</span> 
+						</div>
+					</a> 
+				</foreach>
+				</div>
+				
+			</div>
+			 
+		 
+		</div>
+	</div>
+	
+<include file="public@foot"/>
+<script>
+// 提交
+ 
+ 
+</script>
