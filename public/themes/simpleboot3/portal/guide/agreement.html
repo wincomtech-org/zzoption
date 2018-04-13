@@ -1,11 +1,13 @@
 <include file="public@head" />
+ <link rel="stylesheet" href="__TMPL__/public/assets/css/risk_agreement.css">
 </head>
 <body>
-    <section class='hasBackGray'>
-        <div class="agreements">
-            {$info.content}
-        </div>
-    </section>
-    
-
-    <include file="public@foot" />
+	<div class="nav">
+		<a href="javascript:window.history.back();"><span></span></a>
+		{$info.title}
+	</div>
+	<p>
+		 {$info.content}
+	</p>
+</body>
+</html>

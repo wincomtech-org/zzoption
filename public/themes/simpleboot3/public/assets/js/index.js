@@ -26,7 +26,6 @@ $(function(){
 		var secend=4000;
 		var animating=400;
 		var a="<li>"+$(".body_s>.imgs>ul>li:first-child").html()+"</li>";
-		console.log(a);
 		$(".body_s>.imgs>ul").append(a);
 		$(".body_s>.imgs>ul>li:first-child")
 		var s=$(".body_s>.imgs>ul>li").length;
@@ -37,9 +36,11 @@ $(function(){
 			wih_s=$(window).width();
 			uw=s*wih_s+100;
 			$(".body_s>.imgs").width(wih_s);
-			$(".body_s>.imgs>ul>li>img").width(wih_s);
+			$(".body_s>.imgs>ul>li>a>img").width(wih_s);
 			$(".body_s>.imgs>ul").width(uw);
+			console.log(wih_s);
 		}
+		
 		auto_s();
 		$(window).resize(function(){
 			auto_s();
@@ -87,11 +88,11 @@ $(function(){
 	//询价轮播开始
 	//==============
 	var bs="<div>"+$(".body_s>.xydan>div>div:nth-child(2)>div>div:first-child").html()+"</div>"
-	console.log(bs);
+//	console.log(bs);
 	$(".body_s>.xydan>div>div:nth-child(2)>div").append(bs);
 	var dheig=$(".body_s>.xydan>div>div:nth-child(2)>div").height();
 	var xheigs=$(".body_s>.xydan>div>div:nth-child(2)>div>div").height();
-	console.log(dheig,xheigs);
+//	console.log(dheig,xheigs);
 	var marginT=xheigs;
 	setInterval(function(){
 		marginT+=xheigs;

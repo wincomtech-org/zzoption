@@ -76,7 +76,7 @@ class IndexController extends HomeBaseController
         }
         
         
-        $guide=Db::name('guide')->where('name','transcation')->find();
+        $guide=Db::name('guide')->where('name','trade')->find();
         $this->assign('html_title','交易');
         $this->assign('html_flag','trade');
         $this->assign('guide',$guide['title']);

@@ -227,21 +227,21 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 }
 .body_s>.xydan>div{
 	width:6.7rem;
-	height:auto;
+	height:1rem;
 }
 .body_s>.xydan>div>div{
 	display: inline-block;
 }
 .body_s>.xydan>div>div:nth-child(1){
-	width:0.56rem;
-	height:.56rem;
-	background:url(../img/fenqi.png) no-repeat;
+	width:.56rem;
+	height:1rem;
+	background:url(../img/fenqi.png) no-repeat center;
 	background-size: contain;
-	margin-right: 0.15rem
+	margin-right: 0.15rem;
 }
 .body_s>.xydan>div>div:nth-child(2){
 	color:#666666;
-	height:0.7rem;
+	height:1rem;
 	overflow: hidden;
 }
 .body_s>.xydan>div>div:nth-child(2)>div{
@@ -252,7 +252,7 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	box-sizing: border-box;
 	padding-top: 0.1rem;
 */
-	height:0.7rem;
+	height:1rem;
 	padding:auto 0;
 }
 /*
@@ -262,7 +262,8 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 */
 .body_s>.xydan>div>div:nth-child(2)>div>div>p:nth-child(1){
 	font-size:.23rem;
-	margin-bottom: .05rem;
+	margin-bottom:  .05rem;
+	padding-top: 0.1rem;
 }
 .body_s>.xydan>div>div:nth-child(2)>div>div>p>.span1{
 	color:#bb2323;

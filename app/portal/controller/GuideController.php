@@ -24,32 +24,18 @@ class GuideController extends HomeBaseController
         $this->types=config('guide_types');
     }
      
-    /**
-     * 协议
-     */
-    public function agreements()
-    {
-        
-        $m=$this->m;
-        $types=$this->types;
-        $list=$m->where(['type'=>0,'is_show'=>1])->order('sort asc')->column('id,title,name');
-        $this->assign('list',$list);
-        
-        $this->assign('html_title',$types[0]);
-        return $this->fetch();
-        
-    }
+     
     /**
      * 协议
      */
     public function agreement()
     {
-        $name=$this->request->param('id',0);
+        $name=$this->request->param('name','');
         $m=$this->m;
         
-        $info=$m->where(['type'=>0,'id'=>$name])->find();
+        $info=$m->where(['type'=>1,'name'=>$name])->find();
         if(empty($info)){
-            $this->redirect(url('portal/guide/agreements'));
+            $this->error('无此协议');
         }
         $this->assign('info',$info);
         $this->assign('html_title',$info['title']);

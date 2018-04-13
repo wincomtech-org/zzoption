@@ -34,7 +34,8 @@ class TradeController extends UserBaseController
             $stock=Db::name('stock')->where('code0',$code0)->find();
             $this->assign('stock',$stock);
         }
-        $guide=Db::name('guide')->where('name','transcation')->find();
+      
+        $guide=Db::name('guide')->where('name','trade')->find();
         $this->assign('html_title','询价');
         
         $this->assign('guide',$guide['title']);
