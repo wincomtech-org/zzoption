@@ -1,5 +1,5 @@
 <include file="public@head" />
-  
+		<link rel="stylesheet" href="__TMPL__/public/assets/css/commom.css">
 		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
  <script type="text/javascript" src="__TMPL__/public/assets/js/transaction.js"></script>
 </head>
@@ -33,10 +33,10 @@
 					<p>名义本金：</p>
 					<ol>
 					<foreach name="money_off" item="vo">
-						<li class="">{$vo}万</li>
+						<li class="<eq name='key' value='0'>red</eq>"><span>{$vo}</span>万</li>
 					</foreach>
 					<foreach name="money_on" item="vo" k="key">
-						<li class="<eq name='key' value='0'>red</eq>">{$vo}万</li>
+						<li><span>{$vo}</span>万</li>
 					</foreach>
 						 
 					</ol>
@@ -47,15 +47,18 @@
 					<p>行权周期：</p>
 					<ol>
 					<foreach name="day" item="vo" k="key">
-						<li class="<eq name='key' value='0'>red</eq>">{$vo}月</li>
+						<li class="<eq name='key' value='0'>red</eq>"><span>{$vo}</span>月</li>
 					</foreach>
 						 
 					</ol>
 				</div>
 				<div>
-					<span></span>
+					<button id="label_s"></button>
 					<p>
-						我已阅读并同意<a href="{:url('portal/guide/agreement',['name'=>'trade'])}">{$guide}</a>期权有风险，入市须谨慎！
+						<label for="label_s">
+							我已阅读并同意
+						</label>
+						<a href="{:url('portal/guide/agreement',['name'=>'trade'])}">{$guide}</a>期权有风险，入市须谨慎！
 					</p>
 				</div>
 				<div>

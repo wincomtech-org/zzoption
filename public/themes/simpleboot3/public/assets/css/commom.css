@@ -1,0 +1,17 @@
+
+/* 不能提交按钮样式 */
+.body_s>.show_g>.shows_1>div:nth-child(6)>.tijiao{
+	background:#999999 !important;
+}
+/* 能提交按钮样式 */
+.body_s>.show_g>.shows_1>div:nth-child(6)>.tijiao_s{
+	background:#cd4650 !important;
+}
+
+/* 能够买入样式*/
+.body_s>.show_g>.shows_2>div:nth-child(2)>div>span.sp_red{
+	background:#cd4650 !important;
+}
+ /* 不能够买入就清除class */
+
+

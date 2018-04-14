@@ -1,12 +1,12 @@
 $(function(){
 	//切换页面
-	var index_s=sessionStorage.getItem("key");
+	// var index_s=sessionStorage.getItem("key");
 	(function(){
-		if(index_s===null){index_s=0}
-		console.log(index_s);
-		$($(".body_s>.show_g>div")[index_s]).css("display","block").siblings().css("display","none");
-		$($(".body_s>ul>li")[index_s]).addClass("bh_s").siblings().removeClass("bh_s");
-		var a=0;
+		// if(index_s===null){index_s=0}
+		// console.log(index_s);
+		// $($(".body_s>.show_g>div")[index_s]).css("display","block").siblings().css("display","none");
+		// $($(".body_s>ul>li")[index_s]).addClass("bh_s").siblings().removeClass("bh_s");
+		// var a=0;
 		$(".body_s>ul>li").click(function(){
 			a=$(this).index();
 			sessionStorage.removeItem("key");
@@ -16,23 +16,30 @@ $(function(){
 		});
 	})();
 	//名义本金
+	var principal=$(".body_s>.show_g>.shows_1>div:nth-child(3)>ol>li:first").children("span").html();
 	(function(){
 		$(".body_s>.show_g>.shows_1>div:nth-child(3)>ol>li").click(function(){
+			principal=$(this).children().html();
 			var a=$(this).index();
+			console.log(principal,cycle);
 			$($(".body_s>.show_g>.shows_1>div:nth-child(3)>ol>li")[a]).addClass("red").siblings().removeClass("red");
 		});
 	})();
 	//行权周期
+	var cycle=$(".body_s>.show_g>.shows_1>div:nth-child(4)>ol>li:first-child").children("span").html();
 	(function(){
 		$(".body_s>.show_g>.shows_1>div:nth-child(4)>ol>li").click(function(){
+			cycle=$(this).children().html();
 			var a=$(this).index();
+			console.log(principal,cycle);
 			$($(".body_s>.show_g>.shows_1>div:nth-child(4)>ol>li")[a]).addClass("red").siblings().removeClass("red");
 		});
 	})();
+	console.log(principal,cycle);
 	//同意阅读项
 	(function(){
 		var a=0;
-		$(".body_s>.show_g>.shows_1>div:nth-child(5)>span").click(function(){
+		$(".body_s>.show_g>.shows_1>div:nth-child(5)>button").click(function(){
 			a++;
 			if(a%2===1){
 				$(this).addClass("spans");

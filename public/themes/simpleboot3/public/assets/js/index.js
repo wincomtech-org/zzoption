@@ -10,12 +10,12 @@ $(function(){
 		sessionStorage.removeItem("hei");
 		sessionStorage.setItem("hei",num_s);
 	});
-	//在首页点击foorter的首页回到顶部
-	$(".footer>ol>a:nth-child(1)").click(function(){
-		$("html,body").animate({
-			scrollTop:"0"
-		},500);
-	});
+	// //在首页点击foorter的首页回到顶部
+	// $(".footer>ol>a:nth-child(1)").click(function(){
+	// 	$("html,body").animate({
+	// 		scrollTop:"0"
+	// 	},500);
+	// });
 	//点击询价删除参数
 	$(".func>ol>a:nth-child(1)").click(function(){
 		sessionStorage.removeItem("key");
