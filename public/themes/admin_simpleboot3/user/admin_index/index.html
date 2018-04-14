@@ -24,11 +24,8 @@
                 <th>姓名</th>
                 <th>{:lang('AVATAR')}</th> 
                 <th>手机</th> 
-                <th>逾期次数</th> 
-                <th>累计借款次数</th>
-                <th>累计借款金额</th>
-                <th>已用额度|总授信额度</th>
-              
+                <th>账户余额</th> 
+              	<th>所属机构</th> 
                 <th>{:lang('REGISTRATION_TIME')}</th>
                 <th>{:lang('LAST_LOGIN_TIME')}</th>
                 <th>{:lang('LAST_LOGIN_IP')}</th> 
@@ -50,12 +47,8 @@
                     <td><img width="25" height="25" src="{:cmf_get_image_url($vo.avatar)}"/></td>
                     
                     <td>{$vo.mobile}</td>
-                    
-                     <td>{$vo.overdue}</td>
-                    <td>{$vo.borrow_num}</td>
-                    <td>{$vo.borrow_money}</td>
-                     <td>￥{$vo.money1}|￥{$vo.money0}</td>
-                   
+                     <td>￥{$vo.money}</td>
+                      <td>{$vo.shop}</td>
                     <td>{:date('Y-m-d H:i',$vo['create_time'])}</td>
                     <td>{:date('Y-m-d H:i',$vo['last_login_time'])}</td>
                     <td>{$vo.last_login_ip}</td>

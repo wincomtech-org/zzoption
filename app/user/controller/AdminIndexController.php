@@ -152,10 +152,7 @@ class AdminIndexController extends AdminBaseController
         if(empty($info)){
             $this->error('用户不存在');
         }
-        $tmp='pic/'.md5($info['user_login']);
-        $info['pic1']=$tmp.'camera1.jpg';
-        $info['pic2']=$tmp.'camera2.jpg';
-        $info['pic3']=$tmp.'camera3.jpg';
+        
         $info['more']=json_decode($info['more'],true);
         
         $this->assign('info',$info);
@@ -182,9 +179,7 @@ class AdminIndexController extends AdminBaseController
         if(empty($user)){
             $this->error('无此用户');
         }
-        if(preg_match(config('reg_money'), $data['money0'])!=1){
-            $this->error('授信金额错误'.$data['money0']);
-        }
+         
         $data_action=[
             'aid'=>session('ADMIN_ID'),
             'type'=>'user',
@@ -197,10 +192,7 @@ class AdminIndexController extends AdminBaseController
             $action=1;
             $data_action['action'].='更改实名认证'.$user['is_name'].'为'.$data['is_name'].'.';
         }
-        if($user['money0']!=$data['money0']){
-            $action=1;
-            $data_action['action'].='修改额度'.$user['money0'].'为'.$data['money0'].'.'; 
-        }
+       
         if($action==0){ 
             $this->success('未修改',url('index'));
         }else{

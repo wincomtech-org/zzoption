@@ -1,0 +1,87 @@
+<include file="public@header" />
+</head>
+<body>
+
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs"> 
+			<li class="active"><a href="{:url('index')}">所有{$flag}</a></li> 
+		</ul>
+		<form class="well form-inline margin-top-20" method="post"
+			action="{:url('index')}">
+			订单状态: 
+			<select class="form-control" name="status" style="width: 140px;">
+				<option value='-1'>全部</option> 
+				 <foreach name="order_status" item="vo" k="key">
+				<option value="{$key}" <if condition="$key eq $data.status">selected</if>> 
+				{$vo}
+				</option>
+				</foreach>
+			</select> &nbsp;&nbsp;  
+			用户名: 
+			<input type="text" name="uname" value="{$data.uname}"/>
+			  &nbsp;&nbsp;
+			股票代码(数字): 
+			<input type="text" name="code" value="{$data.code}"/>
+			  &nbsp;&nbsp;
+			<input type="submit"
+				class="btn btn-primary" value="搜索" /> <a class="btn btn-danger"
+				href="{:url('index')}">清空</a>
+				&nbsp;&nbsp; &nbsp;&nbsp; 
+			 
+		</form>
+		<form method="post" class="js-ajax-form margin-top-20" action="">
+
+
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<th width="50">ID</th>
+						 <th>订单号</th> 
+						<th>下单人</th> 
+						<th>代码/股票</th> 
+						<th>名义本金</th> 
+						<th>周期</th>
+						<th>询价时间</th>
+						<th>权利金</th>
+						<th>购买时间</th>
+						<th>行权时间</th>
+						<th>状态</th>
+						 
+						<th>操作</th>
+						 
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="list" item="vo">
+					<tr>
+ 
+						<td>{$vo.id}</td>
+						<td>{$vo.oid}</td>
+						<td>{$vo.uname}</td>
+						<td>{$vo.code0}/{$vo.name}</td>
+					 
+						<td>￥{$vo.money0}</td> 
+						<td>{$vo.month}个月</td> 
+						<td>{$vo.inquiry_time|date='Y-m-d H:i',###}</td> 
+						<td><in name="vo.status" value="0,2">--<else/>￥{$vo.money1}</in></td> 
+						<td><lt name="vo.status" value="3">--<else/>{$vo.buy_time|date='Y-m-d H:i',###}</lt></td> 
+						<td><lt name="vo.status" value="6">--<else/>{$vo.sell_time|date='Y-m-d H:i',###}</lt></td>
+					 
+						<td>
+						{$order_status[$vo.status]}
+						 
+						</td>
+						 
+						 <td><a href="{:url('edit',['id'=>$vo.id])}">查看详情</a></td> 
+					</tr>
+					</foreach>
+				</tbody>
+
+			</table>
+
+		</form>
+		<div class="pagination">{$page}</div>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>
