@@ -16,43 +16,43 @@ $(function(){
 		});
 	})();
 	//名义本金
-	var principal=$(".body_s>.show_g>.shows_1>div:nth-child(3)>ol>li:first").children("span").html();
+	var principal=$(".principal>.red").children("span").html();
 	(function(){
-		$(".body_s>.show_g>.shows_1>div:nth-child(3)>ol>li").click(function(){
+		$(".principal>li").click(function(){
 			principal=$(this).children().html();
 			var a=$(this).index();
 			console.log(principal,cycle);
-			$($(".body_s>.show_g>.shows_1>div:nth-child(3)>ol>li")[a]).addClass("red").siblings().removeClass("red");
+			$($(".principal>li")[a]).addClass("red").siblings().removeClass("red");
 		});
 	})();
 	//行权周期
-	var cycle=$(".body_s>.show_g>.shows_1>div:nth-child(4)>ol>li:first-child").children("span").html();
+	var cycle=$(".cycle>.red").children("span").html();
 	(function(){
-		$(".body_s>.show_g>.shows_1>div:nth-child(4)>ol>li").click(function(){
+		$(".cycle>li").click(function(){
 			cycle=$(this).children().html();
 			var a=$(this).index();
 			console.log(principal,cycle);
-			$($(".body_s>.show_g>.shows_1>div:nth-child(4)>ol>li")[a]).addClass("red").siblings().removeClass("red");
+			$($(".cycle>li")[a]).addClass("red").siblings().removeClass("red");
 		});
 	})();
 	console.log(principal,cycle);
 	//同意阅读项
 	(function(){
 		var a=0;
-		$(".body_s>.show_g>.shows_1>div:nth-child(5)>button").click(function(){
+		$("#label_s").click(function(){
 			a++;
 			if(a%2===1){
 				$(this).addClass("spans");
-				$(".body_s>.show_g>.shows_1>div:nth-child(6)>.tijiao").addClass("tijiao_s");
+				$(".tijiao").addClass("tijiao_s");
 			}else{
 				$(this).removeClass("spans");
-				$(".body_s>.show_g>.shows_1>div:nth-child(6)>.tijiao").removeClass("tijiao_s");
+				$(".tijiao").removeClass("tijiao_s");
 			}
 			
 		});
 	})();
 	(function(){
-		$(".body_s>.show_g>.shows_2>div:nth-child(2)>div>span:last-child").click(function(){
+		$(".sub_s_h>span:last-child").click(function(){
 			if($(this).hasClass("sp_red")){
 				var a=$(this).parent().children("span:first-child()").html();
 				$($(".body_s>.show_g>div")[0]).css("display","block").siblings().css("display","none");
@@ -63,7 +63,7 @@ $(function(){
 		});
 	})();
 	(function(){
-		$(".body_s>.show_g>.shows_4>div:nth-child(2)>div>span:last-child").click(function(){
+		$("sub_ss_jk>span:last-child").click(function(){
 			var b=$(this).parent().children("span:first-child()").html();
 			$($(".body_s>.show_g>div")[0]).css("display","block").siblings().css("display","none");
 			$($(".body_s>ul>li")[0]).addClass("bh_s").siblings().removeClass("bh_s");

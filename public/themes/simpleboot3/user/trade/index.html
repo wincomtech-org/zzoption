@@ -31,7 +31,7 @@
 				</div>
 				<div>
 					<p>名义本金：</p>
-					<ol>
+					<ol class="principal">
 					<foreach name="money_off" item="vo">
 						<li class="<eq name='key' value='0'>red</eq>" class=""><span>{$vo}</span>万</li>
 					</foreach>
@@ -45,7 +45,7 @@
 				</div>
 				<div>
 					<p>行权周期：</p>
-					<ol>
+					<ol class="cycle">
 					<foreach name="day" item="vo" k="key">
 						<li class="<eq name='key' value='0'>red</eq>"><span>{$vo}</span>月</li>
 					</foreach>
