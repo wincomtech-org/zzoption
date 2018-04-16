@@ -1,5 +1,5 @@
 <include file="public@head" />
-  
+		<link rel="stylesheet" href="__TMPL__/public/assets/css/commom.css">
 		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
  <script type="text/javascript" src="__TMPL__/public/assets/js/transaction.js"></script>
 </head>
@@ -31,7 +31,7 @@
 				<div>
 <!--					改变的数据-->
 				<foreach name="list" item="vo">
-					 <div>
+					 <div class="sub_s_h">
 						<span>{$vo.code}/{$vo.name}</span>
 						<span>{$vo.money0}</span>
 						<span>{$vo.month}个月</span>

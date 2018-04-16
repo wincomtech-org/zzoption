@@ -10,17 +10,20 @@
 	<meta name="format-detection" content="telphone=no, email=no"/> 
 	<meta name="full-screen" content="yes">
 	<meta name="x5-fullscreen" content="true">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="msapplication-tap-highlight" content="no">
-	<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="HandheldFriendly" content="true">
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
 	<script type="text/javascript">
 		var a=$(window).width();
-		$("html").css("font-size",`${a/7.5}px`);
+		$("html").css("font-size",a/7.5+"px");
 		$(window).resize(function(){
 			var a=$(window).width();
-			$("html").css("font-size",`${a/7.5}px`);
+			$("html").css("font-size",a/7.5+"px");
 		});
 		function msg(text,html=''){
 			console.log(text);
