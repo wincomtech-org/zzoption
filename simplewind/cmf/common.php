@@ -1608,24 +1608,29 @@ function cmf_get_admin_style()
 }
 
 /**
- * curl get 请求
+ * curl 请求
  * @param $url
+ * @param $data
  * @return mixed
  */
-function cmf_curl_get($url)
+function cmf_curl_get($url,$data='')
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_FAILONERROR, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 5);
     $SSL = substr($url, 0, 8) == "https://" ? true : false;
     if ($SSL) {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 信任任何证书
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // 检查证书中是否设置域名
     }
+    if (!empty($data)){
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    }
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $content = curl_exec($ch);
     curl_close($ch);
     return $content;

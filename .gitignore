@@ -5,10 +5,10 @@
 .idea
 composer.lock
 /data/conf
+!/data/conf/config.php
 /data/runtime
 /public/data
 /public/log
 /public/upload
-*.sql
 *.zip
 *.gz
