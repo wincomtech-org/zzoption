@@ -1,0 +1,29 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('AdminNewscate/index')}">分类管理</a></li>
+        <li class="active"><a>添加分类</a></li>
+    </ul>
+    <div class="row margin-top-20">
+        <form class="js-ajax-form" action="{:url('AdminNewscate/addPost')}" method="post">
+            <div class="form-group">
+                <label for="input-name"><span class="form-required">*</span>分类名称</label>
+                <div>
+                    <input type="text" class="form-control" id="input-name" name="name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+                    <a class="btn btn-default" href="javascript:history.back(-1);">{:lang('BACK')}</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('AdminBrand/index')}">品牌管理</a></li>
+        <li class="active"><a href="{:url('AdminBrand/add')}">添加品牌</a></li>
+    </ul>
+    <form action="{:url('AdminBrand/addPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+        <div class="row">
+            <include file="admin_brand/add_edit" />
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+                    <a class="btn btn-default" href="{:url('AdminBrand/index')}">{:lang('BACK')}</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>
