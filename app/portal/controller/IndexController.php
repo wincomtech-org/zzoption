@@ -32,14 +32,11 @@ class IndexController extends HomeBaseController
         ->column('id,uname,money0,name,code0,month,status');
         
         $indices=Db::name('stock_indice')->column('id,name,count,num,percent');
-        $news=Db::name('stock_news')->where('shop','in',[0,$shop['aid']])->order('list_order asc,create_time desc')->limit(5)->column('id,title,source,create_time');
-        
         $this->assign('html_title','首页');
         $this->assign('html_flag','index');
         $this->assign('banners',$banners);
         $this->assign('orders',$orders);
         $this->assign('indices',$indices);
-        $this->assign('news',$news);
         return $this->fetch();
     }
     /* 首页查询指数 */

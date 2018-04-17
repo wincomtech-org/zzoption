@@ -5,21 +5,7 @@ namespace app\admin\controller;
  
 use cmf\controller\AdminBaseController; 
 use think\Db; 
-/**
- * Class GuideController
- * @package app\admin\controller
- *
- * @adminMenuRoot(
- *     'name'   =>'文档管理',
- *     'action' =>'default',
- *     'parent' =>'',
- *     'display'=> true,
- *     'order'  => 10,
- *     'icon'   =>'',
- *     'remark' =>'文档管理'
- * )
- *
- */
+ 
 class GuideController extends AdminBaseController
 {
     private $m;
@@ -29,9 +15,8 @@ class GuideController extends AdminBaseController
     {
         parent::_initialize();
         $this->m=Db::name('guide');
-        $this->order='cid asc,sort asc';
-        $cates=Db::name('guide_cate')->column('id,name');
-        $this->assign('cates',$cates);
+        $this->order='type asc,name asc,sort asc,id asc';
+       
         $this->assign('flag','文档');
         
         $this->assign('types', config('guide_types'));
@@ -41,7 +26,7 @@ class GuideController extends AdminBaseController
      * 文档管理
      * @adminMenu(
      *     'name'   => '文档管理',
-     *     'parent' => 'default',
+     *     'parent' => '',
      *     'display'=> true,
      *     'hasView'=> true,
      *     'order'  => 20,
@@ -60,9 +45,9 @@ class GuideController extends AdminBaseController
        
         // 获取分页显示
         $page = $list->render(); 
-        $this->assign('page',$page);
+           $this->assign('page',$page);
         $this->assign('list',$list); 
-        
+      
         return $this->fetch();
     }
     
@@ -83,9 +68,9 @@ class GuideController extends AdminBaseController
         $m=$this->m;
         $id=$this->request->param('id');
         $info=$m->where('id',$id)->find();
-       
+        
         $this->assign('info',$info);
-       
+         
         //不同类别到不同的页面
         return $this->fetch();
     }
@@ -136,7 +121,7 @@ class GuideController extends AdminBaseController
         $m=$this->m;
         $id = $this->request->param('id', 0, 'intval');
         
-        $row=$m->where(['id'=>['eq',$id],'cid'=>['neq',1]])->delete();
+        $row=$m->where(['id'=>$id,'type'=>0])->delete();
         if($row===1){
             $this->success('删除成功');
         }else{

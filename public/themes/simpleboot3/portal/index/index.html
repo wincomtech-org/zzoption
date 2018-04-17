@@ -90,18 +90,17 @@
 		</div>
 <!--		咨询-->
 		<div class="zixun">
-			<div style="width:100%"><span></span>股市资讯<a href="{:url('portal/news/index')}">更多</a></div>	
+			<div style="width:100%"><span></span>股市资讯</div>	
 <!--			最新内容-->
-		<foreach name="news" item="vo">
-			<a href="{:url('portal/news/info',['id'=>$vo.id])}">
+			<a href="/">
 				<div class="text">
-					<p><span>{$vo.source}</span>&nbsp;&nbsp;<span>{$vo.create_time|date='m-d H:i',###}</span></p>
+					<p><span>网易财经</span>&nbsp;&nbsp;<span>2月28日</span></p>
 					<p>
-						<span>{$vo.title}</span> 
+						<span>午间看新闻：沪指震荡上涨0.17% 工业互联网再爆发</span> 
 					</p>
 				</div>
 			</a>
-		</foreach>	 
+			 
 		</div>
 	</div>
 	

@@ -56,7 +56,7 @@ class AdminIndexController extends AdminBaseController
      */
     public function index()
     {
-        $where   = [];
+        $where   = ['user_type'=>2];
         $request = input('request.');
 
         if (!empty($request['uid'])) {
@@ -124,7 +124,7 @@ class AdminIndexController extends AdminBaseController
     {
         $id = $this->request->param('id', 0, 'intval');
         if ($id) {
-            Db::name("user")->where(["id" => $id , "user_type" => 2])->setField('user_status', 1);
+            Db::name("user")->where(["id" => $id, "user_type" => 2])->setField('user_status', 1);
             $this->success("会员启用成功！");
         } else {
             $this->error('数据传入失败！');
@@ -148,7 +148,7 @@ class AdminIndexController extends AdminBaseController
     {
         $id = $this->request->param('id', 0, 'intval');
         
-        $info=Db::name("user")->where(["id" => $id ])->find();
+        $info=Db::name("user")->where(["id" => $id, "user_type" => 2])->find();
         if(empty($info)){
             $this->error('用户不存在');
         }
@@ -175,7 +175,7 @@ class AdminIndexController extends AdminBaseController
     {
         $data = $this->request->param('','trim');
         $m_user=Db::name("user");
-        $user=$m_user->where(["id" => $data['id'] ])->find();
+        $user=$m_user->where(["id" => $data['id'], "user_type" => 2])->find();
         if(empty($user)){
             $this->error('无此用户');
         }

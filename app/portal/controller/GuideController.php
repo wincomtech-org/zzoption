@@ -51,14 +51,13 @@ class GuideController extends HomeBaseController
         
         $m=$this->m;
         $types=$this->types;
-        $names=Db::name('guide_cate')->where('type',2)->order('sort asc')->column('id,name');
-        
+        $names=$m->where(['type'=>2])->order('sort asc')->column('id,name,title');
+         
         $list=[];
-        foreach($names as $k=>$v){ 
-            $list[$v]=$m->where('cid',$k)->order('sort asc')->column('id,title');
-        }  
+        foreach($names as $k=>$v){
+            $list[$v['name']][]=['id'=>$v['id'],'title'=>$v['title']]; 
+        } 
         $this->assign('list',$list);
-       
         $this->assign('html_title',$types[2]);
         return $this->fetch();
         

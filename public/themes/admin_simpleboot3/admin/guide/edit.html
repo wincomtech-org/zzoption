@@ -11,8 +11,8 @@
 		<form method="post" class="form-horizontal js-ajax-form margin-top-20"
 			action="{:url('editPost')}">
 			<div class="form-group">
-				<label class="col-sm-2 control-label">标识 </label>
-				 <div class="col-md-6 col-sm-10">
+				<label class="col-sm-2 control-label">分组标识<span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
 					<input type="text" class="form-control" 
 						value="{$info.name}" readonly>
 				</div>
@@ -28,7 +28,7 @@
 		   <div class="form-group">
 				<label class="col-sm-2 control-label">类型<span class="form-required">*</span></label>
 				<div class="col-md-6 col-sm-10">
-					<input type="text" class="form-control"  value="{$cates[$info.cid]}" readonly>
+					<input type="text" class="form-control"  value="{$types[$info.type]}" readonly>
 					 
 					
 				</div>
@@ -43,7 +43,7 @@
 			<div class="form-group">
 	           <label class="col-sm-2 control-label">内容</label>
 	           <div class="col-md-6 col-sm-10"> 
-	           <eq name="info.cid" value="1">
+	           <eq name="info.type" value="0">
 				  <script type="text/plain" id="content" name="content">{$info.content}</script>
 				<else/>
 					<textarea name="content" style="width:100%;" rows="10">{$info.content}</textarea> 

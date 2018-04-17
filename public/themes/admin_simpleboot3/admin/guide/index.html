@@ -17,7 +17,7 @@
 						<th>英文标识</th>
 						<th>标题</th>
 						 <th>类型</th>
-						 
+						 <th>是否显示</th>
 						<th width="50">{:lang('SORT')}</th>
 						<th>添加时间</th>
 						<th>更新时间</th>
@@ -32,14 +32,13 @@
 						<td>{$vo.name}</td>
 					 
 						<td>{$vo.title}</td>
-					 	<td>{$cates[$vo.cid]}</td>
-					 	 
+					 	<td>{$types[$vo.type]}</td>
+					 	<td><eq name="vo.is_show" value="1">显示<else/>隐藏</eq></td>
 						<td>{$vo.sort}</td>
 						<td>{$vo.insert_time|date='Y-m-d H:i:s',###}</td>
 						<td>{$vo.time|date='Y-m-d H:i:s',###}</td>
 						<td><a href="{:url('edit',array('id'=>$vo['id']))}">{:lang('EDIT')}</a>
-						 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-						<eq name="vo.cid" value="1">
+						<eq name="vo.type" value="0">
 						<span>{:lang('DELETE')}</span>
 						<else/>
 						<a href="{:url('delete',array('id'=>$vo['id']))}"
