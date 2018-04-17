@@ -50,6 +50,9 @@ $(function(){
 			}
 			
 		});
+		$(".label_s").click(function(){
+			$("#label_s").click();
+		})
 	})();
 	(function(){
 		$(".sub_s_h>span:last-child").click(function(){

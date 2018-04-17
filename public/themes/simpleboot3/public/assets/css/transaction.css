@@ -204,16 +204,15 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 .body_s>.show_g>.shows_1>div:nth-child(5){
 	position: relative;
 }
-.body_s>.show_g>.shows_1>div:nth-child(5)>button{
+.body_s>.show_g>.shows_1>div:nth-child(5)>span{
 	position: absolute;
-	top:0.15rem;
-	left:0.9rem;
+	top:0.22rem;
+	left:1.02rem;
 	display:inline-block;
-	width:0.3rem;
-	height:0.3rem;
-	outline: none;
-	border: 0.02rem solid #FFF;
-	border-radius: 50%;
+	width:0.18rem;
+	height:0.18rem;
+	border: 0.03rem solid #FFF;
+	border-radius:50%;
 	box-sizing: border-box;
 	box-shadow:0 0 0 0.03rem #c3c3c3;
 }
