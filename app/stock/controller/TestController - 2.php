@@ -10,7 +10,7 @@ use app\stock\model\StockNewsModel;
 /**
  * 股票数据
  */
-class IndexController extends HomeBaseController
+class TestController extends HomeBaseController
 {
     public function test()
     {

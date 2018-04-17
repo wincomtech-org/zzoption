@@ -1,5 +1,5 @@
 <?php
-namespace Aliyun\DySDKLite;
+namespace sms\aliyun;
 
 /**
  * 签名助手 2017/11/19
@@ -7,6 +7,7 @@ namespace Aliyun\DySDKLite;
  * Class SignatureHelper
  */
 class SignatureHelper {
+
     /**
      * 生成签名并发起请求
      *

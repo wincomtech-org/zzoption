@@ -148,7 +148,7 @@ class TimeController extends HomeBaseController
 
     /**
      * 获取指定网站新闻
-     * 详情见 \app\stock\controller\IndexController - 2.php
+     * 详情见 \app\stock\controller\TestController - 2.php
      * @return [type] [description]
      */
     public function news()
