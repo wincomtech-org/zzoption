@@ -1,0 +1,12 @@
+.table_calendar{padding:10px 20px}
+.table_calendar  thead{line-height:30px;color:#444;text-align:center}
+.table_calendar  thead td{border-bottom:1px solid #d1d1d1}
+.table_calendar  tbody{text-align:center;color:#444}
+.table_calendar  tbody td{border-bottom:1px solid #d1d1d1;padding:10px 1px;cursor:pointer}
+.table_calendar  tbody td.rest{background:#fef3f3}
+.table_calendar  tbody td .holiday{color:#aa160d}
+.table_calendar  tbody td .outter{color:#bbbbbb}
+.table_calendar  tbody td.cur{background:#f0675d}
+.table_calendar  tbody td.cur p{color:#fff}
+.table_calendar  tbody td:hover{background:#f0675d}
+.table_calendar  tbody td:hover p{color:#fff}
