@@ -6,47 +6,46 @@ namespace app\admin\controller;
 use cmf\controller\AdminBaseController; 
 use think\Db; 
 /**
- * Class GuideController
+ * Class StockController
  * @package app\admin\controller
  *
  * @adminMenuRoot(
- *     'name'   =>'文档管理',
+ *     'name'   =>'股票管理',
  *     'action' =>'default',
  *     'parent' =>'',
  *     'display'=> true,
  *     'order'  => 10,
  *     'icon'   =>'',
- *     'remark' =>'文档管理'
+ *     'remark' =>'股票管理'
  * )
  *
  */
-class GuideController extends AdminBaseController
+class StockController extends AdminBaseController
 {
     private $m;
     private $order;
-   
+    private $stock_status;
     public function _initialize()
     {
         parent::_initialize();
-        $this->m=Db::name('guide');
-        $this->order='cid asc,sort asc';
-        $cates=Db::name('guide_cate')->column('id,name');
-        $this->assign('cates',$cates);
-        $this->assign('flag','文档');
+        $this->m=Db::name('stock');
+        $this->order='id asc';
+        $this->stock_status=config('stock_status');
+        $this->assign('flag','股票');
         
-        $this->assign('types', config('guide_types'));
+        $this->assign('stock_status', $this->stock_status);
     }
      
     /**
-     * 文档管理
+     * 股票管理
      * @adminMenu(
-     *     'name'   => '文档管理',
+     *     'name'   => '股票管理',
      *     'parent' => 'default',
      *     'display'=> true,
      *     'hasView'=> true,
      *     'order'  => 20,
      *     'icon'   => '',
-     *     'remark' => '文档管理',
+     *     'remark' => '股票管理',
      *     'param'  => ''
      * )
      */
@@ -55,27 +54,37 @@ class GuideController extends AdminBaseController
         $m=$this->m;
         
         $data=$this->request->param();
-        
-        $list= $m->order($this->order)->paginate(10);
+        $where=[];
+        if(empty($data['status'])){
+            $data['status']=0;
+        }else{
+            $where['status']=['eq',$data['status']];
+        }
+        if(empty($data['code0'])){
+            $data['code0']='';
+        }else{
+            $where['code0']=['like','%'.$data['code0'].'%'];
+        }
+        $list= $m->where($where)->order($this->order)->paginate(10);
        
         // 获取分页显示
-        $page = $list->render(); 
+        $page = $list->appends($data)->render(); 
         $this->assign('page',$page);
         $this->assign('list',$list); 
-        
+        $this->assign('data',$data); 
         return $this->fetch();
     }
     
     /**
-     * 文档编辑
+     * 股票编辑
      * @adminMenu(
-     *     'name'   => '文档编辑',
+     *     'name'   => '股票编辑',
      *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> true,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '文档编辑',
+     *     'remark' => '股票编辑',
      *     'param'  => ''
      * )
      */
@@ -90,29 +99,38 @@ class GuideController extends AdminBaseController
         return $this->fetch();
     }
     /**
-     * 文档编辑1
+     * 股票编辑1
      * @adminMenu(
-     *     'name'   => '文档编辑1',
+     *     'name'   => '股票编辑1',
      *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> false,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '文档编辑1',
+     *     'remark' => '股票编辑1',
      *     'param'  => ''
      * )
      */
     function editPost(){
         $m=$this->m;
         $data= $this->request->param();
-        if(empty($data['id'])){
+        
+        $info=$m->where('id',$data['id'])->find();
+        if(empty($info)){
             $this->error('数据错误');
         }
-       
-        $data['content']=empty($_POST['content'])?'':$_POST['content'];
         $data['time']=time();
         $row=$m->where('id', $data['id'])->update($data);
+        $data_action=[
+            'aid'=>session('ADMIN_ID'),
+            'type'=>'stock',
+            'key'=>$info['code0'],
+            'time'=>$data['time'],
+            'ip'=>get_client_ip(),
+            'action'=>'对股票'.$info['code0'].'更新', 
+        ];
         if($row===1){
+            Db::name('action')->insert($data_action);
             $this->success('修改成功',url('index'));
         }else{
             $this->error('修改失败');
@@ -120,15 +138,15 @@ class GuideController extends AdminBaseController
         
     }
     /**
-     * 文档删除
+     * 股票删除
      * @adminMenu(
-     *     'name'   => '文档删除',
+     *     'name'   => '股票删除',
      *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> false,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '文档删除',
+     *     'remark' => '股票删除',
      *     'param'  => ''
      * )
      */
@@ -136,7 +154,7 @@ class GuideController extends AdminBaseController
         $m=$this->m;
         $id = $this->request->param('id', 0, 'intval');
         
-        $row=$m->where(['id'=>['eq',$id],'cid'=>['neq',1]])->delete();
+        $row=$m->where(['id'=>['eq',$id]])->delete();
         if($row===1){
             $this->success('删除成功');
         }else{
@@ -146,15 +164,15 @@ class GuideController extends AdminBaseController
     }
     
     /**
-     * 文档添加
+     * 股票添加
      * @adminMenu(
-     *     'name'   => '文档添加',
+     *     'name'   => '股票添加',
      *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> true,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '文档添加',
+     *     'remark' => '股票添加',
      *     'param'  => ''
      * )
      */
@@ -164,15 +182,15 @@ class GuideController extends AdminBaseController
     }
     
     /**
-     * 文档添加1
+     * 股票添加1
      * @adminMenu(
-     *     'name'   => '文档添加1',
+     *     'name'   => '股票添加1',
      *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> false,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '文档添加1',
+     *     'remark' => '股票添加1',
      *     'param'  => ''
      * )
      */
@@ -180,11 +198,26 @@ class GuideController extends AdminBaseController
         
         $m=$this->m;
         $data= $this->request->param();
-        $data['content']=$_POST['content'];
+        if(strlen($data['code'])!=6 || $data['code']<=1){
+            $this->error('股票代码错误');
+        }
+        $code1='hs'.$data['code'];
+        $code2='sz'.$data['code'];
+        if($data['code0']!=$code1 && $data['code0']!=$code2){
+            $this->error('股票代码不一致');
+        }
         $data['time']=time();
-        $data['insert_time']= $data['time'];
+        $data_action=[
+            'aid'=>session('ADMIN_ID'),
+            'type'=>'stock',
+            'key'=>$data['code0'],
+            'time'=>$data['time'],
+            'ip'=>get_client_ip(),
+            'action'=>'添加股票'.$data['code0'],
+        ];  
         $row=$m->insertGetId($data);
         if($row>=1){
+            Db::name('action')->insert($data_action); 
             $this->success('已成功添加',url('index'));
         }else{
             $this->error('添加失败');

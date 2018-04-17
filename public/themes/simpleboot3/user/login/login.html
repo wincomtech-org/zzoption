@@ -13,7 +13,7 @@
 		</div>
 		<div>
 			<span></span>
-			<input type="password" name="psw" placeholder="请输入密码">
+			<input type="password" maxlength="20" name="psw" placeholder="请输入密码">
 		</div>
 		<div class="login_rigster" style="border:none;">
 			<a href="{:url('user/login/pass')}">忘记密码</a>
@@ -25,20 +25,29 @@
 </html>
 <script>
 // 注册提交
+function is_mobile(tel){
+	var reg=/^[1][3,4,5,6,7,8][0-9]{9}$/; 
+	return reg.test(tel);
+}
+//验证密码格式（必须字母+数字组合）;
+function is_password(str){
+	var reg=/^[a-zA-Z0-9]{6,20}$/;
+	return reg.test(str);
+}
 $('.tijiao').click(function(){
  	 
  	var password=$.trim($('input[name=psw]').val()); 
  	var tel=$.trim($('input[name=tel]').val());
   
-    /*  if(tel== '' || isPhoneNo(tel) == false){
+    if(tel== '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
          alert('提示：请输入正确手机号');
          return false;
-     }else  if(password == '' || isPassword(password) == false){
+     }else  if(password == '' || is_password(password) == false){
          $('input[name="password"]').focus();
-         alert('提示：请输入6位数字密码');
+         alert('提示：请输入6~20位字母数字组合密码');
          return false;
-     }   */
+     } 
       
     
  	$('.tijiao').prop('disabled','disabled');

@@ -10,7 +10,7 @@
 		</ul>
 		<form method="post"
 			class="form-horizontal js-ajax-form margin-top-20"
-			action="{:url('inquiry_do')}">
+			action="{:url('buy_do')}">
 			<div class="form-group fleft">
 				<label class="col-sm-2 control-label">用户</label>
 				<div class="col-md-6 col-sm-10">
@@ -34,6 +34,12 @@
 				</div>
 			</div>
 			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">付款时间</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  value="{$info.buy_time|date='Y-m-d H:i',###}" readonly /> 
+				</div>
+			</div>
+			<div class="form-group fleft">
 				<label class="col-sm-2 control-label">最后更新时间</label>
 				<div class="col-md-6 col-sm-10">
 					<input type="text" class="form-control"  value="{$info.time|date='Y-m-d H:i',###}" readonly /> 
@@ -41,8 +47,7 @@
 			</div>
 			 
 			<div style="clear:both"></div>
-			
-			<div class="form-group fleft">
+			  <div class="form-group fleft">
 				<label class="col-sm-2 control-label">名义本金</label>
 				<div class="col-md-6 col-sm-10">
 					<input type="text" class="form-control" value="{$info.money0}" readonly/> 
@@ -55,27 +60,26 @@
 					<input type="text" class="form-control" value="{$info.month}个月" readonly/> 
 				</div>
 			</div>
-			<div style="clear:both"></div>
 			 <div class="form-group fleft">
 				<label class="col-sm-2 control-label">权利金</label>
 				<div class="col-md-6 col-sm-10">
-					<input type="number" class="form-control"  name="money1" value="{$info.money1}"/> 
+					<input type="text" class="form-control"  name="money1" value="{$info.money1}" readonly/> 
 				</div>
 			</div>
 			<div class="form-group fleft">
 				<label class="col-sm-2 control-label">期初价格</label>
 				<div class="col-md-6 col-sm-10">
-					<input type="number" class="form-control" name="price1_0" value="{$info.price1_0}"/> 
+					<input type="text" class="form-control" value="{$info.price1_0}" readonly/> 
 				</div>
 			</div>
-		 
+			<div style="clear:both"></div>
 			<div class="form-group fleft">
-				<label class="col-sm-2 control-label">询价状态</label>
+				<label class="col-sm-2 control-label">买入状态状态</label>
 				<div class="col-md-6 col-sm-10">
-				 	<input type="radio" name="status" value="0" <eq name="info.status" value="0">checked</eq> required/>询价中
+				 	<input type="radio" name="status" value="3" <eq name="info.status" value="3">checked</eq> required/>已付款
 				 
-					 <input type="radio" name="status" value="1" <eq name="info.status" value="1">checked</eq> required/>询价成功
-					 <input type="radio" name="status" value="2" <eq name="info.status" value="2">checked</eq> required/>询价失败
+					 <input type="radio" name="status" value="4" <eq name="info.status" value="4">checked</eq> required/>持仓中
+					 <input type="radio" name="status" value="5" <eq name="info.status" value="5">checked</eq> required/>买入失败
 				 
 				</div>
 			</div>
@@ -90,15 +94,16 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 				<input type="hidden" name="id" value="{$info.id}"/>
-				  <neq name="info.is_old" value="1">
-					<button type="submit" class="btn btn-primary js-ajax-submit">确认询价信息</button>
-				  </neq>
+				 <neq name="info.is_old" value="1">
+					<button type="submit" class="btn btn-primary js-ajax-submit">确认买入信息</button>
+				 </neq>
+				 
 					<a class="btn btn-default" href="javascript:history.go(-1);">{:lang('BACK')}</a>
 				</div>
 			</div>
 			 <div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-				 <p>请谨慎操作</p>
+				 <p>请谨慎操作,若选择买入失败则用户付款会返还用户余额，若由失败改为持仓中会从余额中扣款，余额不足则失败</p>
 				</div>
 			</div>
 		</form>

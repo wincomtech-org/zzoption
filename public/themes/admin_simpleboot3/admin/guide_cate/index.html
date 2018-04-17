@@ -14,12 +14,13 @@
 				<thead>
 					<tr>
 						<th width="50">ID</th>
-						<th>英文标识</th>
-						<th>标题</th>
+					 
+						<th>名称</th>
+						<th>简介</th>
 						 <th>类型</th>
 						 
 						<th width="50">{:lang('SORT')}</th>
-						<th>添加时间</th>
+						 
 						<th>更新时间</th>
 						<th width="120">{:lang('ACTIONS')}</th>
 					</tr>
@@ -30,21 +31,18 @@
 
 						<td>{$vo.id}</td>
 						<td>{$vo.name}</td>
-					 
-						<td>{$vo.title}</td>
-					 	<td>{$cates[$vo.cid]}</td>
+					 	<td>{$vo.dsc}</td>
+						 
+					 	<td>{$types[$vo.type]}</td>
 					 	 
 						<td>{$vo.sort}</td>
-						<td>{$vo.insert_time|date='Y-m-d H:i:s',###}</td>
+					 
 						<td>{$vo.time|date='Y-m-d H:i:s',###}</td>
 						<td><a href="{:url('edit',array('id'=>$vo['id']))}">{:lang('EDIT')}</a>
-						 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-						<eq name="vo.cid" value="1">
-						<span>{:lang('DELETE')}</span>
-						<else/>
+					 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 						<a href="{:url('delete',array('id'=>$vo['id']))}"
 							class="js-ajax-delete"> {:lang('DELETE')} </a>
-						</eq>
+						 
 							</td>
 					</tr>
 					</foreach>

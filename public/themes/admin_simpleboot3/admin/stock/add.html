@@ -13,30 +13,27 @@
 					<input type="text" class="form-control"  name="name"  >
 				</div>
 			</div>
-			  <div class="form-group">
-	            <label  class="col-sm-2 control-label">图片<span
-					class="form-required">*</span></label>
-	            <div class="col-md-6 col-sm-10">
-	            	<input id="photo-1"  class="form-control" type="hidden" name="pic" style="width:400px;" >
-					<a href="javascript:uploadOneImage('图片上传','#photo-1');">上传</a>
-			 		<img id="photo-1-preview"  style="width:640px;height:260px;">
-	                
-	            </div>
-	        </div> 
+			 <div class="form-group">
+				<label class="col-sm-2 control-label">股票代码（数字）</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  name="code"  >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">股票代码（加前缀，如hs600000）</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  name="code0"  >
+				</div>
+			</div>
 			 
 		 
 			<div class="form-group">
-				<label class="col-sm-2 control-label">链接网址</label>
+				<label class="col-sm-2 control-label">备注</label>
 				<div class="col-md-6 col-sm-10">
-					<input type="text" class="form-control"  name="link" value="">
+					<input type="text" class="form-control"  name="dsc" value="">
 				</div>
 			</div>
-			 <div class="form-group">
-				<label class="col-sm-2 control-label">排序 </label>
-				<div class="col-md-6 col-sm-10">
-					<input type="text" class="form-control" name="sort" value="5">
-				</div>
-			</div>
+			 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
