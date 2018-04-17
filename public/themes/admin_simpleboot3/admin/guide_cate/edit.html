@@ -10,39 +10,36 @@
 
 		<form method="post" class="form-horizontal js-ajax-form margin-top-20"
 			action="{:url('editPost')}">
+			 
 			<div class="form-group">
-				<label class="col-sm-2 control-label">名称</label>
-				<div class="col-md-6 col-sm-10">
-					<input type="text" class="form-control" name="name"
-						value="{$info.name}"  >
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="col-sm-2 control-label">图片<span
+				<label class="col-sm-2 control-label">名称<span
 					class="form-required">*</span></label>
 				<div class="col-md-6 col-sm-10">
-					<input id="photo-1"  class="form-control" type="hidden" name="pic" value="{$info.pic}" style="width:400px;">
-					<a href="javascript:uploadOneImage('图片上传','#photo-1');">上传</a>
-			 		<img id="photo-1-preview"  src="{:cmf_get_image_url($info.pic)}" style="width:640px;height:260px;">
-					 
+					<input type="text" class="form-control" name="name"
+						value="{$info.name}" required>
 				</div>
 			</div>
-		 
-			<div class="form-group">
-				<label class="col-sm-2 control-label">链接网址</label>
+		   <div class="form-group">
+				<label class="col-sm-2 control-label">类型 </label>
 				<div class="col-md-6 col-sm-10">
-					<input type="text" class="form-control" name="link"
-						value="{$info.link}">
+					<input type="text" class="form-control"  value="{$types[$info.type]}" readonly> 
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">简介 </label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="dsc"
+						value="{$info.dsc}">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">排序 </label>
 				<div class="col-md-6 col-sm-10">
-					<input type="text" class="form-control" name="sort"
+					<input type="number" class="form-control" name="sort"
 						value="{$info.sort}">
 				</div>
 			</div>
+		 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<input type="hidden" name="id" value="{$info.id}">
@@ -53,6 +50,16 @@
 		</form>
 	</div>
 	<script src="__STATIC__/js/admin.js"></script>
-	 
+	 <script type="text/javascript">
+    //编辑器路径定义
+    var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+    var editorcontent = new baidu.editor.ui.Editor();
+    editorcontent.render('content');
+    
+</script>
 </body>
 </html>

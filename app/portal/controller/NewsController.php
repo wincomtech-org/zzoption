@@ -13,53 +13,40 @@ namespace app\portal\controller;
 use cmf\controller\HomeBaseController;
 use think\Db;
 
-class GuideController extends HomeBaseController
+class NewsController extends HomeBaseController
 {
     private $m;
-    private $types;
+   
     public function _initialize()
     {
         parent::_initialize();
-        $this->m=Db::name('guide');
-        $this->types=config('guide_types');
-    }
-     
-     
+        $this->m=Db::name('stock_news');
+        $this->assign('html_title','资讯');
+        $this->assign('html_flag','news');
+    } 
     /**
-     * 协议
+     * 新闻资讯
      */
-    public function agreement()
+    public function index()
     {
-        $name=$this->request->param('name','');
-        $m=$this->m;
         
-        $info=$m->where(['type'=>1,'name'=>$name])->find();
-        if(empty($info)){
-            $this->error('无此协议');
+        $m=$this->m;
+        $cid=$this->request->param('cid',0,'intval');
+        $cates=Db::name('stock_news_category')->order('list_order asc')->column('id,name');
+        
+        if($cid==0){
+           $cid=key($cates);
         }
-        $this->assign('info',$info);
-        $this->assign('html_title',$info['title']);
-        return $this->fetch();
-        
-    }
-     
-    /**
-     * 新手课堂
-     */
-    public function help()
-    {
-        
-        $m=$this->m;
-        $types=$this->types;
-        $names=Db::name('guide_cate')->where('type',2)->order('sort asc')->column('id,name');
-        
-        $list=[];
-        foreach($names as $k=>$v){ 
-            $list[$v]=$m->where('cid',$k)->order('sort asc')->column('id,title');
-        }  
-        $this->assign('list',$list);
+        $where=[
+            'cate_id'=>['eq',$cid],
+            'shop'=>['in',[0,session('shop.aid')]],
+        ];
+        $list=$m->where($where)->order('list_order asc,create_time desc')->column('');
        
-        $this->assign('html_title',$types[2]);
+        $this->assign('list',$list);
+        $this->assign('cates',$cates);
+        $this->assign('cid',$cid);
+       
         return $this->fetch();
         
     }
@@ -70,12 +57,12 @@ class GuideController extends HomeBaseController
     {
         
         $m=$this->m;
-        $types=$this->types;
+      
         $id=$this->request->param('id',0,'intval');
         $info=$m->where('id',$id)->find();
         
         $this->assign('info',$info);
-        $this->assign('html_title',$types[2]);
+       
         return $this->fetch();
         
     }

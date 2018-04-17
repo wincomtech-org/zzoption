@@ -10,7 +10,7 @@
 		</ul>
 		<form method="post"
 			class="form-horizontal js-ajax-form margin-top-20"
-			action="{:url('inquiry_do')}">
+			action="{:url('sell_do')}">
 			<div class="form-group fleft">
 				<label class="col-sm-2 control-label">用户</label>
 				<div class="col-md-6 col-sm-10">
@@ -34,6 +34,18 @@
 				</div>
 			</div>
 			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">付款时间</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  value="{$info.buy_time|date='Y-m-d H:i',###}" readonly /> 
+				</div>
+			</div>
+			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">行权时间</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  value="{$info.sell_time|date='Y-m-d H:i',###}" readonly /> 
+				</div>
+			</div>
+			<div class="form-group fleft">
 				<label class="col-sm-2 control-label">最后更新时间</label>
 				<div class="col-md-6 col-sm-10">
 					<input type="text" class="form-control"  value="{$info.time|date='Y-m-d H:i',###}" readonly /> 
@@ -41,8 +53,7 @@
 			</div>
 			 
 			<div style="clear:both"></div>
-			
-			<div class="form-group fleft">
+			 <div class="form-group fleft">
 				<label class="col-sm-2 control-label">名义本金</label>
 				<div class="col-md-6 col-sm-10">
 					<input type="text" class="form-control" value="{$info.money0}" readonly/> 
@@ -55,50 +66,81 @@
 					<input type="text" class="form-control" value="{$info.month}个月" readonly/> 
 				</div>
 			</div>
-			<div style="clear:both"></div>
 			 <div class="form-group fleft">
 				<label class="col-sm-2 control-label">权利金</label>
 				<div class="col-md-6 col-sm-10">
-					<input type="number" class="form-control"  name="money1" value="{$info.money1}"/> 
-				</div>
-			</div>
-			<div class="form-group fleft">
-				<label class="col-sm-2 control-label">期初价格</label>
-				<div class="col-md-6 col-sm-10">
-					<input type="number" class="form-control" name="price1_0" value="{$info.price1_0}"/> 
+					<input type="text" class="form-control"  name="money1" value="{$info.money1}" readonly/> 
 				</div>
 			</div>
 		 
 			<div class="form-group fleft">
-				<label class="col-sm-2 control-label">询价状态</label>
+				<label class="col-sm-2 control-label">期初价格</label>
 				<div class="col-md-6 col-sm-10">
-				 	<input type="radio" name="status" value="0" <eq name="info.status" value="0">checked</eq> required/>询价中
+					<input type="text" class="form-control" value="{$info.price1}" readonly/> 
+				</div>
+			</div>
+			 <div class="form-group fleft">
+				<label class="col-sm-2 control-label">当前价格</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" value="{$info.price2_tmp}" readonly/> 
+				</div>
+			 </div>
+			<eq name="info.status" value="6">
 				 
-					 <input type="radio" name="status" value="1" <eq name="info.status" value="1">checked</eq> required/>询价成功
-					 <input type="radio" name="status" value="2" <eq name="info.status" value="2">checked</eq> required/>询价失败
+				<div class="form-group fleft">
+					<label class="col-sm-2 control-label">浮盈</label>
+					<div class="col-md-6 col-sm-10">
+						<input type="text" class="form-control" value="{$info.money2_tmp}" readonly/> 
+					</div>
+				</div>
+			<else/>
+				<div class="form-group fleft">
+					<label class="col-sm-2 control-label">实际盈利</label>
+					<div class="col-md-6 col-sm-10">
+						<input type="text" class="form-control" value="{$info.money2}" readonly/> 
+					</div>
+				</div>	
+			</eq>
+			<div style="clear:both"></div>
+			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">行权状态</label>
+				<div class="col-md-6 col-sm-10">
+				<input type="radio" name="status" value="4" <eq name="info.status" value="4">checked</eq>  />持仓中
+				 	<input type="radio" name="status" value="6" <eq name="info.status" value="6">checked</eq>  />行权中
+				   <input type="radio" name="status" value="7" <eq name="info.status" value="7">checked</eq>  />行权成功
+					 <input type="radio" name="status" value="8" <eq name="info.status" value="8">checked</eq>  disabled/>行权过期
 				 
+				</div>
+			</div>
+			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">期末价格</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="number" class="form-control" name="price2_0" value="{$info.price2_0}"  /> 
 				</div>
 			</div>
 			<div style="clear:both"></div>
 			 <div class="form-group ">
 				<label class="col-sm-2 control-label">备注</label>
 				<div class="col-md-6 col-sm-10">
-					<input type="text" name="dsc" class="form-control"  value="{$info.dsc}" /> 
+					<input type="text" name="dsc" class="form-control"  value="{$info.dsc}"   /> 
 				</div>
 			</div>
 			<div style="clear:both"></div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 				<input type="hidden" name="id" value="{$info.id}"/>
-				  <neq name="info.is_old" value="1">
-					<button type="submit" class="btn btn-primary js-ajax-submit">确认询价信息</button>
-				  </neq>
+				 <neq name="info.is_old" value="1">
+				 	 <neq name="info.status" value="8">
+					<button type="submit" class="btn btn-primary js-ajax-submit">确认行权信息</button>
+					 </neq>
+				 </neq>
 					<a class="btn btn-default" href="javascript:history.go(-1);">{:lang('BACK')}</a>
 				</div>
 			</div>
 			 <div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-				 <p>请谨慎操作</p>
+				 <p>请谨慎操作,若选择行权成功则盈利返还用户余额，若由行权成功、过期改为行权中会从余额中扣款，余额不足则失败</p>
+				 <p>过期订单不能修改</p>
 				</div>
 			</div>
 		</form>

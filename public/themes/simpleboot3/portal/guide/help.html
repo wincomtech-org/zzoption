@@ -7,16 +7,16 @@
 		<a href="javascript:window.history.back();"><span></span></a>
 		了解期权交易
 	</div>
-	<foreach name="list" item="vo" k="key"> 
+	<foreach name="list" item="vo" key="key"> 
 		<div class="div">
 			{$key}
 		</div>
 	 
 		<div class="div_s">
-		<foreach name="vo" item="vv" >
+		<foreach name="vo" item="vv" key="kk">
 			<div>
-				<a href="{:url('info',['id'=>$vv.id])}">
-					{$vv.title}
+				<a href="{:url('info',['id'=>$kk])}">
+					{$vv} 
 					<span></span>
 				</a>
 			</div>
