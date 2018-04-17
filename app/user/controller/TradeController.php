@@ -46,7 +46,7 @@ class TradeController extends UserBaseController
         return $this->fetch();
     }
     /*  询价 */
-    public function ajax_inquire(){
+    public function ajax_inquiry(){
         
         $user=session('user');
         $data=$this->request->param();
@@ -68,7 +68,7 @@ class TradeController extends UserBaseController
             'money0'=>$data['money'],
             'month'=>$data['month'],
             'status'=>0,
-            'enquiry_time'=>$time,
+            'inquiry_time'=>$time,
             'time'=>$time,
         ];
         $m=$this->m;

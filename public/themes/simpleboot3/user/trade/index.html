@@ -33,10 +33,10 @@
 					<p>名义本金：</p>
 					<ol class="principal">
 					<foreach name="money_off" item="vo">
-						<li class="<eq name='key' value='0'>red</eq>" class=""><span>{$vo}</span>万</li>
+						<li  ><span>{$vo}</span>万</li>
 					</foreach>
 					<foreach name="money_on" item="vo" k="key">
-						<li><span>{$vo}</span>万</li>
+						<li class="<eq name='key' value='0'>red</eq>"><span>{$vo}</span>万</li>
 					</foreach>
 						 
 					</ol>
@@ -53,13 +53,16 @@
 					</ol>
 				</div>
 				<div>
-					<button id="label_s"></button>
+					<span id="label_s"></span>
 					<p>
-						<label for="label_s">我已阅读并同意</label>
+						<label class="label_s">
+							我已阅读并同意
+						</label>
 						<a href="{:url('portal/guide/agreement',['name'=>'trade'])}">{$guide}</a>期权有风险，入市须谨慎！
 					</p>
 				</div>
 				<div>
+				<input type="hidden" id="code0" value="{$stock.code0|default='sh600008'}"/>
 					<input class="tijiao" type="button" value="确定">
 				</div>
 			</div>
@@ -77,15 +80,15 @@ $('.tijiao').click(function(){
 	 var obj=$(this);
 	 var text=['确定','正在提交'];
  	 
- 	var code0='sh600000';
- 	var month=3;
- 	var money=100;
+ 	var code0=$('#code0').val();
+ 	var month=$.trim($('.principal .red span').text());
+ 	var money=$.trim($('.cycle .red span').text());
     
      button_click(obj,1,text[1],2);
    
     $.ajax({
         type: 'POST',
-        url: "{:url('user/trade/ajax_inquire')}",
+        url: "{:url('user/trade/ajax_inquiry')}",
         dataType: 'json',
         data: {'code0':code0,'month':month,'money':money},
         success: function(data){ 
