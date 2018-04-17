@@ -14,14 +14,15 @@ use think\Db;
 use think\View;
 class AdminBaseController extends BaseController
 {
-
+   
     public function _initialize()
     {
         // 监听admin_init
         hook('admin_init');
         parent::_initialize();
         
-        View::share('zztitle',config('zztitle'));
+        
+       
         $session_admin_id = session('ADMIN_ID');
         if (!empty($session_admin_id)) {
             $user = Db::name('user')->where(['id' => $session_admin_id])->find();
@@ -32,7 +33,7 @@ class AdminBaseController extends BaseController
             if (!$this->checkAccess($session_admin_id)) {
                 $this->error("您没有访问权限！");
             }
-           
+            
             $this->assign("admin", $user);
         } else {
             if ($this->request->isPost()) {
@@ -42,6 +43,22 @@ class AdminBaseController extends BaseController
                 exit();
             }
         }
+        $shop=session('shop');
+       //没有分站信息或分站信息更新
+        if(empty($shop['id']) || $shop['id']!=$user['shop']){
+            
+            $shop=Db::name('shop')->where('id',$user['shop'])->find();
+            if(empty($shop) || $shop['type']==2){
+                $shop0=Db::name('shop')->where('id',1)->find();
+                $shop['title']=$shop0['title'];
+                $shop['logo']=$shop0['logo'];
+                $shop['tel']=$shop0['tel'];
+                $shop['qrcode']=$shop0['qrcode'];
+                $shop['dsc']=$shop0['dsc'];
+            }
+            session('shop',$shop);
+        }
+        View::share('zztitle',$shop['title']);
     }
 
     public function _initializeView()
