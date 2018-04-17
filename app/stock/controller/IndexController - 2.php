@@ -3,9 +3,9 @@ namespace app\stock\controller;
 
 use cmf\controller\HomeBaseController;
 use think\Db;
-use app\portal\model\StockModel;
-use app\portal\model\StockIndiceModel;
-use app\portal\model\StockNewsModel;
+use app\stock\model\StockModel;
+use app\stock\model\StockIndiceModel;
+use app\stock\model\StockNewsModel;
 
 /**
  * 股票数据

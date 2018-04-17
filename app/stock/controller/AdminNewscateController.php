@@ -1,25 +1,25 @@
 <?php
-namespace app\portal\controller;
+namespace app\stock\controller;
 
 use cmf\controller\AdminBaseController;
 use think\Db;
 
 /**
-* 新闻
+*  新闻分类
 */
-class AdminNewsController extends AdminBaseController
+class AdminNewscateController extends AdminBaseController
 {
     public function _initialize()
     {
         parent::_initialize();
-        $this->mq = Db::name('stock_news');
+        $this->mq = Db::name('stock_news_category');
     }
     
     /**
      * 分类管理
      * @adminMenu(
      *     'name'   => '新闻分类',
-     *     'parent' => 'portal/AdminIndex/default',
+     *     'parent' => 'stock/AdminNews/default',
      *     'display'=> true,
      *     'hasView'=> true,
      *     'order'  => 10000,

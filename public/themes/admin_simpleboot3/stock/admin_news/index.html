@@ -1,0 +1,53 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('AdminNews/index')}">新闻管理</a></li>
+            <li><a href="{:url('AdminNews/add')}">添加新闻</a></li>
+        </ul>
+        <form class="well form-inline margin-top-20" method="post" action="{:url('AdminNews/index')}">
+            关键字:
+            <input type="text" class="form-control" name="keyword" style="width:200px;"
+                   value="{$keyword|default=''}" placeholder="请输入关键字...">
+            <input type="submit" class="btn btn-primary" value="搜索"/>
+            <a class="btn btn-danger" href="{:url('AdminNews/index')}">清空</a>
+        </form>
+        <form method="post" class="js-ajax-form" action="{:url('AdminNews/listOrder')}">
+            <div class="table-actions">
+                <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
+            </div>
+            <table class="table table-hover table-bordered table-list">
+                <thead>
+                    <include file="admin_news/table-th" />
+                </thead>
+                <tbody>
+                    <foreach name="list" item="vo">
+                    <tr>
+                        <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}" class="input-order"></td>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td><a>{$vo.title}</a></td>
+                        <td>{$vo.source}</td>
+                        <td>{$vo.create_time?=date('Y-m-d H:i',$vo.create_time)}</td>
+                        <td>
+                            <a href="{:url('AdminNews/edit', ['id'=>$vo.id])}">编辑</a> &nbsp; &nbsp;
+                            <a class="js-ajax-delete" href="{:url('AdminNews/delete', ['id'=>$vo.id])}">删除</a>
+                        </td>
+                        <td></td>
+                    </tr>
+                    </foreach>
+                </tbody>
+                <tfoot>
+                    <include file="admin_news/table-th" />
+                </tfoot>
+            </table>
+            <div class="table-actions">
+                <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
+            </div>
+            <ul class="pagination">{$pager|default=''}</ul>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

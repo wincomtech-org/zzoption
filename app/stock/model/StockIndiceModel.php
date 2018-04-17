@@ -1,5 +1,5 @@
 <?php
-namespace app\portal\model;
+namespace app\stock\model;
 
 use think\Model;
 

@@ -3,16 +3,16 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li><a href="{:url('AdminBrand/index')}">品牌管理</a></li>
-        <li class="active"><a href="{:url('AdminBrand/add')}">添加品牌</a></li>
+        <li><a href="{:url('AdminNews/index')}">新闻管理</a></li>
+        <li class="active"><a href="{:url('AdminNews/add')}">添加新闻</a></li>
     </ul>
-    <form action="{:url('AdminBrand/addPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+    <form action="{:url('AdminNews/addPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
         <div class="row">
-            <include file="admin_brand/add_edit" />
+            <include file="admin_news/add_edit" />
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
-                    <a class="btn btn-default" href="{:url('AdminBrand/index')}">{:lang('BACK')}</a>
+                    <a class="btn btn-default" href="{:url('AdminNews/index')}">{:lang('BACK')}</a>
                 </div>
             </div>
         </div>
