@@ -7,7 +7,6 @@ namespace Aliyun\DySDKLite;
  * Class SignatureHelper
  */
 class SignatureHelper {
-
     /**
      * 生成签名并发起请求
      *

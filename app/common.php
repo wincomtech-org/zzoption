@@ -1,12 +1,15 @@
 <?php 
-ini_set("display_errors", "on");
+// ini_set("display_errors", "on");
 // error_reporting(E_ALL);
-set_time_limit(0);
-header("Content-Type: text/plain; charset=utf-8");
-require_once VENDOR_PATH.'Aliyun\DySDKLite\SignatureHelper'.EXT;
-use Aliyun\DySDKLite\SignatureHelper;
+// set_time_limit(0);
+// header("Content-Type: text/plain; charset=utf-8");
+
+// require_once VENDOR_PATH.'Aliyun\DySDKLite\SignatureHelper'.EXT;
+// use Aliyun\DySDKLite\SignatureHelper;
 // vendor('Aliyun\DySDKLite\SignatureHelper');
-// use sms\SignatureHelper;
+
+// vender下不生效，我放extend下了
+use sms\SignatureHelper;
 
 /**
  * 发送短信
