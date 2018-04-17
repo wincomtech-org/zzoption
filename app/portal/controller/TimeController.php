@@ -12,9 +12,9 @@ namespace app\portal\controller;
 
 use cmf\controller\HomeBaseController;
 use think\Db;
-use app\stock\model\StockModel;
-use app\stock\model\StockIndiceModel;
-use app\stock\model\StockNewsModel;
+use app\portal\model\StockModel;
+use app\portal\model\StockIndiceModel;
+use app\portal\model\StockNewsModel;
 
 /*处理每日定时任务 \app\stock\controller\IndexController.php */
 class TimeController extends HomeBaseController
