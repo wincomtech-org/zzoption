@@ -2,6 +2,11 @@
 namespace sms;
 use sms\aliyun\SignatureHelper;
 
+// ini_set("display_errors", "on");
+// error_reporting(E_ALL);
+// set_time_limit(0);
+// header("Content-Type: text/plain; charset=utf-8");
+
 /**
 * 阿里大于类
 */
