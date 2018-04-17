@@ -374,7 +374,13 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	background:url(../img/wd.png) center no-repeat;
 	background-size: contain;
 }
-
+.float_right{
+	display:inline-block;
+	width:5rem;
+	text-align: right;
+	color:#333333;
+	font-size:0.12rem;
+}
 
 
 
