@@ -16,8 +16,8 @@ class BannerController extends AdminbaseController {
     {
         parent::_initialize(); 
         $this->order='sort asc,id asc';
-        $this->m=Db::name('Banner');
-        
+        $this->m=Db::name('banner');
+         
         $this->assign('flag','Banner图');
     }
     
@@ -90,11 +90,18 @@ class BannerController extends AdminbaseController {
         if(empty($data['id'])){
             $this->error('数据错误');
         }
-        
-        if(empty($data['pic']) || !is_file(getcwd().'/upload/'.$data['pic'])){
-            $this->error('必须要有图片');
+        $path=getcwd().'/upload/';
+        if(!is_file($path.$data['pic'])){
+            $this->error('图片不存在');
         }
-        zz_set_image($data['pic'], $data['pic'], 640, 260);
+        $size=config('pic_banner');
+        $pic='banner/'.$data['id'].'.jpg';
+        //文件为新上传
+        if($data['pic']!=$pic){ 
+            zz_set_image($data['pic'], $pic, $size['width'], $size['height'], 6);
+            unlink($path.$data['pic']);
+        }
+        $data['pic']=$pic;
         //处理网址，补加http:// 
         $data['link']=zz_link($data['link']);
         $data['time']=time();
@@ -124,6 +131,11 @@ class BannerController extends AdminbaseController {
          $id = $this->request->param('id', 0, 'intval');
         $row=$m->where('id',$id)->delete();
         if($row===1){ 
+            $path=getcwd().'/upload/';
+            $data['pic']='banner/'.$id.'.jpg';
+            if(is_file($path.$data['pic'])){
+                unlink($path.$data['pic']);
+            } 
             $this->success('删除成功');
         }else{
             $this->error('删除失败');
@@ -166,14 +178,25 @@ class BannerController extends AdminbaseController {
         
         $m=$this->m; 
         $data= $this->request->param();
-        if(empty($data['pic']) || !is_file(getcwd().'/upload/'.$data['pic'])){
-            $this->error('必须要有图片');
+        $path=getcwd().'/upload/';
+        if(!is_file($path.$data['pic'])){
+            $this->error('图片不存在');
         }
-        zz_set_image($data['pic'], $data['pic'], 640, 260);
+        //处理网址，补加http://
+        $data['link']=zz_link($data['link']);
         $data['time']=time();
-        $row=$m->insertGetId($data);
-        if($row>=1){
-            $this->success('已成功添加',url('index')); 
+        $insertId=$m->insertGetId($data);
+        if($insertId>=1){
+            $size=config('pic_banner');
+            $pic='banner/'.$insertId.'.jpg';
+            zz_set_image($data['pic'], $pic, $size['width'], $size['height'], 6); 
+            $result    = $m->where('id',$insertId)->update(['pic'=>$pic]); 
+            if($result===1){
+                unlink($path.$data['pic']);
+                $this->success('已成功添加',url('index'));
+            }else{
+                $this->error('图片更新失败');
+            }
         }else{
             $this->error('添加失败');
         }

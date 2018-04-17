@@ -93,7 +93,7 @@ class UserController extends AdminBaseController
         //不能添加被禁用的角色和超管角色
         $where=[
             'status'=>['eq',1],
-            'id'=>['neq',1] 
+            //'id'=>['neq',1] 
         ];
         $roles = Db::name('role')->where($where)->order("id DESC")->select();
         $this->assign("roles", $roles);

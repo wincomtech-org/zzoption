@@ -1,0 +1,40 @@
+<include file="public@head" />
+ 
+	<script src="__TMPL__/public/assets/js/information.js"></script>
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/information.css">
+</head>
+<body>
+	<div class="header">
+		资讯
+	</div>
+	<div class="fun_qh">
+		<ol>
+		<foreach name="cates" item="vo" >
+			<li class="<if condition='$key eq $cid'>red_text</if>">
+				<a href="{:url('index',['cid'=>$key])}">{$vo}</a>
+				<span></span>
+			</li>
+		</foreach>
+			 
+		</ol>
+	</div>
+<!--	显示位置-->
+	<div class="show">
+<!--		财经要闻页-->
+		<div style="display:block">
+			 
+		<foreach name="list" item="vo">
+			<a href="{:url('portal/news/info',['id'=>$vo.id])}">
+				<div class="text">
+					<p><span>{$vo.source}</span>&nbsp;&nbsp;<span>{$vo.create_time|date='m-d H:i',###}</span></p>
+					<p>
+						<span>{$vo.title}</span> 
+					</p>
+				</div>
+			</a>
+		</foreach>	 
+		</div>
+ 
+	</div>
+<!--	底部-->
+	<include file="public@foot"/>
