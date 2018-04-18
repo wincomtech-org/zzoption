@@ -7,6 +7,9 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 body{
 	background:#c3c3c3;
 }
+a{
+	text-decoration: none;
+}
 .header{
 	height:0.9rem;
 	text-align: center;
@@ -36,10 +39,15 @@ body{
 	height:0.8rem;
 	line-height: 0.8rem;
 	display: inline-block;
-	font-size:0.25rem;
+	
 	text-align: center;
 	position: relative;
+	
+}
+.fun_qh>ol>li>a{
 	color:#333333;
+	font-size:0.3rem;
+	font-weight:900;
 }
 .fun_qh>ol>li>span{
 	display:inline-block;
@@ -50,7 +58,7 @@ body{
 	height:0.04rem;
 	margin: auto;
 }
-.fun_qh>ol>.red_text{
+.fun_qh>ol>.red_text>a{
 	color:#cd4650;
 }
 .fun_qh>ol>.red_text>span{

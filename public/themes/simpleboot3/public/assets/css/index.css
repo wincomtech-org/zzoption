@@ -66,8 +66,10 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	display: block;
 	width:0.1rem;
 	height:0.1rem;
-	background:url(../img/tuoy.png) no-repeat;
 	background-size: contain;
+}
+.new_p{
+	background:url(../img/tuoy.png) no-repeat;
 }
 /*轮播开始*/
 /*================*/
@@ -374,7 +376,13 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	background:url(../img/wd.png) center no-repeat;
 	background-size: contain;
 }
-
+.float_right{
+	display:inline-block;
+	width:5rem;
+	text-align: right;
+	color:#333333;
+	font-size:0.12rem;
+}
 
 
 
