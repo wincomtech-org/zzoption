@@ -1,0 +1,47 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap">
+        <form method="post" class="form-horizontal js-ajax-form" action="{:url('AdminCalendar/calendarDialogPost')}">
+            <div class="form-group">
+                <label for="input-to" class="col-sm-2 control-label"><span class="form-required">*</span>当前日期</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" id="input-to" name="date" value="{$date|default='2018-4-18'}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">当前日期状态</label>
+                <div class="col-md-6 col-sm-10">
+                    <p>
+                        <switch name="type">
+                            <case value="1">
+                                <span>休息日</span>
+                                <input type="hidden" name="type" value="1">
+                            </case>
+                            <case value="2">
+                                <span>节假日</span>
+                                <input type="hidden" name="type" value="2">
+                            </case>
+                            <default/>工作日<input type="hidden" name="type" value="0">
+                        </switch>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="form-required">*</span>是否休盘</label>
+                <div class="col-md-6 col-sm-10">
+                    <label><input type="radio" name="is_trade" value="1" {$is_trade==1?='checked'}> 是</label> &nbsp; &nbsp;
+                    <label><input type="radio" name="is_trade" value="0" {$is_trade==0?='checked'}> 否</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="hidden" name="calenId" value="{$calenId|default=''}">
+                    <button type="submit" class="btn btn-primary js-ajax-submit1">修改</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

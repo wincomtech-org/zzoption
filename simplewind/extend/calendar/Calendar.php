@@ -7,17 +7,6 @@ namespace calendar;
 class Calendar
 {
     /**
-     * @author Pwstrick
-     * @deprecated 判断是否是休息天
-     */
-    private function _checkIsRest($year, $month, $day)
-    {
-        $date = mktime(0, 0, 0, $month, $day, $year);
-        $week = date("N", $date);
-        return $week == 7 || $week == 6;
-    }
-
-    /**
      * threshold
      * @author Lothar
      * @deprecated 生成日历的各个边界值
@@ -35,7 +24,7 @@ class Calendar
         //取得天数
         $days = date("t", $firstDay);
         //取得第一天是星期几
-        $firstDayOfWeek = date("N", $firstDay);
+        $firstDayOfWeek = date('N', $firstDay);
         //获得最后一天是星期几
         $lastDayOfWeek = date('N', $lastDay);
 
@@ -64,6 +53,8 @@ class Calendar
 
         return array(
             'days'               => $days,
+            'firstDay'           => $firstDay,
+            'lastDay'            => $lastDay,
             'firstDayOfWeek'     => $firstDayOfWeek,
             'lastDayOfWeek'      => $lastDayOfWeek,
             'lastMonthOfLastDay' => $lastMonthOfLastDay,
@@ -84,7 +75,7 @@ class Calendar
      * @param  [type] $calendar [通过threshold方法计算后的数据]
      * @return [type]           [description]
      */
-    public function caculate($calendar)
+    public function caculate($calendar, $cwk=[], $cws=[])
     {
         $days               = $calendar['days'];
         $firstDayOfWeek     = $calendar['firstDayOfWeek']; //本月第一天的星期
@@ -94,6 +85,8 @@ class Calendar
         $month              = $calendar['month'];
 
         $dates = array();
+
+        //上月日历信息
         if ($firstDayOfWeek != 7) {
             $lastDays = array();
             $current  = $lastMonthOfLastDay; //上个月的最后一天
@@ -103,15 +96,37 @@ class Calendar
             }
             $lastDays = array_reverse($lastDays); //反序
             foreach ($lastDays as $index => $day) {
-                array_push($dates, array('day' => $day, 'tdclass' => ($index == 0 ? 'rest' : ''), 'pclass' => 'outter'));
+                array_push($dates, array('day' => '', 'tdclass' => '', 'pclass' => 'outter', 'type'=>'0', 'calenId'=>'0'));
             }
         }
 
         //本月日历信息
         for ($i = 1; $i <= $days; $i++) {
+            $isTrade = true;$type='0';$calenId='0';
+            $tdclass = '';
+
             $isRest = $this->_checkIsRest($year, $month, $i);
-            //判断是否是休息天
-            array_push($dates, array('day' => $i, 'tdclass' => ($isRest ? 'rest' : ''), 'pclass' => ''));
+            if ($isRest) {
+                $type = '1';
+                $tdclass = 'rest';
+            }
+            if (isset($cwk[$i])) {
+                $type = $cwk[$i];
+                $isTrade = ($type>0)?false:true;
+            }
+            if (isset($cws[$i])) {
+                $isTrade = ($cws[$i]['is_trade']==1)?false:true;
+                $calenId = $cws[$i]['id'];
+            }
+
+            //判断是否是休息日、交易日
+            array_push($dates, array(
+                'day'       => $i, 
+                'tdclass'   => $tdclass, 
+                'pclass'    => ($isTrade ? '' : 'holiday'),
+                'type'      => $type,
+                'calenId'   => $calenId,
+            ));
         }
 
         //下月日历信息
@@ -125,7 +140,7 @@ class Calendar
             $length = 6 - $lastDayOfWeek;
         }
         for ($i = 1; $i <= $length; $i++) {
-            array_push($dates, array('day' => $i, 'tdclass' => ($i == $length ? 'rest' : ''), 'pclass' => 'outter'));
+            array_push($dates, array('day' => '', 'tdclass' => '', 'pclass' => 'outter', 'type'=>'0', 'calenId'=>'0'));
         }
 
         return $dates;
@@ -141,11 +156,10 @@ class Calendar
      * @deprecated 4)将中间行添加到$tr中，就是每一行的array
      * @param array $caculate 通过caculate方法计算后的数据
      */
-    public function draw($caculate)
+    public function draws($caculate)
     {
-        $tr     = array();
+        $tr = $result = array();
         $length = count($caculate);
-        $result = array();
         foreach ($caculate as $index => $date) {
             if ($index % 7 == 0) {
                 //第一列
@@ -161,4 +175,14 @@ class Calendar
         return $result;
     }
 
+    /**
+     * @author Pwstrick
+     * @deprecated 判断是否是休息天
+     */
+    private function _checkIsRest($year, $month, $day)
+    {
+        $date = mktime(0, 0, 0, $month, $day, $year);
+        $week = date("N", $date);
+        return $week == 7 || $week == 6;
+    }
 }

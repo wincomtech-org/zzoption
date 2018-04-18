@@ -5,8 +5,8 @@ use cmf\controller\AdminBaseController;
 use think\Db;
 
 /**
-*  新闻分类
-*/
+ *  新闻分类
+ */
 class AdminNewscateController extends AdminBaseController
 {
     public function _initialize()
@@ -14,7 +14,7 @@ class AdminNewscateController extends AdminBaseController
         parent::_initialize();
         $this->mq = Db::name('stock_news_category');
     }
-    
+
     /**
      * 分类管理
      * @adminMenu(
@@ -32,8 +32,8 @@ class AdminNewscateController extends AdminBaseController
     {
         $list = $this->mq->paginate(15);
 
-        $this->assign('list',$list);
-        $this->assign('pager',$list->render());
+        $this->assign('list', $list);
+        $this->assign('pager', $list->render());
         return $this->fetch();
     }
     public function add()
@@ -42,7 +42,7 @@ class AdminNewscateController extends AdminBaseController
     }
     public function addPost()
     {
-        $data      = $this->request->param();
+        $data = $this->request->param();
 
         $result = $this->mq->insert($data);
 
@@ -55,8 +55,8 @@ class AdminNewscateController extends AdminBaseController
     // 编辑
     public function edit()
     {
-        $id = $this->request->param('id', 0, 'intval');
-        $post = $this->mq->where('id',$id)->find();
+        $id   = $this->request->param('id', 0, 'intval');
+        $post = $this->mq->where('id', $id)->find();
         $this->assign($post);
         return $this->fetch();
     }
