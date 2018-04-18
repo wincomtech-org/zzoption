@@ -119,4 +119,23 @@ $('.tijiao').click(function(){
     });
 	return false;
  });
+
+ var text_i;
+	$(".input1").bind('input porpertychange',function(){
+		$(".botton_input").fadeIn();
+		text_i=$(this).val();
+		console.log(text_i);
+	});
+	$(".botton_input>p").click(function(){
+		$(".botton_input").css("display","none");
+		$(".input1").val($(this).html());
+		text_i=$(this).html();
+		console.log(text_i);
+	});
+	$element = $('.botton_input');
+	$(document).on('click', function(){
+        $element.css("display","none");
+    }).on('click', '.need-hidden-element', function(event){
+        event.stopPropagation();
+    })
 </script>
