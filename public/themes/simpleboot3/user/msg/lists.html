@@ -1,0 +1,49 @@
+<include file="public@head" /> 
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/system.css" />
+	 
+	</head>
+
+	<body>
+		<div class="point">
+			<div class="alltop">
+				<div class="top">
+					<a href="javascript:window.history.back();">
+						<div class="t_left">
+
+						</div>
+					</a>
+					<div class="t_right">
+						<span>{$html_title}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="allsystem">
+		<foreach name="list" item="vo">
+			<div class="system">
+				<div class="s_img">
+
+				</div>
+				<div class="s_right">
+					<div class="public">
+						<div class="public1">
+							<span>{$vo.title}</span>
+						</div>
+						<div class="time">
+                            <span>{$vo.time|date='Y-m-d H:i',###}</span>
+						</div>
+					</div>
+					<div class="s_mess">
+						<span>{$vo.content}</span>
+					</div>
+				</div>
+				<div style="clear: both"></div>
+			</div>
+		</foreach>
+             
+		</div>
+	</body>
+
+</html>

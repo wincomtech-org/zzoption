@@ -62,7 +62,9 @@ var id="{$order.id}";
 $('.tijiao').click(function(){
 	 var obj=$(this);
 	 var text=['行权','正在提交'];
-	 
+	 if(!confirm('确认行权吗?')){
+		 return false;
+	 }
 	 
     button_click(obj,1,text[1]);
   

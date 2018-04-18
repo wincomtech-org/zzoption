@@ -1,0 +1,45 @@
+<include file="public@head" />
+	 
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/mynews.css" />
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+	</head>
+
+	<body>
+		<div class="point">
+			<div class="alltop">
+				<div class="top">
+						<div class="t_left">
+
+						</div>
+					<div class="t_right">
+						<span>{$html_title}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="my">
+		<foreach name="list" item="vo">
+			<a href="{:url('user/msg/lists',['type'=>$key])}">
+				<div class="mynews" id="xtnews">
+					<div class="mynews_c">
+						<div class="my_txt">
+								<span>{$vo.name}</span>
+						</div>
+						<div class="m_tip"></div>
+					</div>
+				</div>
+			</a>
+		</foreach>	
+			 
+		</div>
+
+	</body>
+	<script>
+		$(".t_left").click(function(){
+			window.history.back();
+		})
+	</script>
+</html>

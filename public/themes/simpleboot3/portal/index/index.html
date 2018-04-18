@@ -9,10 +9,11 @@
 			<input type="text" placeholder="请输入股票代码，进行搜索">
 			<span></span>
 		</div>
-		<div>
-			<a href="/"><span></span></a>
-			<!-- 有新消息则有new_p类名；没有则无 -->
-			<span class="new_p"></span>
+		 
+		<div> 
+			<a href="{:url('user/msg/index')}"><span></span></a>
+		 
+			<span class="<notempty name='msg'>new_p</notempty>"></span>
 		</div>
 	</div>
 <!--	内容-->
@@ -91,7 +92,8 @@
 		</div>
 <!--		咨询-->
 		<div class="zixun">
-			<div style="width:100%"><span></span>股市资讯<a class="float_right" href="{:url('portal/news/index')}">更多</a></div>	
+			<div style="width:100%"><span></span>股市资讯<a class="float_right" href="{:url('portal/news/index')}">更多</a></div>
+		 
 <!--			最新内容-->
 		<foreach name="news" item="vo">
 			<a href="{:url('portal/news/info',['id'=>$vo.id])}">

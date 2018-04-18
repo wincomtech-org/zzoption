@@ -22,18 +22,30 @@ class IndexController extends HomeBaseController
     }
     /* 首页 */
     public function index(){
+       //获取分站信息
         $shop=session('shop');
         $banners=Db::name('banner')->where('shop',$shop['id'])->order('sort asc')->column('id,pic,link');
         //最新订单
         $orders=Db::name('order')
         ->order('buy_time desc')
-        ->where('status','in','3,4')
-        ->limit('10')
+        ->where('status','in','3,4,6,7,8')
+        ->limit('5')
         ->column('id,uname,money0,name,code0,month,status');
-        
+       
+        //获取最新指数
         $indices=Db::name('stock_indice')->column('id,name,count,num,percent');
+        //获取最新资讯
         $news=Db::name('stock_news')->where('shop','in',[0,$shop['aid']])->order('list_order asc,create_time desc')->limit(5)->column('id,title,source,create_time');
-        
+        //获取未读消息
+        $uid=session('user.id');
+        if(!empty($uid)){
+            $where_msg=[
+                'uid'=>['eq',$uid],
+                'status'=>['eq',1]
+            ];
+            $msg=Db::name('msg')->field('id')->where($where_msg)->find();
+            $this->assign('msg',$msg);
+        }
         $this->assign('html_title','首页');
         $this->assign('html_flag','index');
         $this->assign('banners',$banners);
