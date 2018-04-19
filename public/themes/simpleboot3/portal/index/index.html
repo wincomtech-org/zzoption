@@ -6,8 +6,18 @@
 <!--	头部搜索-->
 	<div class="header">
 		<div>
-			<input type="text" placeholder="请输入股票代码，进行搜索">
+			<input class="input_h_j" type="text" placeholder="请输入股票代码，进行搜索">
 			<span></span>
+			<div class="botton_input_s">
+				<p>60000/浦发银行</p>
+				<p>54088/人民大会堂</p>
+				<p>20150/FBI协会</p>
+				<p>98616/美国大战叙利亚</p>
+				<p>60000/浦发银行</p>
+				<p>54088/人民大会堂</p>
+				<p>20150/FBI协会</p>
+				<p>98616/美国大战叙利亚</p>
+			</div>
 		</div>
 		 
 		<div> 
@@ -129,4 +139,22 @@ function indice(){
 	},'json');
 	 
 }
+var text_i_s;
+	$(".input_h_j").bind('input porpertychange',function(){
+		$(".botton_input_s").fadeIn();
+		text_i_s=$(this).val();
+		console.log(text_i_s);
+	});
+	$(".botton_input_s>p").click(function(){
+		$(".botton_input_s").css("display","none");
+		$(".input_h_j").val($(this).html());
+		text_i_s=$(this).html();
+		console.log(text_i_s);
+	});
+	$element = $('.botton_input_s');
+	$(document).on('click', function(){
+        $element.css("display","none");
+    }).on('click', '.need-hidden-element', function(event){
+        event.stopPropagation();
+    })
 </script>
