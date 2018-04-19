@@ -52,7 +52,7 @@ class TimeController extends HomeBaseController
         // dump($post);die;
 
         // $m->insertAll($post);
-        model('StockIndice')->isUpdate(true)->saveAll($post);
+        model('stock/StockIndice')->isUpdate(true)->saveAll($post);
         exit('股市指数获取结束');
     }
 
@@ -71,7 +71,7 @@ class TimeController extends HomeBaseController
             'format'   => 'json',
         ];
         $result = $this->nowapi_call($nowapi_parm);
-
+dump($result);die;
         if (empty($result['lists'])) {
             cmf_log('获取股票列表失败', 'stock_list.log');
             exit('获取股票列表错误');
@@ -201,6 +201,6 @@ class TimeController extends HomeBaseController
             }
         }
 
-        dump($result);
+        cmf_log('更新'.$result.'条', 'news.log');
     }
 }

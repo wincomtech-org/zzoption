@@ -96,7 +96,7 @@ class StockNewsModel extends Model
                                 // $source['name'] = strstr($ds[2],'：');
                                 $create_time = strtotime(cmf_strip_chars($links[3][0], $rule5));
                                 if (isset($extra['time'])) {
-                                    if ($create_time>=$extra['time']) {
+                                    if ($create_time>$extra['time']) {
                                         $post[] = $this->format_data($cate_id,$source,$detail_url,$links[2][0],$create_time,$ds[3]);
                                     }
                                 } else {

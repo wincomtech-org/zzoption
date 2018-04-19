@@ -5,6 +5,7 @@ use cmf\controller\HomeBaseController;
 use app\stock\model\StockModel;
 use app\stock\model\StockIndiceModel;
 use app\stock\model\StockNewsModel;
+use calendar\Calendar;
 use think\Db;
 use sms\Dy;
 
@@ -82,10 +83,32 @@ class TestController extends HomeBaseController
         exit('股市指数获取结束');
     }
 
-    public function trade()
+    public function calendar()
     {
-        $rest = lothar_nonTradingDay(2018);
-        dump($rest);
+        $util   = new Calendar();
+        $years  = 2018; //年份
+        $months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; //月份数组
+
+        // 获取非工作日
+        $unwork = lothar_nonTradingDay('2018',1);
+        $unwork = $unwork[2018];
+        // 获取指定月份的
+        // $cwk = [];
+        // foreach ($unwork as $key => $tt) {
+        //     if ($month==substr($key,0,2)) {
+        //         $cwk[intval(substr($key, -2))] = $tt;
+        //         // $cwk[date('j','2018'.$key)] = $tt;
+        //     }
+        // }
+
+        $post = [];
+        foreach ($months as $m) {
+            $post = array_merge($post,$util->getWork($years,$m,$unwork));
+        }
+        // dump($post);
+
+        // $result = Db::name('stock_calendar')->insertAll($post);
+        // dump($result);
     }
 
 }

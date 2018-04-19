@@ -147,40 +147,6 @@ class Calendar
     }
 
     /**
-     * 生成初始化日历 [cmf_stock_calendar]
-     * @param  [type] $year  [年份]
-     * @param  [type] $month [月份]
-     * @param  [type] $cwk   [接口数据]
-     * @return [type]        [description]
-     */
-    public function getWork($year, $month, $cwk)
-    {
-        //取得天数
-        $days = date("t", mktime(0,0,0,$month,1,$year));
-
-        $dates = array();
-        //本月日历信息
-        for ($i = 1; $i <= $days; $i++) {
-            $isRest = $this->_checkIsRest($year, $month, $i);
-            $type = empty($isRest) ? 0 : 1;
-
-            $wk = ($month<10?'0'.$month:$month).($i<10?'0'.$i:$i);
-            $type = isset($cwk[$wk]) ? $cwk[$wk] : $type;
-            $isTrade = $type>0 ? 0 : 1;
-
-            array_push($dates, array(
-                'type'      => $type,
-                'is_trade'  => $isTrade,
-                'time'      => mktime(0,0,0,$month,$i,$year),
-                // 'date'      => $year.'-'.$month.'-'.$i,
-                'day'       => $i,
-            ));
-        }
-
-        return $dates;
-    }
-
-    /**
      * draw
      * @author Lothar
      * @deprecated 画表格，设置table中的tr与td
@@ -193,17 +159,7 @@ class Calendar
     public function draws($caculate)
     {
         $tr = $result = array();
-
-        // 不足则自动填充
-        $week = date('w',$caculate[0]['time']);
-        if ($week>0) {
-            for ($sp=0; $sp < $week; $sp++) { 
-                $fill[] = ['id'=>'','type'=>'','is_trade'=>'','time'=>'','day'=>''];
-            }
-            $caculate = array_merge($fill,$caculate);
-        }
         $length = count($caculate);
-        
         foreach ($caculate as $index => $date) {
             if ($index % 7 == 0) {
                 //第一列
