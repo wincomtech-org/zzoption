@@ -43,10 +43,10 @@
 					<p>名义本金：</p>
 					<ol class="principal">
 					<foreach name="money_off" item="vo">
-						<li  ><span>{$vo}</span>万</li>
+						<li class="no_click_s"><span>{$vo}</span>万</li>
 					</foreach>
 					<foreach name="money_on" item="vo" k="key">
-						<li class="<eq name='key' value='0'>red</eq>"><span>{$vo}</span>万</li>
+						<li class="<eq name='key' value='0'>red</eq> click_yes"><span>{$vo}</span>万</li>
 					</foreach>
 						 
 					</ol>
@@ -57,7 +57,7 @@
 					<p>行权周期：</p>
 					<ol class="cycle">
 					<foreach name="day" item="vo" k="key">
-						<li class="<eq name='key' value='0'>red</eq>"><span>{$vo}</span>月</li>
+						<li class="<eq name='key' value='0'>red</eq> click_yes"><span>{$vo}</span>月</li>
 					</foreach>
 						 
 					</ol>
@@ -119,8 +119,7 @@ $('.tijiao').click(function(){
     });
 	return false;
  });
-
- var text_i;
+ var text_i;//搜所框输入时获取得文本；
 	$(".input1").bind('input porpertychange',function(){
 		$(".botton_input").fadeIn();
 		text_i=$(this).val();
@@ -137,5 +136,27 @@ $('.tijiao').click(function(){
         $element.css("display","none");
     }).on('click', '.need-hidden-element', function(event){
         event.stopPropagation();
-    })
+	})
+
+	//名义本金
+	var principal=$(".principal>.red").children("span").html();
+	(function(){
+		$(".principal>.click_yes").click(function(){
+			principal=$(this).children().html();
+			var a=$(this).index();
+			console.log(principal,cycle);
+			$($(".principal>li")[a]).addClass("red").siblings().removeClass("red");
+		});
+	})();
+
+	//行权周期
+	var cycle=$(".cycle>.red").children("span").html();
+	(function(){
+		$(".cycle>.click_yes").click(function(){
+			cycle=$(this).children().html();
+			var a=$(this).index();
+			console.log(principal,cycle);
+			$($(".cycle>li")[a]).addClass("red").siblings().removeClass("red");
+		});
+	})();
 </script>

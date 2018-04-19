@@ -15,27 +15,6 @@ $(function(){
 			$($(".body_s>.show_g>div")[a]).css("display","block").siblings().css("display","none");
 		});
 	})();
-	//名义本金
-	var principal=$(".principal>.red").children("span").html();
-	(function(){
-		$(".principal>li").click(function(){
-			principal=$(this).children().html();
-			var a=$(this).index();
-			console.log(principal,cycle);
-			$($(".principal>li")[a]).addClass("red").siblings().removeClass("red");
-		});
-	})();
-	//行权周期
-	var cycle=$(".cycle>.red").children("span").html();
-	(function(){
-		$(".cycle>li").click(function(){
-			cycle=$(this).children().html();
-			var a=$(this).index();
-			console.log(principal,cycle);
-			$($(".cycle>li")[a]).addClass("red").siblings().removeClass("red");
-		});
-	})();
-	console.log(principal,cycle);
 	//同意阅读项
 	(function(){
 		var a=0;

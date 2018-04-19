@@ -548,3 +548,7 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	border-top:0.02rem solid #f3f3f3;
 	box-sizing: border-box;
 }
+.no_click_s{
+	background:#CFCFCF;
+	border:none !important;
+}

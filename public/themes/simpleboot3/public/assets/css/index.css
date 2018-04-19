@@ -376,10 +376,17 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 }
 .float_right{
 	display:inline-block;
-	width:5rem;
+	width:1rem;
+	margin-left:4rem;
 	text-align: right;
 	color:#333333;
-	font-size:0.12rem;
+	background:url(../img/right_s_s.png) right center no-repeat;
+	background-size:auto 0.3rem;
+	box-sizing: border-box;
+	padding-right:0.3rem;
+	font-size:0.24rem;
+	text-decoration: none;
+	font-weight: 600;
 }
 .botton_input_s{
 	width:7.5rem;
