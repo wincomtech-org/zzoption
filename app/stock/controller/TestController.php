@@ -24,14 +24,18 @@ class TestController extends HomeBaseController
 
     public function test()
     {
-        // $scModel = new StockModel;
+        $scModel = new StockModel;
         // $data = $scModel->getStockBase('s_sh000001');
         // $data = $scModel->getIndice('s_sh000001');
-        // $data = $scModel->getPrice('s_sh000001');
+        // $data = $scModel->getPrice();
+        // $dtime = strtotime('-7 day');
+        // $dtime = time();
+        // $dnum = $scModel->where('time','lt',$dtime)->delete();
 
-        lothar_nonTradingDay('2018',1);
-
+        // lothar_nonTradingDay('2018',1);
+        // dump($dnum);
         // dump($data);
+        exit('ok');
     }
     public function index()
     {
@@ -81,6 +85,17 @@ class TestController extends HomeBaseController
         // $m->insertAll($post);
         // model('StockIndice')->isUpdate(true)->saveAll($post);
         exit('股市指数获取结束');
+    }
+
+    public function stockList()
+    {
+        Db::execute("TRUNCATE cmf_stock");
+        $m           = Db::name('stock');
+        $data0       = $m->column('id,name','code0');
+        $c = count($data0);
+        dump($c);
+        dump($data0);
+        die;
     }
 
     public function calendar()

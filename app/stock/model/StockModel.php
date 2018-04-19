@@ -61,13 +61,12 @@ class StockModel extends Model
      * 大盘 - S内盘指数
      * 接口：http://hq.sinajs.cn/list=
      * 参数含义
-        00开头：
+        sh00开头：
             var hq_str_s_sh000001="上证指数,3094.668,-128.073,-3.97,436653,5458126";
             数据含义分别为：0指数名称，1当前点数、2当前价格、3涨跌率、4成交量（手）、5成交额（万元）
-        600开头的：
+        sh60开头的：
             var hq_str_s_sh600000="浦发银行,11.770,0.270,2.35,287482,33608";
             参数含义：0指数名称、1当前价格、2涨跌、3涨跌率、4成交量、5成交额
-            var hq_str_sh600000="浦发银行,11.520,11.500,11.770,11.790,11.510,11.760,11.770,28748298,336076808.000,33500,11.760,98500,11.750,96000,11.740,131500,11.730,58700,11.720,10300,11.770,127378,11.780,317400,11.790,731525,11.800,229550,11.810,2018-04-10,15:00:00,00";
      * 获取单个
         string(60) "var hq_str_s_sh000001="上证指数,3190.3216,0.0000,0.00,0,0";
         "
@@ -103,9 +102,11 @@ class StockModel extends Model
             $codes   = explode(',', $code);
             foreach ($data as $key => $val) {
                 preg_match($pattern, $val, $arr);
-                $tmp    = explode(',', $arr[0]);
-                // $tmpNums= array_push($tmp,$codes[$key]);
-                $post[] = array_merge([$codes[$key]],$tmp);
+                if (!empty($arr[0])) {
+                    $tmp    = explode(',', $arr[0]);
+                    // $tmpNums= array_push($tmp,$codes[$key]);
+                    $post[] = array_merge([$codes[$key]],$tmp);
+                }
             }
         }
         // dump($post);die;
@@ -123,9 +124,10 @@ class StockModel extends Model
      * @param  string $code [description]
      * @return [type]       [description]
      */
-    public function getIndice($code='s_sh000001')
+    public function getIndice($code='s_sh000001,s_sh000002')
     {
         $data = $this->getStockBase($code);
+        $tmp = [];
         foreach ($data as $key => $row) {
             $tmp[] = [
                 'id'      => $key + 1,
@@ -146,9 +148,10 @@ class StockModel extends Model
      * @param  string $code [description]
      * @return [type]       [description]
      */
-    public function getPrice($code='s_sh000001')
+    public function getPrice($code='s_sh600000,s_sh600006')
     {
         $data = $this->getStockBase($code);
+        $tmp = [];
         foreach ($data as $row) {
             $tmp[] = [
                 'name'    => $row[1],
