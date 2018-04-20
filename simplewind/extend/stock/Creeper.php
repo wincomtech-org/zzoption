@@ -1,5 +1,6 @@
 <?php
 namespace stock;
+use think\Db;
 
 /**
  * 采集数据
@@ -65,16 +66,16 @@ class Creeper
                         }
                     }
 
-                    $result = $this->insertAll($post);
+                    $result = Db::name('stock_news')->insertAll($post);
                     return $result;
                 }
-
             }
         }
 
         return 0;
     }
 
+    // 'content'     => strip_tags(str_replace("&nbsp;"," ",htmlspecialchars_decode($content))),
     public function format_data($cate_id, $source, $detail_url, $title, $create_time, $content)
     {
         $data = [
