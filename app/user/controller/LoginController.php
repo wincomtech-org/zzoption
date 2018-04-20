@@ -175,7 +175,7 @@ class LoginController extends HomeBaseController
     /**
      * 找回密码
      */
-    public function findPass()
+    public function findpass()
     {
         $this->assign('html_title','找回密码');
         return $this->fetch();
@@ -186,54 +186,58 @@ class LoginController extends HomeBaseController
      */
     public function ajax_findpsw()
     {
-        //$data=$this->request->param('');
         
-        $validate = new Validate([
-            
-            'pic'  => 'require|length:4',
-            'code'  => 'require|number|length:6',
-            'tel' => 'require|number|length:11',
-            'psw' => 'require|number|length:6',
-        ]);
+        $time=time();
+        $verify=session('sms');
+        $data1 = $this->request->post();
+       
+        //验证码
+        if(empty($verify) ||($time-$verify['time'])>600){
+            $this->error('验证码不存在或已过期');
+        }
+        if($verify['code']!=$data1['sms']){
+            $this->error('验证码错误');
+        }
+        if($verify['mobile']!=$data1['tel'] ){
+            $this->error('手机号码不匹配');
+        }
+        
+        $rules = [
+            'user_pass' => 'require|min:6|max:20',
+            'mobile'=>'require|number|length:11',
+        ];
+        $redirect                = url('user/login/login');
+        $validate = new Validate($rules);
         $validate->message([
-            'tel.require'           => '手机号码错误',
-            'tel.number'           => '手机号码错误',
-            'tel.length'           => '手机号码错误',
-            'pic.require'           => '图片验证码错误',
-            'pic.length'           => '图片验证码错误',
-            'code.require'           => '短信验证码错误',
-            'code.number'           => '短信验证码错误',
-            'code.length'           => '短信验证码错误',
-            'psw.require' => '密码为6位数字', 
-            'psw.number' => '密码为6位数字', 
-            'psw.length' => '密码为6位数字', 
-           
-             
+            'user_pass.require' => '密码不能为空',
+            'user_pass.min'     => '密码为6-20位',
+            'user_pass.max'     => '密码为6-20位',
+            'mobile.number'     => '手机号码格式错误',
+            'mobile.require' => '手机号码不能为空',
+            'mobile.length'     => '手机号码格式错误',
+            
         ]);
+        $data=[
+            'user_pass'=>$data1['psw'],
+            'mobile'=>$data1['tel'],
+           
+        ];
         
-        $data = $this->request->post();
         if (!$validate->check($data)) {
             $this->error($validate->getError());
         }
-        if (!cmf_captcha_check($data['pic'])) {
-            $this->error('图片验证码错误');
-        }
-        $msg=new Msg();
-        $res=$msg->verify($data['tel'],$data['code']);
-        if($res!=='success'){
-            $this->error($res);
-        }
          
         $userModel = new UserModel();
-        if (preg_match(config('reg_mobile'), $data['tel'])) { 
-            $log            = $userModel->mobilePasswordReset($data['tel'], $data['psw']);
+        if (preg_match(config('reg_mobile'), $data['mobile'])) { 
+            $log            = $userModel->mobilePasswordReset($data['mobile'], $data['user_pass']);
         } else {
             $log = 2;
         }
         switch ($log) {
             case 0:
                 session('user',null);
-                $this->success('密码重置成功');
+                session('sms',null);
+                $this->success('密码重置成功',$redirect);
                 break;
             case 1:
                 $this->error("您的手机号尚未注册");

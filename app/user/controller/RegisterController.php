@@ -53,20 +53,16 @@ class RegisterController extends HomeBaseController
         $tmp=Db::name('user')->where('mobile',$phone)->find(); 
         switch ($type){
             //注册
-            case 'reg':
-               
+            case 'reg': 
                 if(!empty($tmp)){
                     $this->error('该手机号已被使用');
-                }
-                 
+                } 
                 break;
             //找回密码
-            case 'find':
-                
+            case 'find': 
                 if(empty($tmp)){
                     $this->error('该手机号不存在');
-                }
-                
+                } 
                 break;
             //换手机号
             case 'mobile':
@@ -85,9 +81,17 @@ class RegisterController extends HomeBaseController
                  $this->error('未知操作');
                  
         }
-        $msg=new Msg();
-         
-        $this->error($msg->reg($phone,rand(100000,999999)));
+       
+        $tmp=\sms\Dy::dySms('15261541317');
+      
+        if(empty($tmp['code'])){
+            $this->error('error');
+        }elseif(trim($tmp['code'])=='OK'){
+            $this->success('发送成功','');
+        }else{
+            $this->error('发送失败');
+        }
+        
     }
     
     /**
@@ -97,14 +101,14 @@ class RegisterController extends HomeBaseController
     {
         
         $time=time();
-        $verify=session('verify');
+        $verify=session('sms');
         $data1 = $this->request->post();
         $shop= $data1['code']-10000;
         if($shop<=0){
             $this->error('机构码错误');
         }
         //验证码
-       /*  if(empty($verify) ||($time-$verify['time'])>600){
+        if(empty($verify) ||($time-$verify['time'])>600){
             $this->error('验证码不存在或已过期');
         }
         if($verify['code']!=$data1['sms']){
@@ -112,7 +116,7 @@ class RegisterController extends HomeBaseController
         }
         if($verify['mobile']!=$data1['tel'] ){
             $this->error('手机号码不匹配');
-        } */
+        }  
         
         $rules = [ 
             'user_pass' => 'require|min:6|max:20',
@@ -166,7 +170,7 @@ class RegisterController extends HomeBaseController
         if ($result !== false) {
             $data   = Db::name("user")->where('id', $result)->find();
             cmf_update_current_user($data);
-            session('verify',null);
+            session('sms',null);
             $this->success("注册成功！",$redirect);
         } else {
             $this->error("注册失败！");

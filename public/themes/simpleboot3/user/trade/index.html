@@ -23,18 +23,11 @@
 			<div style="display:block" class="shows_1">
 				<div>
 					<p>股票名称：</p>
-					<input class="input1" type="text" placeholder="输入股票名称/代码" value="{$stock.name|default=''}">
-					<div class="botton_input">
-						<p>60000/浦发银行</p>
-						<p>54088/人民大会堂</p>
-						<p>20150/FBI协会</p>
-						<p>98616/美国大战叙利亚</p>
-						<p>60000/浦发银行</p>
-						<p>54088/人民大会堂</p>
-						<p>20150/FBI协会</p>
-						<p>98616/美国大战叙利亚</p>
+					<input class="input1" type="text" placeholder="输入股票代码/名称" value="<notempty name='stock.name'>{$stock.name}</notempty>">
+					<div class="botton_input"> 
 					</div>
 				</div>
+				
 				<div>
 					<p>方向：</p>
 					<bottom>买涨</bottom>
@@ -43,10 +36,10 @@
 					<p>名义本金：</p>
 					<ol class="principal">
 					<foreach name="money_off" item="vo">
-						<li class="no_click_s"><span>{$vo}</span>万</li>
+						<li class="no_click_s" ><span>{$vo}</span>万</li>
 					</foreach>
 					<foreach name="money_on" item="vo" k="key">
-						<li class="<eq name='key' value='0'>red</eq> click_yes"><span>{$vo}</span>万</li>
+						<li class="click_yes <eq name='key' value='0'>red</eq>"><span>{$vo}</span>万</li>
 					</foreach>
 						 
 					</ol>
@@ -57,7 +50,7 @@
 					<p>行权周期：</p>
 					<ol class="cycle">
 					<foreach name="day" item="vo" k="key">
-						<li class="<eq name='key' value='0'>red</eq> click_yes"><span>{$vo}</span>月</li>
+						<li class="click_yes <eq name='key' value='0'>red</eq>"><span>{$vo}</span>月</li>
 					</foreach>
 						 
 					</ol>
@@ -72,7 +65,8 @@
 					</p>
 				</div>
 				<div>
-				<input type="hidden" id="code0" value="{$stock.code0|default='sh600008'}"/>
+				<input type="hidden" id="code0" value="{$stock.code0|default=''}"/>
+				<input type="hidden" id="name" value="{$stock.name|default=''}"/>
 					<input class="tijiao" type="button" value="确定">
 				</div>
 			</div>
@@ -83,6 +77,7 @@
 	</div>
 	
 <include file="public@foot"/>
+ <include file="public@stock_search"/>
 <script>
 // 提交
  
@@ -90,17 +85,23 @@ $('.tijiao').click(function(){
 	 var obj=$(this);
 	 var text=['确定','正在提交'];
  	 
- 	var code0=$('#code0').val();
- 	var month=$.trim($('.principal .red span').text());
- 	var money=$.trim($('.cycle .red span').text());
-    
+ 	var code0=$.trim($('#code0').val());
+ 	var name=$.trim($('.input1').val());
+ 	var name0=$.trim($('#name').val());
+ 	if(code0=='' || name=='' || name!=name0){
+ 		msg('请选择股票');
+ 		return false;
+ 	}
+ 	var money=$.trim($('.principal .red span').text());
+ 	var month=$.trim($('.cycle .red span').text());
+ 	 
      button_click(obj,1,text[1],2);
    
     $.ajax({
         type: 'POST',
         url: "{:url('user/trade/ajax_inquiry')}",
         dataType: 'json',
-        data: {'code0':code0,'month':month,'money':money},
+        data: {'code0':code0,'month':month,'name':name,'money':money},
         success: function(data){ 
         	if(data.code==1){
 				//返回上一页并刷新
@@ -119,44 +120,14 @@ $('.tijiao').click(function(){
     });
 	return false;
  });
- var text_i;//搜所框输入时获取得文本；
-	$(".input1").bind('input porpertychange',function(){
-		$(".botton_input").fadeIn();
-		text_i=$(this).val();
-		console.log(text_i);
-	});
-	$(".botton_input>p").click(function(){
-		$(".botton_input").css("display","none");
-		$(".input1").val($(this).html());
-		text_i=$(this).html();
-		console.log(text_i);
-	});
-	$element = $('.botton_input');
-	$(document).on('click', function(){
-        $element.css("display","none");
-    }).on('click', '.need-hidden-element', function(event){
-        event.stopPropagation();
-	})
 
-	//名义本金
-	var principal=$(".principal>.red").children("span").html();
-	(function(){
-		$(".principal>.click_yes").click(function(){
-			principal=$(this).children().html();
-			var a=$(this).index();
-			console.log(principal,cycle);
-			$($(".principal>li")[a]).addClass("red").siblings().removeClass("red");
-		});
-	})();
+$(".principal>.click_yes").click(function(){ 
+	var a=$(this).index(); 
+	$($(".principal>li")[a]).addClass("red").siblings().removeClass("red");
+});
+$(".cycle>.click_yes").click(function(){ 
+	var a=$(this).index(); 
+	$($(".cycle>li")[a]).addClass("red").siblings().removeClass("red");
+});
 
-	//行权周期
-	var cycle=$(".cycle>.red").children("span").html();
-	(function(){
-		$(".cycle>.click_yes").click(function(){
-			cycle=$(this).children().html();
-			var a=$(this).index();
-			console.log(principal,cycle);
-			$($(".cycle>li")[a]).addClass("red").siblings().removeClass("red");
-		});
-	})();
 </script>

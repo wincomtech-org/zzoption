@@ -73,5 +73,15 @@
         1=>'系统消息',
         2=>'个人消息',
     ],
-  
+    'money_type'=>[ 
+        1=>'交易',
+        2=>'充值', 
+        3=>'提现',
+    ],
+    'dySms'        => [
+        'id'       => 'LTAIjpLMgGy1TvjR',
+        'secret'   => 'Y8PkgNNLNbah407yol61nqdwHCeKFS',
+        'signname' => '耀华科技',
+    ],
+    
 );

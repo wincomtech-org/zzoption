@@ -1,0 +1,103 @@
+<include file="public@header" />
+ <link href="__TMPL__/public/assets/simpleboot3/css/zzinfo.css" rel="stylesheet">
+ <style>
+.nowrap{
+	white-space:nowrap ;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class=""><a href="{:url('index')}">所有{$flag}</a></li>
+        	<li class="active"><a href="{:url('send')}">发送{$flag}</a></li> 
+		 
+		</ul>
+		<form method="post"
+			class="form-horizontal js-ajax-form margin-top-20"
+			action="{:url('send_do')}">
+			 
+			 
+			<div class="form-group  ">
+				<label class="col-sm-2 control-label">消息类型</label>
+				<div class="col-md-6 col-sm-10">
+					<select class="form-control" name="type" style="width: 140px;">
+						 
+					<foreach name="msg_types" item="vo" k="key">
+						<option value="{$key}"  > 
+						{$vo}
+						</option>
+					</foreach>
+					</select> 
+				</div>
+			</div>
+			<div class="form-group  ">
+				<label class="col-sm-2 control-label">用户搜索</label>
+				<div class="col-md-6 col-sm-10">
+					 <input type="text"  class="search_info"/> 
+					 <select class="select"  style="width: 140px;"> 
+						<option value="id">用户id</option>
+						<option value="user_nickname">用户姓名(模糊)</option>
+						<option value="mobile">用户手机号</option> 
+					</select> 
+					 <button type="button" class="search_btn">搜索</button>
+				</div>
+			</div>
+			  <div class="form-group">
+				<label class="col-sm-2 control-label">用户列表</label>
+				<div class="col-md-6 col-sm-10 users">
+					 
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">消息标题</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  name="title"  /> 
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">消息内容</label>
+				<div class="col-md-6 col-sm-10">
+					<textarea class="form-control" name="content" id="" cols="30"  > </textarea>
+				</div>
+			</div>
+			  
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+				 <button type="submit" class="btn btn-primary js-ajax-submit">发送</button>
+				 
+					<a class="btn btn-default" href="javascript:history.go(-1);">{:lang('BACK')}</a>
+				</div>
+			</div>
+			 <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+				 <p>系统消息未选择用户时默认发送给所有用户 </p>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+<script>
+var url="{:url('ajax_search')}";
+var users;
+var spans='';
+$('.search_btn').click(function(){
+	var info=$.trim($('.search_info').val());
+	var select=$.trim($('.select').val());  
+	 
+	spans='';
+	$('.users').html('');
+	$.post(url,{'info':info,'select':select},function(data){
+		users=data.data;
+	 
+		for(var i in users){
+			spans+='<span class="nowrap"><input type="checkbox" name="uids[]" value="'+users[i]['id']
+			+'" checked/>'+users[i]['id']+'-'+users[i]['user_nickname']+'-'+users[i]['mobile']+'</span>';
+		}
+		$('.users').append(spans);
+		 
+	},'json');
+});
+</script> 
+</body>
+</html>

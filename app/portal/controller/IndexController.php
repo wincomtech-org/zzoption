@@ -12,7 +12,7 @@ namespace app\portal\controller;
 
 use cmf\controller\HomeBaseController;
 use think\Db;
-
+  
 class IndexController extends HomeBaseController
 {
     public function _initialize()
@@ -22,6 +22,9 @@ class IndexController extends HomeBaseController
     }
     /* 首页 */
     public function index(){
+       
+       
+      
        //获取分站信息
         $shop=session('shop');
         $banners=Db::name('banner')->where('shop',$shop['id'])->order('sort asc')->column('id,pic,link');
@@ -54,12 +57,7 @@ class IndexController extends HomeBaseController
         $this->assign('news',$news);
         return $this->fetch();
     }
-    /* 首页查询指数 */
-    public function ajax_indice(){
-         
-        $indices=Db::name('stock_indice')->column('id,count,num,percent');
-        $this->success('获取成功','',$indices);
-    }
+     
     /* 前台我的信息*/
     public function my(){
        
@@ -94,9 +92,21 @@ class IndexController extends HomeBaseController
     }
     /* 询价*/
     public function transcation(){
+        $name=$this->request->param('code','','trim');
         //登录用户跳转
         if(!empty(session('user'))){
-            $this->redirect(url('user/trade/index'));
+            $this->redirect(url('user/trade/index',['code'=>$name]));
+        }
+        if(!empty($name)){
+            $whereOr=[
+              'code|code0|name'=>['eq',$name],  
+            ];
+            $stock=Db::name('stock')->whereOr($whereOr)->find(); 
+        }
+        if(empty($stock)){
+            $this->assign('code',$name);
+        }else{
+            $this->assign('stock',$stock);
         }
         
         
@@ -105,7 +115,7 @@ class IndexController extends HomeBaseController
         $this->assign('html_flag','trade');
         $this->assign('guide',$guide['title']);
         $this->assign('day',config('day'));
-        
+       
         $this->assign('money_off',config('money_off'));
         $this->assign('money_on',config('money_on'));
         return $this->fetch();

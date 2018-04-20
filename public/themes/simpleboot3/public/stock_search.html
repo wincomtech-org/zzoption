@@ -1,0 +1,46 @@
+ 
+<script>
+var text_i="{$code|default=''}";
+var spans='';
+var url_search="{:url('portal/stock/stock_search')}";
+if(text_i!=''){
+	$(".input1").val(text_i);
+	stock_search(text_i);
+}
+$(".input1").bind('input porpertychange',function(){ 
+	text_i=$.trim($(this).val()); 
+	stock_search(text_i);
+	 
+});
+function stock_search(code){ 
+	spans=''; 
+	$.post(url_search,{'code':code},function(data){
+		stocks=data.data; 
+		for(var i in stocks){
+			spans+='<p><input type="hidden" class="code0" value="'+stocks[i]['code0']
+			+'" /><input type="hidden" class="name" value="'+stocks[i]['name']
+			+'" />'+stocks[i]['code']+'/'+stocks[i]['name']+'</p>';
+		}
+		$('.botton_input').html('');
+		$('.botton_input').append(spans);
+		$(".botton_input").fadeIn();
+		 
+	},'json');
+}
+$(document).on('click','.botton_input>p',function(){
+	$('#code0').val($(this).find('.code0').val());
+	$('#name').val($(this).find('.name').val());
+	$('.input1').val($(this).find('.name').val());
+	$(".botton_input").css("display","none");
+});
+$element = $('.botton_input');
+$(document).on('click', function(){
+    $element.css("display","none");
+}).on('click', '.need-hidden-element', function(event){
+    event.stopPropagation();
+});
+$("#search").click(function(){
+	text_i=$.trim($('.input1').val()); 
+	self.location="{:url('portal/index/transcation')}"+'?code='+text_i;
+});
+</script>

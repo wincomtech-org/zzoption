@@ -33,10 +33,10 @@
 				<foreach name="list" item="vo">
 					 <div class="sub_s_h">
 						<span>{$vo.code}/{$vo.name}</span>
-						<span>{$vo.money0}</span>
+						<span>{$vo.money0}万元</span>
 						<span>{$vo.month}个月</span>
 						<span>{$vo.money1}元</span>
-					 
+					 	<input type="hidden" class="id" value="{$vo.id}"/>
 					<eq name="vo.status" value="1">
 						<span class="sp_red">买入</span>
 					<else/>
@@ -56,28 +56,29 @@
 <include file="public@foot"/>
 <script>
 // 提交
- $('.shows_2').show();
+ 
+var text=['买入','正在买入'];
 $('.sp_red').click(function(){
-	msg('买入');
-	  return false;
+	var obj=$(this);
+	   if(!confirm('确认买入吗？')){
+		 return false;
+	 } 
+	 var id=$(this).siblings('.id').val();
     $.ajax({
         type: 'POST',
-        url: "{:url('user/trade/ajax_ask')}",
+        url: "{:url('user/trade/ajax_buy')}",
         dataType: 'json',
-        data: {'code':code,'month':month,'money':money},
+        data: {'id':id},
         success: function(data){ 
-        	if(data.code==1){
-				//返回上一页并刷新
+        	msg(data.msg);
+        	button_click(obj,0,text[0]);  
+        	if(data.url!=''){ 
 				self.location=data.url;
-			}else{
-				 button_click(obj,0,text[0],2);
-				 
-				msg(data.msg);
-			}
+			} 
         },
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
       	    
-        	 button_click(obj,0,text[0],2);
+        	 button_click(obj,0,text[0]);
         	msg('服务器连接失败',event.responseText);
         }
     });
