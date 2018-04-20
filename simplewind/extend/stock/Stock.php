@@ -127,13 +127,14 @@ class Stock
      */
     public function nowapi_call($a_parm=[])
     {
-        $set = config('nowapi_stock');
         // 预设值
+        $appKey      = '32258';
+        $sign        = '813e13dfe768c1d9c75eaaba70d42c1a';
         $a_parm = [
             'app'      => 'finance.stock_list',
             'category' => 'hs',
-            'appkey'   => $set['appKey'],
-            'sign'     => $set['sign'],
+            'appkey'   => $appKey,
+            'sign'     => $sign,
             'format'   => 'json',
         ];
 
