@@ -51,7 +51,7 @@ class AdminNewsController extends AdminBaseController
 
         $list = $this->scModel->alias('a')
             ->field('a.id,title,source,create_time,a.list_order,b.name')
-            ->join('stock_news_category b', 'a.cate_id=b.id')
+            ->join('stock_news_category b', 'a.cate_id=b.id','LEFT')
             ->where($where)
             ->order('list_order,create_time DESC')
             ->paginate(15);

@@ -24,7 +24,7 @@ class StockNewsModel extends Model
         return strtotime($value);
     }
 
-    public function cateTree($selectId=0, $option='请选择')
+    public function cateTree($selectId=0, $option='')
     {
         $data = Db::name('stock_news_category')->field(['id','name'])->select()->toArray();
 
