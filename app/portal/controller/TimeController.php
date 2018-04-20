@@ -1,11 +1,11 @@
 <?php
 namespace app\portal\controller;
 
-use cmf\controller\HomeBaseController;
 use app\stock\model\StockNewsModel;
-// use app\stock\model\StockModel;
-// use app\stock\model\StockIndiceModel;
+use cmf\controller\HomeBaseController;
 use think\Db;
+use stock\Stock;
+use stock\Creeper;
 
 /*处理每日定时任务 \app\stock\controller\IndexController.php */
 class TimeController extends HomeBaseController
@@ -16,74 +16,33 @@ class TimeController extends HomeBaseController
      */
     public function indice()
     {
-        $m = Db::name('stock_indice');
         //上证指数、深证成指、创业板指
-        $url = 'http://hq.sinajs.cn/list=s_sh000001,s_sz399001,s_sz399006';
+        $stockModel = new Stock;
 
-        $content = cmf_curl_get($url);
-        $data    = explode(';', $content);
-        unset($data[3]);
-        $pattern = '/(?<==").*?(?=")/ism';
-        foreach ($data as $key => $val) {
-            preg_match($pattern, $val, $arr);
-            $tmp    = explode(',', $arr[0]);
-            $post[] = [
-                'id'      => $key + 1,
-                'count'   => round($tmp[1], 2),
-                'num'     => round($tmp[2], 2),
-                'percent' => round($tmp[3], 2),
-            ];
-            // 不使用模型层时
-            // $m->where('id', $key+1)->update([
-            //     'count'   => round($tmp[1], 2),
-            //     'num'     => round($tmp[2], 2),
-            //     'percent' => round($tmp[3], 2),
-            // ]);
-        }
+        $post = $stockModel->getIndice();
 
-        // $m->insertAll($post);
         model('stock/StockIndice')->isUpdate(true)->saveAll($post);
         cmf_log('股市指数获取结束', 'stock_indice.log');
         sleep(3);
         $this->redirect('portal/Time/indice');
-        // exit('股市指数获取结束');
     }
 
     /*处理每日定时任务，crontab每日凌晨1点执行一次  */
     /**
-     * 获取股票列表、更新
+     * 股票列表获取、更新
      * https://jingyan.baidu.com/article/ff411625d1433a12e5823772.html
      * A股
      *     沪市A股（就是上海A股交易市场上市的股票）：600xxx,601xxx,603xxx
      *     深市A股（就是深圳A股交易市场上市的股票）：000xxx
      * 中小板：深市中小板（主要为中小企业上市提供场所，帮助公司融资）：002xxx
      * 创业板（主要目的就是初创的公司，但是潜力具体的股票进行融资的地方）：300xxx
-     * B股
-     *     沪市B股主要格式为200xxx
-     *     深市B股主要格式为900xxx
-     * 权证代码：沪市的为58，深市的为031
-     * 基金代码：沪市的为500开头，深市的为4开头
-     * 配股代码：沪市的为700开头，深市的为8开头
-     * 转配股代码：沪市的为710开头，深市的为3开头
-     * 新股申购代码：沪市的为730开头，深市的即为该股票代码
-     * 国债代码：沪市的为00开头，深市的为19开头
-     * 企业债券代码：沪市的为12开头，深市为10开头
-     * 回购债券：沪市的为2开头，深市的为1开头
      * @return [type] [description]
      */
     public function stock_list()
     {
         //股票列表
-        $appKey      = '32258';
-        $sign        = '813e13dfe768c1d9c75eaaba70d42c1a';
-        $nowapi_parm = [
-            'app'      => 'finance.stock_list',
-            'category' => 'hs',
-            'appkey'   => $appKey,
-            'sign'     => $sign,
-            'format'   => 'json',
-        ];
-        $result = $this->nowapi_call($nowapi_parm); //总计4705个股票代码
+        $stockModel = new Stock;
+        $result = $stockModel->nowapi_call(); //总计4705个股票代码
         if (empty($result['lists'])) {
             cmf_log('获取股票列表失败', 'stock_list.log');
             exit('获取股票列表错误');
@@ -129,38 +88,6 @@ class TimeController extends HomeBaseController
         cmf_log('获取股票列表执行完成，新增' . $row_insert . '条，更新' . $row_update . '条', 'stock_list.log');
         exit('执行完成');
     }
-    public function nowapi_call($a_parm)
-    {
-        if (!is_array($a_parm)) {
-            return false;
-        }
-        //combinations
-        $a_parm['format'] = empty($a_parm['format']) ? 'json' : $a_parm['format'];
-        $apiurl           = empty($a_parm['apiurl']) ? 'http://api.k780.com/?' : $a_parm['apiurl'] . '/?';
-        unset($a_parm['apiurl']);
-        foreach ($a_parm as $k => $v) {
-            $apiurl .= $k . '=' . $v . '&';
-        }
-        $apiurl = substr($apiurl, 0, -1);
-        if (!$callapi = file_get_contents($apiurl)) {
-            return false;
-        }
-        //format
-        if ($a_parm['format'] == 'base64') {
-            $a_cdata = unserialize(base64_decode($callapi));
-        } elseif ($a_parm['format'] == 'json') {
-            if (!$a_cdata = json_decode($callapi, true)) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-        //array
-        if ($a_cdata['success'] != '1') {
-            return false;
-        }
-        return $a_cdata['result'];
-    }
 
     /*处理每日定时任务，crontab每天8点半，12点半，19点半执行一次  */
     /**
@@ -200,6 +127,7 @@ class TimeController extends HomeBaseController
         ];
 
         $scModel = new StockNewsModel;
+        $cModel  = new Creeper;
         // 先清空数据，再重新写入
         // Db::query('TRUNCATE cmf_stock_news;');
         $result = 0;
@@ -210,17 +138,17 @@ class TimeController extends HomeBaseController
             $time    = ['time' => $maxTime];
             if (is_array($ref['url'])) {
                 foreach ($ref['url'] as $k => $v) {
-                    $result += $scModel->creeper($v, $ref['pattern'], $ref['source'], $k, $time);
+                    $result += $cModel->creeper($v, $ref['pattern'], $ref['source'], $k, $time);
                 }
             } else {
-                $result += $scModel->creeper($ref['url'], $ref['pattern'], $ref['source'], 0, $time);
+                $result += $cModel->creeper($ref['url'], $ref['pattern'], $ref['source'], 0, $time);
             }
         }
 
         // 删除7天之前的数据
         $dtime = strtotime('-7 day');
-        $dnum = $scModel->where('create_time','lt',$dtime)->delete();
+        $dnum  = $scModel->where('create_time', 'lt', $dtime)->delete();
 
-        cmf_log('更新 ' . $result . ' 条，删除 '.$dnum.' 条', 'news.log');
+        cmf_log('更新 ' . $result . ' 条，删除 ' . $dnum . ' 条', 'news.log');
     }
 }
