@@ -310,8 +310,8 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 .body_s>.show_g>.shows_2>div:nth-child(2)>div>span:nth-child(4){
 	width:1.2rem;
 }
-.body_s>.show_g>.shows_2>div:nth-child(2)>div>span:nth-child(5){
-	width:1.2rem;
+.body_s>.show_g>.shows_2>div:nth-child(2)>div>span:nth-child(6){
+	width:1.3rem;
 	padding:0 0.05rem;
 	height:0.37rem;
 	background:#999999;
@@ -509,13 +509,13 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 		padding-left:0.1rem;
 	}
 	.body_s>.show_g>.shows_2>div:nth-child(1)>span:nth-child(1){
-		width:2.5rem;
+		width:2.2rem;
 	}
 	.body_s>.show_g>.shows_2>div:nth-child(1) {
 		padding-left: 0.1rem;
 	}
 	.body_s>.show_g>.shows_2>div:nth-child(2)>div>span:nth-child(1){
-		width:2.5rem;
+		width:2.2rem;
 	}
 	.body_s>.show_g>.shows_1>div:nth-child(5)>button{
 		top:0.2rem;
