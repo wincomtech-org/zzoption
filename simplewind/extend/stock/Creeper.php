@@ -75,6 +75,7 @@ class Creeper
         return 0;
     }
 
+    // 'content'     => strip_tags(str_replace("&nbsp;"," ",htmlspecialchars_decode($content))),
     public function format_data($cate_id, $source, $detail_url, $title, $create_time, $content)
     {
         $data = [
