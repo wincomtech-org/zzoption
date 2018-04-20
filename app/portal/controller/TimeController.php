@@ -40,12 +40,13 @@ class TimeController extends HomeBaseController
             //     'percent' => round($tmp[3], 2),
             // ]);
         }
-        // dump($post);die;
 
         // $m->insertAll($post);
         model('stock/StockIndice')->isUpdate(true)->saveAll($post);
         cmf_log('股市指数获取结束', 'stock_indice.log');
-        exit('股市指数获取结束');
+        sleep(3);
+        $this->redirect('portal/Time/indice');
+        // exit('股市指数获取结束');
     }
 
     /*处理每日定时任务，crontab每日凌晨1点执行一次  */

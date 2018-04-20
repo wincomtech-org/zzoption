@@ -12,35 +12,36 @@ use sms\aliyun\SignatureHelper;
 */
 class Dy
 {
-    private $url = 'dysmsapi.aliyuncs.com';
-    private $accessKeyId = 'LTAIjpLMgGy1TvjR';
-    private $accessKeySecret = 'Y8PkgNNLNbah407yol61nqdwHCeKFS';
-    private $signname = '耀华科技';
+    private static $url = 'dysmsapi.aliyuncs.com';
+    private static $accessKeyId = 'LTAIjpLMgGy1TvjR';
+    private static $accessKeySecret = 'Y8PkgNNLNbah407yol61nqdwHCeKFS';
+    private static $signname = '耀华科技';
 
     function __construct()
     {
         # code...
     }
 
-    public function dySms($mobile='',$extra=['tc'=>'SMS_127810124'])
+    public static function dySms($mobile='18715511536', $extra=['tc'=>'SMS_127810124'])
     {
-        $accessKeyId     = $this->accessKeyId;
-        $accessKeySecret = $this->accessKeySecret;
-        $url             = $this->url;
+        $url             = self::$url;
+        $accessKeyId     = self::$accessKeyId;
+        $accessKeySecret = self::$accessKeySecret;
         $params          = [];
 
         if (isset($extra['sd'])) {
-            $params = $this->querySendDetails($mobile,$extra);
+            $params = self::querySendDetails($mobile,$extra);
         } else {
             $code = rand(1000, 9999);
             session('smsCode', $code);
             if (is_array($mobile)) {
-                $params = $this->batchSms($mobile,$extra,$code);
+                $params = self::batchSms($mobile,$extra,$code);
             } else {
-                $params = $this->oneSms($mobile,$extra,$code);
+                $params = self::oneSms($mobile,$extra,$code);
             }
         }
 
+        return $params;
         // 合并固定参数
         $params = array_merge($params, [
             "RegionId" => "cn-hangzhou",
@@ -55,11 +56,11 @@ class Dy
         return $content;
     }
 
-    public function oneSms($mobile = '18715511536', $extra = ['tc' => 'SMS_127810124'], $code)
+    private static function oneSms($mobile = '', $extra = ['tc' => 'SMS_127810124'], $code='')
     {
         $params = [
             'PhoneNumbers'  => $mobile,
-            'SignName'      => $this->signname, //短信签名
+            'SignName'      => self::$signname, //短信签名
             'TemplateCode'  => $extra['tc'], //短信模板ID
             'TemplateParam' => '{"code":"' . $code . '","product":"recharge"}', //可选，短信模板变量替换JSON串，如果有则需要，没有就不需要。不能是汉字！
             // 'OutId' => 'abcdefgh',//可选，外部流水扩展字段
@@ -72,7 +73,7 @@ class Dy
     /**
      * 批量发送短信
      */
-    function batchSms($mobile = ['18715511536','15261541317'], $extra = ['tc' => 'SMS_127810124',[['name'=>'lothar','price'=>'1.00'],['name'=>'zz','price'=>'1.00']]], $code) {
+    private static function batchSms($mobile = ['18715511536','15261541317'], $extra = ['tc' => 'SMS_127810124',[['name'=>'lothar','price'=>'1.00'],['name'=>'zz','price'=>'1.00']]], $code='') {
 
         // *** 需用户填写部分 ***
 
@@ -85,7 +86,7 @@ class Dy
         //     "云通信2",
         // );
         foreach ($mobile as $value) {
-            $params["SignNameJson"][] = $this->signname;
+            $params["SignNameJson"][] = self::$signname;
         }
 
         // fixme 必填: 短信模板Code，应严格按"模板CODE"填写, 请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/template
@@ -122,7 +123,7 @@ class Dy
     /**
      * 短信发送记录查询
      */
-    function querySendDetails($mobile='18715511536',$extra=['sd'=>'20180417']) {
+    private static function querySendDetails($mobile='', $extra=['sd'=>'20180417']) {
         $params = [
             'PhoneNumber'   => $mobile,//必填: 短信接收号码
             'SendDate'      => $extra['sd'],//必填: 短信发送日期，格式Ymd，支持近30天记录查询

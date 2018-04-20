@@ -18,7 +18,10 @@ class TestController extends HomeBaseController
     public function sms()
     {
         $sms = new Dy();
-        $result = $sms->dySms('18715511536');
+        // $result = $sms->dySms('18715511536');
+
+        // $result = Dy::oneSms();
+
         dump($result);
     }
 

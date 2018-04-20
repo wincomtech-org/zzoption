@@ -13,7 +13,7 @@ use think\Db;
  *     'action' => 'default',
  *     'parent' => 'stock/AdminIndex/default',
  *     'display'=> true,
- *     'order'  => 10000,
+ *     'order'  => 10,
  *     'icon'   => '',
  *     'remark' => '新闻管理'
  * )
