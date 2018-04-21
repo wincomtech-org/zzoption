@@ -70,7 +70,7 @@ class AdminNewsController extends AdminBaseController
     public function addPost()
     {
         $data         = $this->request->param();
-        $data['shop'] = cmf_get_current_admin_id();
+        $data['shop'] = Db::name('user')->where('id',cmf_get_current_admin_id())->value('shop');
 
         // $result = $this->mq->insert($data);
         $result = $this->scModel->isUpdate(false)->allowField(true)->save($data);
@@ -102,8 +102,8 @@ class AdminNewsController extends AdminBaseController
     public function editPost()
     {
         $data = $this->request->param();
-        if (!isset($data['shop'])) {
-            $data['shop'] = cmf_get_current_admin_id();
+        if (empty($data['shop'])) {
+            $data['shop'] = Db::name('user')->where('id',cmf_get_current_admin_id())->value('shop');
         }
 
         // $result = $this->mq->update($data);

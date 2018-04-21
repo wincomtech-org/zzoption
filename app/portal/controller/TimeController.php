@@ -40,12 +40,57 @@ class TimeController extends HomeBaseController
      */
     public function stock_list()
     {
+        $stockModel = new Stock;
+        $result = $stockModel->nowapi_call();
+
+        if (empty($result)) {
+            cmf_log('获取股票列表失败', 'stock_list.log');
+        }
+        unset($result['fields']);
+
+        $data_update = [];
+        $data_insert = [];
+        $time        = time();
+        $m           = Db::name('stock');
+        $data0       = $m->column('code,name');
+
+        foreach ($result as $k => $v) {
+            $code = strstr($k,'.',true);
+            if (!empty($data0[$code])) {
+                if ($v[0]!=$data0[$code]) {
+                    //股票更名
+                    $data_update[$code] = $v[0];
+                }
+            } else {
+                $data_insert[] = [
+                    'name'  => $v[0],
+                    'code'  => $code,
+                    'code0' => (strpos($k,'.SS')?'sh':'sz').$code,
+                    'time'  => $time,
+                ];
+            }
+        }
+
+        $row_insert = 0;
+        $row_update = count($data_update);
+        if (!empty($data_insert)) {
+            $row_insert = $m->insertAll($data_insert);
+        }
+        if (!empty($data_update)) {
+            foreach ($data_update as $k => $v) {
+                $m->where('code', $k)->update(['name' => $v, 'time' => $time]);
+            }
+        }
+
+        cmf_log('获取股票列表执行完成，新增' . $row_insert . '条，更新' . $row_update . '条', 'stock_list.log');
+    }
+    public function stock_list2()
+    {
         //股票列表
         $stockModel = new Stock;
         $result = $stockModel->nowapi_call(); //总计4705个股票代码
         if (empty($result['lists'])) {
             cmf_log('获取股票列表失败', 'stock_list.log');
-            exit('获取股票列表错误');
         }
 
         $data_update = [];

@@ -17,9 +17,15 @@ class TestController extends HomeBaseController
 {
     public function sms()
     {
+        // session('sms',null);
+        $msg = session('sms');
+        // // $msg = [];
+        dump($msg);
+        // dump($msg['time']);die;
+        // dump(intval(session('sms.time')));die;
         $result = '';
         $sms = new Dy();
-        $result = $sms->dySms('18715511536s');
+        $result = $sms->dySms('18715511536',2);
 
         // $result = Dy::oneSms();
 
@@ -28,10 +34,12 @@ class TestController extends HomeBaseController
 
     public function test()
     {
-        // $scModel = new Stock;
+        $scModel = new Stock;
+        $data = [];
         // $data = $scModel->getStockBase('s_sh000001');
         // $data = $scModel->getIndice('s_sh000001');
         // $data = $scModel->getPrice();
+        // $data = $scModel->nowapi_call();
         // dump($data);
 
         // $stockModel = new StockModel;
@@ -88,7 +96,8 @@ class TestController extends HomeBaseController
 
         // dump($code);
 
-        $data = $stockModel->getIndice($code);
+        $data = [];
+        // $data = $stockModel->getIndice($code);
         // $data = $stockModel->getPrice($code);
         dump($data);
 
