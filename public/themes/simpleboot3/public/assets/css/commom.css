@@ -1,10 +1,10 @@
 
 /* 不能提交按钮样式 */
-.body_s>.show_g>.shows_1>div:nth-child(6)>.tijiao{
+.tijiao{
 	background:#999999 !important;
 }
 /* 能提交按钮样式 */
-.body_s>.show_g>.shows_1>div:nth-child(6)>.tijiao_s{
+.tijiao_s{
 	background:#cd4650 !important;
 }
 
