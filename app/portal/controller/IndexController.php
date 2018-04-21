@@ -22,9 +22,7 @@ class IndexController extends HomeBaseController
     }
     /* 首页 */
     public function index(){
-       
-       
-      
+        
        //获取分站信息
         $shop=session('shop');
         $banners=Db::name('banner')->where('shop',$shop['id'])->order('sort asc')->column('id,pic,link');

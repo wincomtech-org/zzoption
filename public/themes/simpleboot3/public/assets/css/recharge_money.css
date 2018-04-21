@@ -1,0 +1,115 @@
+body,ul,p{margin:0;padding:0}
+body{background:#f3f3f3}
+.p_text{
+    height:1rem;
+    line-height:1rem;
+    color:#333333;
+    font-size:0.3rem;
+    text-indent: 0.9rem;
+    font-weight:700;
+}
+.parent_u{
+    padding:0.3rem 0 0.1rem 0;
+    background:#fff;
+}
+.recharge_j{
+    width:5.5rem;  
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;  
+}
+.recharge_j>li{
+	width:1rem;
+	height:0.5rem;
+	text-align: center;
+	line-height: 0.5rem;
+	font-size: 0.2rem;
+	color:#999999;
+	border-radius: 0.06rem;
+    border:0.02rem solid #999999;
+    margin:0 0.3rem 0.2rem 0;
+}
+.no_click_s {
+    background: #CFCFCF;
+    border: none !important;
+}
+.recharge_j>.red {
+    color: #cd4650;
+    border: 0.02rem solid #cd4650;
+}
+.custom_s{
+    height:1rem;
+    padding-left:1rem;
+    line-height: 1rem;
+    background:#fff;
+}
+.custom_s>span{
+    font-size:.3rem;
+    font-weight: 600;
+}
+.custom_s>input{
+    outline: none;
+    border:none;
+    font-size:0.3rem;
+}
+.gta_five{
+	position: relative;
+}
+.gta_five>span{
+	position: absolute;
+	top:0.22rem;
+	left:1.02rem;
+	display:inline-block;
+	width:0.18rem;
+	height:0.18rem;
+	border: 0.03rem solid #FFF;
+	border-radius:50%;
+	box-sizing: border-box;
+	box-shadow:0 0 0 0.03rem #c3c3c3;
+}
+.gta_five>.spans{
+	background:#cd4650;
+}
+.gta_five>p{
+	display: inline-block;
+	width:5.53rem;
+	font-size:0.25rem;
+	color:#c3c3c3;
+	text-indent: 0.1rem;
+	margin:0.14rem 0 0.2rem 1.24rem;
+}
+.gta_five>p>a{
+	text-decoration: none;
+	color:#cd4650;
+}
+	/*提交按钮*/
+.gta_six{
+	width:100%;
+	height:2.56rem;
+	background:#f3f3f3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.gta_six>.tijiao{
+	width:3.56rem;
+	height:0.67rem;
+	outline: none;
+	border:none;
+	text-align: center;
+	line-height: 0.67rem;
+	font-size: 0.3rem;
+	color: #fff;
+	letter-spacing: 0.055rem;
+	font-weight: 600;
+	border-radius: 0.06rem;
+}
+.spans {
+    background: #cd4650;
+}
+.tijiao{
+	background:#999999 !important;
+}
+.tijiao_s{
+	background:#cd4650 !important;
+}

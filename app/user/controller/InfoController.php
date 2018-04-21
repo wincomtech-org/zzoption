@@ -44,55 +44,6 @@ class InfoController extends UserBaseController
     }
     
      
-    /**
-     * 保存紧急联系人信息
-     */
-    public function ajax_tels()
-    {
-        $m_user=Db::name('user');
-        $uid=session('user.id');
-        $user=$m_user->where('id',$uid)->find();
-        $data0=$this->request->param('');
-        if(($data0['tel1']==''||$data0['name1']=='') && ($data0['tel2']==''||$data0['name2']=='')){
-           $this->error('父母信息最少要填一项');
-        }
-        
-         
-        $more=json_decode($user['more'],true);
-        
-        $more['tel1'] = $data0['tel1'];
-        $more['name1']=$data0['name1'];
-        $more['tel2']=$data0['tel2'];
-        $more['name2']=$data0['name2'];
-        $more['tel3'] = $data0['tel3'];
-        $more['name3']=$data0['name3'];
-        $more['tel4']=$data0['tel4'];
-        $more['name4']=$data0['name4'];
-        
-        $data=['more'=>json_encode($more)];
-        $m_user->where('id',$uid)->update($data);
-       
-        $this->success('保存成功',url('portal/index/trust'));
-        
-    }
-    /**
-     * 紧急联系人
-     */
-    public function bank()
-    {
-        $user=Db::name('user')->field('user_login,user_nickname,is_name,bank_name,bank_card')->where('id',session('user.id'))->find();
-        if($user['bank_card']!=''){
-            $tmp1=substr($user['bank_card'], 0,6);
-            $tmp2=substr($user['bank_card'], -4);
-            //$user['bank_card']=$tmp1.'******'.$tmp2;
-            
-        }
-        $this->assign('html_title','添加银行卡');
-        $this->assign('user',$user);
-        return $this->fetch();
-        
-    }
-    
     
     /* 头像修改 */
     public function ajax_avatar(){
@@ -222,7 +173,7 @@ class InfoController extends UserBaseController
              
             'code'  => 'require|number|length:6',
             'tel' => 'require|number|length:11',
-            'psw' => 'require|number|length:6',
+            'psw' => 'require|min:6|max:20',
         ]);
         $validate->message([
             'tel.require'           => '手机号码错误',
@@ -231,9 +182,9 @@ class InfoController extends UserBaseController
             'code.require'           => '短信验证码错误',
             'code.number'           => '短信验证码错误',
             'code.length'           => '短信验证码错误',
-            'psw.require' => '密码为6位数字',
-            'psw.number' => '密码为6位数字',
-            'psw.length' => '密码为6位数字', 
+            'psw.require' => '密码不能为空',
+            'psw.min'     => '密码为6-20位',
+            'psw.max'     => '密码为6-20位',
         ]);
         
         $data = $this->request->post();
@@ -269,60 +220,6 @@ class InfoController extends UserBaseController
         }
          
     }
-    /* 身份证照片 */
-    public function pic(){
-        $user=Db::name('user')->field('user_login')->where('id',session('user.id'))->find();
-        $tmp='pic/'.md5($user['user_login']);
-        $pic[1]=$tmp.'camera1.jpg';
-        $pic[2]=$tmp.'camera2.jpg';
-        $pic[3]=$tmp.'camera3.jpg';
-        $this->assign('pic',$pic);
-        $this->assign('html_title','身份认证');
-        return $this->fetch();
-    }
-    /*  身份证照片 */
-    public function ajax_pic(){
-        set_time_limit(300);
-        zz_log('pp','test.log');
-        foreach($_FILES as $k=>$v){
-            $file=$v;
-            if($file['error']==0){
-                if($file['size']>config('avatar_size')){
-                    $this->error('文件超出大小限制');
-                }
-                $avatar='pic/'.md5(session('user.user_login')).$k.'.jpg';
-                $path=getcwd().'/upload/';
-                $size=config($k);
-                $destination=$path.$avatar;
-                if(move_uploaded_file($file['tmp_name'], $destination)){
-                    $avatar=zz_set_image($avatar,$avatar,$size['width'],$size['height'],6);
-                    if(!is_file($path.$avatar)){
-                        $this->error('图片处理失败');
-                    } 
-                }else{
-                    $this->error('文件上传失败');
-                }
-            }else{
-                $this->error('文件传输失败,请注意图片大小和网速');
-            }
-        }
-        $this->success('上传成功',url('portal/index/trust'));
-         
-    }
-    public function setting(){
-        $this->assign('user',session('user'));
-        $this->assign('html_title','设置');
-        return $this->fetch();
-    }
-    public function xuexin(){
-        $this->error('功能暂无');
-        $this->assign('html_title','学信网');
-        return $this->fetch();
-    }
-    public function record(){
-        $this->error('功能暂无');
-        $this->assign('html_title','运营商评估');
-        return $this->fetch();
-    }
     
+     
 }

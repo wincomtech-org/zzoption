@@ -42,12 +42,18 @@
 			<span>{$order.money2}元</span>
 		</div>
 	</div>
-<!--	温馨提示-->
+<!--温馨提示-->
 	<div class="wenxin">
 		<p>温馨提示：预计盈利不代表实际盈利，以实际成交价格为准</p>
 		<div>
+		 
 		<eq name="order.status" value="4">
+			<gt name="order.is_old" value="1">
 			<bottom class="tijiao">行权</bottom>
+			<else/>
+			<bottom>持仓中</bottom> 
+			</gt>
+			 
 		<else/>
 			<bottom>行权中</bottom> 
 		</eq>

@@ -22,7 +22,7 @@
 <!--	中间部分开始-->
 	<div class="body_sss">
 		<ul>
-			<a href="">
+			<a href="{:url('user/pay/index')}">
 				<li>
 					<span>充值提现</span>
 				</li>
@@ -41,7 +41,7 @@
 				</li>
 			</a>
 			<span></span>
-			<a href="">
+			<a href="{:url('user/pay/money')}">
 				<li>
 					<span>资金明细</span>
 				</li>
@@ -51,7 +51,7 @@
 <!--	客服。。。。。-->
 	<div class="small_func">
 		<ul>
-			<a href="http://p.qiao.baidu.com/cps/chat?siteId=11930295&userId=23499205">
+			<a href="">
 				<li>
 					<span class="span1"></span>
 					<span class="span2">在线客服</span>
@@ -73,5 +73,12 @@
 				</li>
 			</a>
 		</ul>
+	 
+		<div class="quit_s">
+			<a href="{:url('user/index/logout')}">
+				退出登录
+			</a>
+		</div>
+	 
 	</div>
 <include file="public@foot"/>

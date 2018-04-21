@@ -116,7 +116,7 @@
   <include file="public@stock_search"/>
 <script>
 //setInterval(indice,3000);
-var indice_url="{:url('portal/stock/stock_indice')}";
+var indice_url="{:url('portal/stockz/stock_indice')}";
 function indice(){
 	$.post(indice_url,{'id':0},function(data){
 		var indices=data.data;
