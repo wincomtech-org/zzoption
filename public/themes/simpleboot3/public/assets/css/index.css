@@ -284,16 +284,17 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	font-size: 0.35rem;
 	display: flex;
 	flex-flow: row nowrap;
-	justify-content: flex-start;
+	justify-content:space-between;
 	align-items: center;
 	line-height: 0.7rem;
 }
-.body_s>.zixun>div:nth-child(1)>span{
-	display: block;
+.body_s>.zixun>div:nth-child(1)>div>span{
+	display: inline-block;
 	height:0.35rem;
 	width:0.04rem;
 	background:#c83224;
 	margin-right:0.25rem;
+	vertical-align: middle;
 }
 .body_s>.zixun>a{
 	text-decoration: none;
@@ -377,7 +378,6 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 .float_right{
 	display:inline-block;
 	width:1rem;
-	margin-left:4rem;
 	text-align: right;
 	color:#333333;
 	background:url(../img/right_s_s.png) right center no-repeat;
