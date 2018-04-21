@@ -22,7 +22,7 @@
 			 <div class=""> 
 				<span>{$vo.code}/{$vo.name}</span>
 				<span>{$vo.money0}</span> 
-				<span>{$vo.buy_time|date='Y-m-d',###}/{$vo.sell_time|date='Y-m-d',###}</span> 
+				<span class="auto_br_j">{$vo.buy_time|date='Y-m-d',###}/{$vo.sell_time|date='Y-m-d',###}</span> 
 			</div>
 		</a> 
 	</foreach>
@@ -32,3 +32,14 @@
 	
 </body>
 </html>
+<script>
+	function auto_br_j(){
+		var a=$(window).width();
+		if(a<=360){
+			for(var i=0;i<$(".auto_br_j").length;i++){
+				$($(".auto_br_j")[i]).html($($(".auto_br_j")[i]).html().split("/").join("/<br>"));
+			}
+		}
+	}
+	auto_br_j();
+</script>

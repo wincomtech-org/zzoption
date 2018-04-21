@@ -25,12 +25,18 @@ body{background:#f3f3f3}
 	background-size: contain;
 }
 .name_tou{
-	height:0.9rem;
+	min-height:0.9rem;
 	background:#fff;
-	line-height: 0.9rem;
+	line-height: 0.5rem;
 	border-bottom: 0.02rem solid #f3f3f3;
 	box-sizing: border-box;
 	padding-left: 0.86rem;
+	display:flex;
+}
+.name_tou>p{
+	align-self: center;
+	margin:0;
+	padding:0;
 }
 .name_tou>p:nth-child(1){
 	display: inline-block;
@@ -39,6 +45,7 @@ body{background:#f3f3f3}
 	color:#333333;
 }
 .name_tou>p:nth-child(2){
+	width:3.5rem;
 	display: inline-block;
 	font-size:0.22rem;
 	color:#c9c9c9
