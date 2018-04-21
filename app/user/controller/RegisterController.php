@@ -14,7 +14,6 @@ use cmf\controller\HomeBaseController;
 use think\Validate;
 use think\Db;
  
-use sms\Msg;
 
 class RegisterController extends HomeBaseController
 {
@@ -72,24 +71,21 @@ class RegisterController extends HomeBaseController
                 //判断密码
                 $psw=$this->request->param('psw',0);
                 $user=Db::name('user')->where('id',session('user.id'))->find();
-                $result=zz_psw($user, $psw);
-                if(empty($result[0])){
-                    $this->error($result[1],$result[2]);
-                }
+                
                 break;
             default:
                  $this->error('未知操作');
                  
         }
        
-        $tmp=\sms\Dy::dySms('15261541317');
+        $tmp=\sms\Dy::dySms($phone);
       
         if(empty($tmp['code'])){
             $this->error('error');
         }elseif(trim($tmp['code'])=='OK'){
             $this->success('发送成功','');
         }else{
-            $this->error('发送失败');
+            $this->error($tmp['msg']);
         }
         
     }

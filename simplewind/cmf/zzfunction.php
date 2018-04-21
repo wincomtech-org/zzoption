@@ -20,53 +20,37 @@ function zz_get_time0(){
     $day=date('Y-m-d',time());
     return strtotime($day);
 }
-/* 检测是否系统维护时间 */
-function zz_check_time(){
-    $time=time();
-    $day=strtotime(date('Y-m-d',$time));
-    $tmp=$time-$day;
-    if($tmp<600 || $tmp>86390){
-        return [1,'夜间0点到0点10分为系统维护时间，不能处理用户借条数据'];
-    }else{
-        return [0,'可以访问'];
+ 
+ /* 根据期初价格，期末价格和名义本金计算收益 */
+function zz_get_money($price1, $price2, $money0){
+     
+    $tmp1=bcsub($price2, $price1,4);
+    if($tmp1<=0){
+        return 0;
     }
+    $tmp2=bcmul($tmp1, $money0,4);
+    return bcdiv($tmp2,$price1,2);
 }
-/* 利率计算 */
-function zz_get_money($money,$rate,$days){
-    $tmp1=bcmul($days*$rate,$money,2);
-    $tmp2=bcdiv($tmp1,36000,2);
-    return bcadd($money,$tmp2,2);
+
+function zz_msg($data){
+    //先保存消息内容再保存用户消息连接
+    $data_txt=[
+        'aid'=>$data['aid'],
+        'title'=>$data['title'],
+        'content'=>$data['content'],
+        'type'=>$data['type'],
+        'time'=>time(),
+    ];
+    $msg_id=Db::name('msg_txt')->insertGetId($data_txt);
+     
+    $data_msg=[
+        'msg_id'=>$msg_id,
+        'uid'=>$data['uid']
+    ];
+    Db::name('msg')->insert($data_msg);
+    
 }
-/* 得到最终还款金额 */
-function zz_get_money_overdue($real_money,$money,$rate,$overdue_day){
-    $tmp1=bcmul($overdue_day*$rate,$money,2);
-    $tmp2=bcdiv($tmp1,36000,2); 
-    return bcadd($real_money,$tmp2,2);
-}
-/* 密码输入 */
-function zz_psw($user,$psw){
-    if($user['user_pass']!=session('user.user_pass')){
-        session('user',null);
-        return [0,'密码已修改，请重新登录',url('user/login/login')];
-    }  
-    if(cmf_compare_password($psw, $user['user_pass'])){
-        session('psw',0); 
-        return [1];
-    }else{
-        $fail=session('psw');
-        if(empty($fail)){
-            session('psw',1);
-        }elseif($fail==5){
-            session('user',null);
-            session('psw',0);
-            return [0,'密码错误已达6次，请重新登录',url('user/login/login')];
-        }else{
-            session('psw',$fail+1);
-        }
-        return [0,'密码错误'.($fail+1).',累计六次将退出登录!',''];
-    }
-   
-}
+  
 /* 发送微信信息 */
 /*  cURL函数简单封装 */
 function zz_curl($url, $data = null)
@@ -84,83 +68,7 @@ function zz_curl($url, $data = null)
     curl_close($curl);
     return $output;
 }
-function zz_wxmsg($openid,$url0,$data,$type){
-    $token=config('access_token');
-    $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$token;
-    if($type=='msg_back'){
-        $template_id=config($type);
-        $json = '{
-            "touser":"'.$openid.'",
-            "template_id":"'.$template_id.'",
-            "url":"'.$url0.'",
-            "topcolor":"#FF0000",
-            "data":{
-                "first": {
-                "value":"'.$data[0].'",
-                "color":"#173177"
-                },
-                "keyword1":{
-                "value":"'.$data[1].'",
-                "color":"#173177"
-                },
-                "keyword2":{
-                "value":"'.$data[2].'",
-                "color":"#173177"
-                },
-                "keyword3":{
-                "value":"'.$data[3].'",
-                "color":"#173177"
-                },
-                "keyword4":{
-                "value":"'.$data[4].'",
-                "color":"#173177"
-                }, 
-                "remark":{
-                "value":"'.$data[5].'",
-                "color":"#173177"
-                }
-            }
-        }';
-    }elseif($type=='msg_back'){
-        $template_id=config($type);
-        $json = '{
-            "touser":"'.$openid.'",
-            "template_id":"'.$template_id.'",
-             "url":"'.$url0.'",
-            "topcolor":"#FF0000",
-            "data":{
-                "first": {
-                "value":"'.$data[0].'",
-                "color":"#173177"
-                },
-                "keyword1":{
-                "value":"'.$data[1].'",
-                "color":"#173177"
-                },
-                "keyword2":{
-                "value":"'.$data[2].'",
-                "color":"#173177"
-                },
-                "keyword3":{
-                "value":"'.$data[3].'",
-                "color":"#173177"
-                },
-                "keyword4":{
-                "value":"'.$data[4].'",
-                "color":"#173177"
-                },
-                "remark":{
-                "value":"'.$data[5].'",
-                "color":"#173177"
-                }
-            }
-        }';
-    }else{
-        return ['errorcode'=>1,'errmsg'=>'参数错误','msgid'=>0]; 
-    } 
-    $res=zz_curl($url,$json);
-    return $res;
-}
+ 
 /* 过滤HTML得到纯文本 */
 function zz_get_content($list,$len=100){
     //过滤富文本

@@ -83,5 +83,18 @@
         'secret'   => 'Y8PkgNNLNbah407yol61nqdwHCeKFS',
         'signname' => '耀华科技',
     ],
+    'nowapi_stock'=>[
+        'appKey' => '32258',
+        'sign' => '813e13dfe768c1d9c75eaaba70d42c1a',
+    ],
+    'ali_stock'=>[
+        'AppKey'=>'24861356',
+        'AppSecret'=>'36191c3b1e1b6d10c22a1b2f7fee85d8',
+        'AppCode'=>'133ff1c380254976b638d37bf02d6fc0',
+    ],
+    'order_old'=>'2018-2-1',
+    'order_sell'=>'2018-2-1',
+    'sell_day'=>5,
+    
     
 );

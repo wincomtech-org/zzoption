@@ -70,23 +70,38 @@ a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
 }
 .show_zong>div{
 	display:none;
-}
-.show_zong>div>div{
-	padding:0.15rem 0.5rem;
 	border-bottom: 0.2rem solid #f3f3f3;
 }
-.show_zong>div>div>a>p:nth-child(1){
+.show_zong>div:nth-child(1){
+	display: block;
+}
+.show_zong>div>div>a{
+	display: flex;
+	padding-right:1.2rem;
+	justify-content: space-between;
+}
+.show_zong>div>div>a>div:nth-child(1){
+	width:5rem;
+	display:inline-block;
+	padding:0.15rem 0 0.15rem 0.5rem;
+}
+.show_zong>div>div>a>div:nth-child(1)>p:nth-child(1){
 	font-size:0.26rem;
 	color:#696969;
 }
-.show_zong>div>div>a>p:nth-child(2){
+.show_zong>div>div>a>div:nth-child(1)>p:nth-child(2){
 	font-size:0.20rem;
 	color:#a7a7a7;
 	margin-top:0.1rem;
 }
-
-
-
-
-
+.show_zong>div>div>a>div:nth-child(2){
+		padding-top:0.15rem;
+		font-weight: 700;
+}
+.show_zong>div>div>a>.jia{
+	color:green;
+}
+.show_zong>div>div>a>.jian{
+	color:red;
+}
 

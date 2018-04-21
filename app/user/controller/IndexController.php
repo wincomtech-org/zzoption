@@ -23,7 +23,7 @@ class IndexController extends UserBaseController
     }
      
      public function index(){
-         $this->redirect(url('portal/index/info'));
+         $this->redirect(url('portal/index/index'));
      }
      
     /**

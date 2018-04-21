@@ -1,0 +1,46 @@
+<include file="public@head" />
+	 
+	<script src="__TMPL__/public/assets/js/capital_details.js"></script>
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/capital_details.css">
+</head>
+<body>
+	<div class="dingbu">
+		<a href="{:url('portal/index/my')}"></a>
+		<p>{$html_title}</p>
+	</div>
+<!--	选项栏-->
+	<div class="nav_ssy">
+		<ol>
+		<foreach name="money_type" item="vo">
+			<li class="{($type==$key)?:'red_ss'}"><a href="{:url('user/pay/money',['type'=>$key])}">{$vo}</a>
+				<span></span>
+			</li>
+			 
+		</foreach>
+		</ol>
+	</div>
+<!--	切换动态-->
+	<div class="show_zong">
+<!--		交易记录开始-->
+		<div>
+		<foreach name="list" item="vo">
+			<div>
+				<a href="javascript:void(0)">
+					<div>
+						<p>{$vo.dsc}</p>
+						<p>{$vo.insert_time|date='Y-m-d H:i',###}</p>
+					</div>
+					<div class="<gt name='vo.money' value='0'>jia<else/>jian</gt>">
+					{$vo.money}
+					</div>
+					 
+				</a>
+			</div>
+		</foreach>
+			 
+		</div>
+<!--		交易记录结束-->
+ 
+	</div>
+</body>
+</html>

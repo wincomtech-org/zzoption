@@ -134,10 +134,7 @@ class OrderController extends AdminBaseController
      */
     public function inquiry_do()
     {
-        $tmp=zz_check_time();
-        if($tmp[0]===1){
-            $this->error($tmp[1]);
-        }
+        $this->time_check();
         $m=$this->m;
         
         $data=$this->request->param();
@@ -168,14 +165,40 @@ class OrderController extends AdminBaseController
             'action'=>'对订单'.$info['oid'].'询价处理结果为'.$statuss[$data['status']],
             
         ]; 
+        //如果只是修改备注 
+        if($data_order['status']==$info['status'] && ($data_order['status']!=1 || $data_order['money1']==$info['money1'])){
+            
+            $data_action['action'].=',仅保存信息';
+            $m->where('id',$data['id'])->update($data_order);
+            Db::name('action')->insert($data_action);
+            $this->success('已保存信息',url('index'));
+        }
+        
         Db::startTrans();
        
         $m->where('id',$data['id'])->update($data_order);
+        //询价结果变化通知客户
+        $dsc='('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'元,周期'.$info['month'].'个月)';
+       
+        if($info['status']==1){
+            $dsc.='询价成功，权利金为'.$data_order['money1'];
+        }else{
+            $dsc.='询价失败';
+        }
+        $user=Db::name('user')->where('uid',$info['uid'])->find();
+        //先保存消息内容再保存用户消息连接
+        $data_msg=[
+            'aid'=>$data_action['aid'],
+            'title'=>'询价结果通知',
+            'content'=>$dsc,
+            'type'=>2,
+            'uid'=>$user['id'],
+            'mobile'=>$user['mobile'],
+        ];
+        zz_msg($data_msg); 
         Db::name('action')->insert($data_action);
         Db::commit();
-        
-        
-        
+         
         $this->success('保存成功！',url('index'));
         
     }
@@ -194,10 +217,8 @@ class OrderController extends AdminBaseController
      */
     public function buy_do()
     {
-        $tmp=zz_check_time();
-        if($tmp[0]===1){
-            $this->error($tmp[1]);
-        }
+        $this->time_check();
+       
         $m=$this->m;
         
         $data=$this->request->param();
@@ -225,7 +246,13 @@ class OrderController extends AdminBaseController
             'action'=>'对订单'.$info['oid'].'买入处理结果为'.$statuss[$data['status']],
             
         ];
-        
+        //如果只是修改备注
+        if($data_order['status']==$info['status']){
+            $data_action['action'].=',仅保存备注';
+            $m->where('id',$data['id'])->update($data_order);
+            Db::name('action')->insert($data_action);
+            $this->success('已保存备注信息',url('index'));
+        }
         
         
         Db::startTrans();
@@ -234,19 +261,55 @@ class OrderController extends AdminBaseController
         //若选择买入失败则用户付款会返还用户余额，若由失败改为持仓中会从余额中扣款，余额不足则失败
         $m_user=Db::name('user');
         $user=$m_user->where('id',$info['uid'])->find();
+        //询价结果变化通知客户
+        $dsc='('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'元,周期'.$info['month'].'个月)';
+       
+        if($data_order['status']==4){
+            $dsc.='买入成功';
+        }else{
+            $dsc.='买入失败';
+        }
+        
         if($info['status']<5 && $data_order['status']==5){
             //退款
-            $money=bcadd($user['money'],$info['money1'],2);
-            $m_user->where('id',$info['uid'])->update(['money'=>$money]);
+            $money_tmp=$info['money1'];
+            $dsc.=',退还费用';
         }elseif($info['status']==5 && $data_order['status']<5){
-            //退款改为买入，需要付款
+            //退款改为买入，需要付款 
+            $money_tmp='-'.$info['money1']; 
+            $dsc.=',支付费用';
+        }
+        //是否有资金操作
+        if(isset($money_tmp)){ 
             $money=bcsub($user['money'],$info['money1'],2);
             if($money<0){
                 $this->error('用户余额不足');
             }
             $m_user->where('id',$info['uid'])->update(['money'=>$money]);
+            $dsc.=$info['money1'].'元'; 
+            //记录资金明细
+            $data_money=[
+                'uid'=>$user['id'],
+                'money'=>$money_tmp,
+                'status'=>1,
+                'type'=>1,
+                'time'=>$data_order['time'],
+                'insert_time'=>$data_order['time'],
+                'dsc'=>$dsc,
+            ];
+            Db::name('money')->insert($data_money);
         }
-        
+        //先保存消息内容再保存用户消息连接
+        $data_msg=[
+            'aid'=>$data_action['aid'],
+            'title'=>'买入结果通知',
+            'content'=>$dsc,
+            'type'=>2,
+            'uid'=>$user['id'],
+            'mobile'=>$user['mobile'],
+        ];
+       
+        zz_msg($data_msg);
         Db::name('action')->insert($data_action);
         Db::commit();
          
@@ -268,10 +331,8 @@ class OrderController extends AdminBaseController
      */
     public function sell_do()
     {
-        $tmp=zz_check_time();
-        if($tmp[0]===1){
-            $this->error($tmp[1]);
-        }
+        $this->time_check();
+       
         $m=$this->m;
         
         $data=$this->request->param();
@@ -288,7 +349,7 @@ class OrderController extends AdminBaseController
         }
         $data_order=[
             'status'=>$data['status'],
-            'price2_0'=>$data['price2_0'],
+            'price2_0'=>round($data['price2_0'],4),
             'price2'=>round($data['price2_0'],2),
             'time'=>time(),
             'dsc'=>$data['dsc'],
@@ -305,37 +366,95 @@ class OrderController extends AdminBaseController
             'action'=>'对订单'.$info['oid'].'行权处理结果为'.$statuss[$data['status']],
             
         ]; 
-        
+        //如果只是修改备注
+        if($data_order['price2_0']==$info['price2_0'] && $data_order['status']==$info['status']){
+            $data_action['action'].='，仅保存信息';
+            $m->where('id',$data['id'])->update($data_order);
+            Db::name('action')->insert($data_action);
+            $this->success('已保存备注信息',url('index'));
+        }
         Db::startTrans();
         
       
         //若选择行权成功则盈利返还用户余额，若由行权成功、过期改为行权中会从余额中扣款，余额不足则失败
         $m_user=Db::name('user');
         $user=$m_user->where('id',$info['uid'])->find();
-    
+       
+        $dsc='('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'元,周期'.$info['month'].'个月)';
         if($data_order['status']==7){
             $data_order['money2']=zz_get_money($info['price1_0'], $data_order['price2_0'], $info['money0']);
-          //不管之前是否结算过，计算新旧盈利的差值后给用户 
-            $money_add=bcsub($data_order['money2'],$info['money2'],2);
-            //点击行权结束就重新计算收益
+            //之前结算过，计算新旧盈利的差值后给用户 
+            if($info['status']==7){
+                $money_add=bcsub($data_order['money2'],$info['money2'],2);
+                $dsc.='管理员修改行权结果,重新计算盈利'.$money_add.'元';
+            }else{
+                $money_add=$data_order['money2'];
+                $dsc.='行权成功，计算盈利'.$money_add.'元';
+            }
+           
+            //用户余额操作和用户资金明细记录
             $money=bcadd($user['money'],$money_add,2); 
+           
         }else{
             //非行权结束则期末价格归0,从用户余额中扣除盈利
             $data_order['price2_0']=0;
             $data_order['price2']=0;
             $data_order['money2']=0;
-            $money=bcsub($user['money'],$info['money2'],2); 
-        } 
-        if($money<0){
-            $this->error('用户余额不足');
-        } 
-        $m_user->where('id',$info['uid'])->update(['money'=>$money]);
+            //之前行权过的从用户余额中扣除盈利
+            if($info['status']==7){
+                $money_add=bcsub($data_order['money2'],$info['money2'],2);
+                $dsc.='管理员修改行权结果,扣除原盈利'.$money_add.'元';
+                $money=bcsub($user['money'],$info['money2'],2); 
+            } 
+             
+        }  
+      
         $m->where('id',$data['id'])->update($data_order);
+       
+        //记录资金明细
+        if(isset($money_add)){ 
+            if($money<0){
+                Db::rollback();
+                $this->error('用户余额不足');
+            } 
+            $m_user->where('id',$info['uid'])->update(['money'=>$money]);
+            $data_money=[
+                'uid'=>$user['id'],
+                'status'=>1,
+                'type'=>1,
+                'time'=>$data_order['time'],
+                'insert_time'=>$data_order['time'],
+                'dsc'=>$dsc,
+                'money'=>$money_add,
+            ]; 
+            Db::name('money')->insert($data_money);
+            $data_msg=[
+                'aid'=>$data_action['aid'],
+                'title'=>'行权结果通知',
+                'content'=>$dsc,
+                'type'=>2,
+                'uid'=>$user['id'],
+                'mobile'=>$user['mobile'],
+            ];
+            
+            zz_msg($data_msg);
+        }
         Db::name('action')->insert($data_action);
         Db::commit();
         
         $this->success('保存成功！',url('index'));
         
+    }
+    
+    /* 判断是否交易时间 */
+    public function time_check(){
+        
+        $time=time();
+        $day=strtotime(date('Y-m-d',$time));
+        $tmp=$time-$day;
+        if($tmp<600 || $tmp>86390){
+            $this->error('非交易时间');
+        }
     }
     
 }

@@ -12,29 +12,43 @@ namespace app\user\controller;
 
 use cmf\controller\UserBaseController;
 use think\Db;
-use think\Validate;
-use sms\Msg;
-use function Qiniu\json_decode;
+use app\portal\controller\StockzController;
+ 
 /* 交易 */
 class TradeController extends UserBaseController
 {
     private $m;
+    private $sort;
     public function _initialize()
     {
         parent::_initialize();
         $this->m=Db::name('order');
+        $this->sort='time desc';
         $this->assign('html_title','交易');
         $this->assign('html_flag','trade');
     }
     /*询价 */
     public function index(){
-        $code0=$this->request->param('code0','');
+        $code0=$this->request->param('code0','','trim');
+        $name=$this->request->param('code','','trim');
         //查询股票
+        $m_stock=Db::name('stock');
         if(!empty($code0)){
-            $stock=Db::name('stock')->where('code0',$code0)->find();
+            $stock=$m_stock->where('code0',$code0)->find();
+            $this->assign('stock',$stock);
+        }elseif(!empty($name)){
+            $whereOr=[
+                'code|code0|name'=>['eq',$name],
+            ];
+            $stock=$m_stock->whereOr($whereOr)->find();
             $this->assign('stock',$stock);
         }
-      
+        if(empty($stock)){
+            $this->assign('code',$name); 
+        }else{
+            $this->assign('stock',$stock);
+        }
+        
         $guide=Db::name('guide')->where('name','trade')->find();
         $this->assign('html_title','询价');
         
@@ -47,12 +61,17 @@ class TradeController extends UserBaseController
     }
     /*  询价 */
     public function ajax_inquiry(){
-        
+     
+        $this->time_check();
         $user=session('user');
         $data=$this->request->param();
+        
         $stock=Db::name('stock')->where('code0',$data['code0'])->find();
         if(empty($stock)){
             $this->error('股票不存在');
+        }
+        if($stock['name']!=$data['name']){
+            $this->error('请选择股票');
         }
         if($stock['status']!=1){
             $this->error('该股票不能交易');
@@ -82,17 +101,19 @@ class TradeController extends UserBaseController
         //0询价，1询价有结果，2询价失败，3买入，4买入成功，5买入失败，6卖出，7结束
         $where=[
             'uid'=>session('user.id'),
-            'status'=>['in',[0,1,2,3,5]]
+            'status'=>['in',[0,1,2,3,5]],
+            'is_old'=>0,
         ];
-        $list=$m->where($where)->select();
+        $list=$m->where($where)->order($this->sort)->select();
         $this->assign('list',$list);
         $this->assign('order_status',config('order_status'));
         return $this->fetch();
     }
     /*  买入 */
     public function ajax_buy(){
+        $this->time_check();
+        $uid=session('user.id');
         
-        $user=session('user');
         $id=$this->request->param('id',0,'intval');
         $m=$this->m;
         $order=$m->where('id',$id)->find();
@@ -100,23 +121,52 @@ class TradeController extends UserBaseController
             $this->error('询价信息不存在');
         }
         if($order['status']!=1){
-            $this->error('暂时不能买入，请刷新');
+            $this->error('数据错误，请刷新');
         }
+        if($order['is_old']!=0){
+            $this->error('数据错误，请刷新');
+        }
+        if($uid!=$order['uid']){
+            session('user',null);
+            $this->error('这不是你的信息','/');
+        }
+        $m_user=Db::name('user');
+        $user=$m_user->where('id',$uid)->find();
+        if($user['is_name']==0){
+            $this->error('交易前请先实名认证',url('user/info/info'));
+        }
+        if($user['money']<$order['money1']){
+            $this->error('余额不足，请先充值',url('portal/index/my'));
+        }
+        $money_new=bcsub($user['money'],$order['money1'],2);
         $time=time();
         //要计算行权最后期限,以提前5天提醒用户
         //要重新计算,可以放到后台
-        $end_time=$time+$order['month']*30*24*3600;
-        $notice_time=$end_time-config('notice_time')*24*3600;
+        
         $data_order=[ 
             'uname'=>$user['user_nickname'], 
-            'status'=>0,
+            'status'=>3,
             'buy_time'=>$time,
-            'time'=>$time,
-            'end_time'=>$end_time,
-            'notice_time'=>$notice_time,
+            'time'=>$time, 
+             
         ];
+        $m->startTrans();
         $m->where('id',$id)->update($data_order);
-        $this->success('已提交，等待后台回复',url('buy'));
+        $m_user->where('id',$uid)->update(['money'=>$money_new]);
+        $dsc='('.$order['name'].'('.$order['code0'].'),名义本金'.$order['money0'].'元,周期'.$order['month'].'个月)';
+        //记录资金明细
+        $data_money=[
+            'uid'=>$uid,
+            'money'=>'-'.$order['money1'],
+            'status'=>1,
+            'type'=>1,
+            'time'=>$time,
+            'insert_time'=>$time,
+            'dsc'=>'买入'.$dsc, 
+        ];
+        Db::name('money')->insert($data_money);
+        $m->commit();
+        $this->success('已提交，等待后台处理',url('buy'));
         
     }
     /*买入界面，即询价后 */
@@ -127,7 +177,7 @@ class TradeController extends UserBaseController
             'uid'=>session('user.id'),
             'status'=>['in',[4,6]]
         ];
-        $list=$m->where($where)->select();
+        $list=$m->where($where)->order($this->sort)->select();
         $this->assign('list',$list);
         $this->assign('order_status',config('order_status'));
         return $this->fetch();
@@ -176,7 +226,7 @@ class TradeController extends UserBaseController
     }
     /*  行权 */
     public function ajax_sell(){
-        
+        $this->time_check();
         $uid=session('user.id');
         $id=$this->request->param('id',0,'intval');
         $m=$this->m;
@@ -186,14 +236,17 @@ class TradeController extends UserBaseController
         }
         if($order['uid']!=$uid){
             $this->error('无此订单2');
-        }elseif($order['status']!=4){
+        }elseif($order['status']!=4 || $order['is_old']<2){
+            //is_old是否过期，0正常，1过期,2可以行权，3即将过期
             $this->error('订单不能行权');
         }
-        
+        if($uid!=$order['uid']){
+            session('user',null);
+            $this->error('这不是你的信息','/');
+        }
         $time=time();
          
-        $data_order=[
-            
+        $data_order=[ 
             'status'=>6,
              'sell_time'=>$time,
             'time'=>$time
@@ -247,10 +300,9 @@ class TradeController extends UserBaseController
         $m=$this->m;
         //0询价，1询价有结果，2询价失败，3买入，4买入成功，5买入失败，6卖出，7结束
         $where=[
-            'uid'=>session('user.id'),
-             
+            'uid'=>session('user.id'), 
         ];
-        $list=$m->where($where)->select();
+        $list=$m->where($where)->order($this->sort)->select();
         $this->assign('list',$list);
         $this->assign('html_title','询价记录');
         
@@ -264,7 +316,7 @@ class TradeController extends UserBaseController
             'uid'=>session('user.id'),
             'status'=>['in',[7,8]],
         ];
-        $list=$m->where($where)->select();
+        $list=$m->where($where)->order($this->sort)->select();
         $this->assign('list',$list);
         $this->assign('html_title','平仓历史');
         
@@ -286,5 +338,16 @@ class TradeController extends UserBaseController
         
         return $this->fetch();
     }
+    /* 判断是否交易时间 */
+    public function time_check(){
+       
+        $time=time();
+        $day=strtotime(date('Y-m-d',$time));
+        $tmp=$time-$day;
+        if($tmp<600 || $tmp>86390){
+            $this->error('非交易时间');
+        }
+    }
+     
      
 }
