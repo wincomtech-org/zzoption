@@ -103,21 +103,21 @@ a{
 	height: 0.55rem;
 	
 }
-
-.c_btn{
-	float: right;
-	margin-right: 0.23rem;
-	height: 0.42rem;
-	width: 1.28rem;
-	
+#new_dx{
+	width:60%;
 }
-
-.c_btn button{
-	
-	height: 100%;
-	width: 1.28rem;
-	font-size: 0.18rem;
-	
+#sms_btn{
+	background: #cd4650;
+    width: 1.9rem;
+    border-radius: 0.06rem;
+	border: none;
+	text-align: center;
+    padding: 0.1rem 0.3rem;
+    outline: none;
+    font-size: 0.14rem;
+    color: #fcf3f3;
+	letter-spacing: 0.02rem;
+	float: right;
 }
 
 .c_2{

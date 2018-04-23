@@ -56,7 +56,7 @@ $('button').click(function(){
  	 
  	var name=$.trim($('input[name=uname]').val());
  	var idcard=$.trim($('input[name=idcard]').val());
- 	var bank=$.trim($('input[name=bank]').val());
+	 var bank=$.trim($('input[name=bank]').val());
     /*  if(tel== '' || isPhoneNo(tel) == false){
          $('input[name="tel"]').focus();
          alert('提示：请输入正确手机号');
@@ -66,9 +66,7 @@ $('button').click(function(){
          alert('提示：请输入6位数字密码');
          return false;
      }   */
-      
-    
-    
+    if(!is_bankCard(bank)){alert("请输入正确的卡号");return false}
      button_click(obj,1,text[1]);
    
     $.ajax({

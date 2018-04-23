@@ -28,23 +28,12 @@
 	</div>
 </body>
 </html>
-<script> 
- //验证手机号;
-function is_mobile(tel){
-	var reg=/^[1][3,4,5,6,7,8][0-9]{9}$/; 
-	return reg.test(tel);
-}
-//验证密码格式（只能字母+数字组合）;
-function is_password(str){
-	var reg=/^[a-zA-Z0-9]{6,20}$/;
-	return reg.test(str);
-}
-//验证密码格式（只能字母+数字组合）;
+<script>
 function isCode(str){
 	var reg=/^[0-9]{5}$/;
 	return reg.test(str);
 }
-$('#sms').click(function(){ 
+function  gggy_s(){ 
     var tel=$.trim($('input[name=tel]').val()); 
    	var code=$.trim($('input[name=code]').val()); 
    	var psw=$.trim($('input[name=psw]').val()); 
@@ -61,8 +50,10 @@ $('#sms').click(function(){
         $('input[name="code"]').focus();
         alert('请输入正确的机构码');
         return false;
-    }
-   	 
+	}
+	//=======================
+	down_s($("#sms"),gggy_s);
+	//=======================
    	$.ajax({
            type: 'POST',
            url: "{:url('user/register/sendmsg')}",
@@ -70,20 +61,20 @@ $('#sms').click(function(){
            data:{'tel':tel},
            success: function(data){ 
         	if(data.code==1){
-                    //settime();
+					//settime();
+				
            	}else{  
-           		msg(data.msg); 
+				   msg(data.msg); 
+				   console.log(3);   
            	} 
            },
            error: function(){
-           	msg('服务器连接失败'); 
+			   msg('服务器连接失败');
            }
-       }); 
+	   }); 
    	return false;  
-});
-
-
- 
+}
+$('#sms').click(gggy_s);
  // 注册提交
 $('.tijiao').click(function(){
  	var code=$.trim($('input[name=code]').val());

@@ -7,13 +7,13 @@ $(function(){
 		// $($(".body_s>.show_g>div")[index_s]).css("display","block").siblings().css("display","none");
 		// $($(".body_s>ul>li")[index_s]).addClass("bh_s").siblings().removeClass("bh_s");
 		// var a=0;
-		$(".body_s>ul>li").click(function(){
-			a=$(this).index();
-			sessionStorage.removeItem("key");
-			sessionStorage.setItem("key",a);
-			$($(".body_s>ul>li")[a]).addClass("bh_s").siblings().removeClass("bh_s");
-			$($(".body_s>.show_g>div")[a]).css("display","block").siblings().css("display","none");
-		});
+		// $(".body_s>ul>li").click(function(){
+		// 	a=$(this).index();
+		// 	sessionStorage.removeItem("key");
+		// 	sessionStorage.setItem("key",a);
+		// 	$($(".body_s>ul>li")[a]).addClass("bh_s").siblings().removeClass("bh_s");
+		// 	$($(".body_s>.show_g>div")[a]).css("display","block").siblings().css("display","none");
+		// });
 	})();
 	//同意阅读项
 	(function(){
