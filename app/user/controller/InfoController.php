@@ -171,7 +171,7 @@ class InfoController extends UserBaseController
         $data=$this->request->param('');
         $validate = new Validate([
              
-            'code'  => 'require|number|length:6',
+            'code'  => 'require|number|length:4',
             'tel' => 'require|number|length:11',
             'psw' => 'require|min:6|max:20',
         ]);
@@ -200,21 +200,16 @@ class InfoController extends UserBaseController
             if(!empty($tmp)){
                 $this->error("您的手机号已存在");
             }
-            //判断密码
-            $user=$m_user->where('id',$uid)->find(); 
-            $result=zz_psw($user, $data['psw']);
+            //判断密码 
+            $result=zz_psw($uid, $data['psw']);
             if(empty($result[0])){
                 $this->error($result[1],$result[2]);
             }
             //短信验证码
-            $msg=new Msg();
-            $res=$msg->verify($data['tel'],$data['code']);
-            if($res!=='success'){
-                $this->error($res);
-            } 
+             
             $m_user->where('id',$uid)->update(['mobile'=>$data['tel']]);
             session('user.mobile',$data['tel']);
-            $this->success('手机号更改成功',url('user/info/setting'));
+            $this->success('手机号更改成功',url('user/info/info'));
         } else {
             $this->error("您输入的手机号格式错误");
         }
