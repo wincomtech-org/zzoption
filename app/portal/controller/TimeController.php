@@ -18,11 +18,12 @@ class TimeController extends HomeBaseController
     {
         //上证指数、深证成指、创业板指
         $stockModel = new Stock;
-
-        $post = $stockModel->getIndice();
-
-        model('stock/StockIndice')->isUpdate(true)->saveAll($post);
-        cmf_log('股市指数获取结束', 'stock_indice.log');
+        for ($i=0; $i < 20; $i++) { 
+            $post = $stockModel->getIndice();
+            model('stock/StockIndice')->isUpdate(true)->saveAll($post);
+            sleep(3);
+        }
+        cmf_log('股市指数获取结束', 'stock_indice.log');exit;
         // sleep(3);
         // $this->redirect('portal/Time/indice');
     }

@@ -18,14 +18,14 @@ class TestController extends HomeBaseController
     public function sms()
     {
         // session('sms',null);
-        $msg = session('sms');
+        // $msg = session('sms');
         // // $msg = [];
-        dump($msg);
+        // dump($msg);
         // dump($msg['time']);die;
         // dump(intval(session('sms.time')));die;
         $result = '';
         $sms = new Dy();
-        $result = $sms->dySms('18715511536',2);
+        $result = $sms->dySms('18715511536',1);
 
         // $result = Dy::oneSms();
 
