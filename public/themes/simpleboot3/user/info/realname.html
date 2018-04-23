@@ -57,16 +57,11 @@ $('button').click(function(){
  	var name=$.trim($('input[name=uname]').val());
  	var idcard=$.trim($('input[name=idcard]').val());
 	 var bank=$.trim($('input[name=bank]').val());
-    /*  if(tel== '' || isPhoneNo(tel) == false){
-         $('input[name="tel"]').focus();
-         alert('提示：请输入正确手机号');
-         return false;
-     }else  if(password == '' || isPassword(password) == false){
-         $('input[name="password"]').focus();
-         alert('提示：请输入6位数字密码');
-         return false;
-     }   */
-    if(!is_bankCard(bank)){alert("请输入正确的卡号");return false}
+	if(!is_username(name)){alert("请输ff入正确22姓名");return false;}
+	if(!is_idcard1(idcard)||!is_idcard2(idcard)){alert("请输入正确得身份证");return false}
+	console.log(!is_idcard1(idcard)||!is_idcard2(idcard))
+	if(!is_bankCard(bank)){alert("请输入正确的卡号");return false}
+	console.log(!is_bankCard(bank))
      button_click(obj,1,text[1]);
    
     $.ajax({

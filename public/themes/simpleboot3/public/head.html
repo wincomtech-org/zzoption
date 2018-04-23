@@ -17,8 +17,8 @@
 	<meta http-equiv="Cache-Control" content="no-siteapp" />
 	<meta name="HandheldFriendly" content="true">
 	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="__TMPL__/public/assets/js/regExp.js"></script>
-	<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+ 
+ 
 	<script type="text/javascript">
 		var a=$(window).width();
 		$("html").css("font-size",a/7.5+"px");
@@ -29,6 +29,7 @@
 		function msg(text,html=''){
 			console.log(text);
 			alert(text);
+			
 			if(html!=''){
 				$('body').append(html);
 			}
@@ -81,5 +82,19 @@
 			var reg=/^([1-9]{1})(\d{14}|\d{18})$/;
 			return reg.test(str);
 		}
-		
+		function is_username(str){
+			 
+			var reg=/^[\u4E00-\u9FA5]{2,20}$/;
+			return reg.test(str);
+		}
+		//18位
+		function is_idcard1(str){
+			var reg=/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+			return reg.test(str);
+		}
+		//15位
+		function is_idcard2(str){
+			var reg=/^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$/;
+			return reg.test(str);
+		}
 	</script>

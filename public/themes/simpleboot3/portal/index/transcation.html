@@ -20,56 +20,7 @@
 		</ul>
 		<div class="show_g">
 <!--			询价-->
-			<div style="display:block" class="shows_1">
-				<div>
-					<p>股票名称：</p>
-					<input class="input1" type="text" placeholder="输入股票代码/名称" value="<notempty name='stock.name'>{$stock.name}</notempty>">
-					<div class="botton_input"> 
-					</div>
-				</div>
-				
-				<div>
-					<p>方向：</p>
-					<bottom>买涨</bottom>
-				</div>
-				<div>
-					<p>名义本金：</p>
-					<ol class="principal">
-					<foreach name="money_off" item="vo">
-						<li class="no_click_s" ><span>{$vo}</span>万</li>
-					</foreach>
-					<foreach name="money_on" item="vo" k="key">
-						<li class="click_yes <eq name='key' value='0'>red</eq>"><span>{$vo}</span>万</li>
-					</foreach>
-						 
-					</ol>
-<!--					清除浮动-->
-					<div style="clear: both;"></div>
-				</div>
-				<div>
-					<p>行权周期：</p>
-					<ol class="cycle">
-					<foreach name="day" item="vo" k="key">
-						<li class="click_yes <eq name='key' value='0'>red</eq>"><span>{$vo}</span>月</li>
-					</foreach>
-						 
-					</ol>
-				</div>
-				<div>
-					<span id="label_s"></span>
-					<p>
-						<label class="label_s">
-							我已阅读并同意
-						</label>
-						<a href="{:url('portal/guide/agreement',['name'=>'trade'])}">{$guide}</a>期权有风险，入市须谨慎！
-					</p>
-				</div>
-				<div>
-				<input type="hidden" id="code0" value="{$stock.code0|default=''}"/>
-				<input type="hidden" id="name" value="{$stock.name|default=''}"/>
-					<input class="tijiao" type="button" value="确定">
-				</div>
-			</div>
+<include file="public@inquiry" />
 <!--			买入-->
 			<div class="shows_2">
 				<div>
