@@ -135,10 +135,10 @@ $('#psw_btn').click(function(){
          return false;
      }else if(psw1 == '' || is_password(psw1) == false){
          $('input[name="psw1"]').focus();
-         msg('提示：请输入正确6位数字');
+         msg('提示：请输入正确的密码');
          return false;
      }else if(psw2 == '' || psw2 != psw1 ){
-         $('input[name="password2"]').focus();
+         $('input[name="psw2"]').focus();
          msg('提示：两次密码不一致');
          return false;
      }  

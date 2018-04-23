@@ -34,20 +34,18 @@ class ConfigController extends AdminBaseController
     public function index()
     { 
         
-        $info=[
-            'zztitle'=>config('zztitle'),
-            'rate'=>config('rate'),
-            'rate_overdue'=>config('rate_overdue'),
-            'tel1'=>config('tel1'),
-            'tel2'=>config('tel2'),
-            'paper_day' =>config('paper_day'),
-            'paper_money' =>config('paper_money'),
-            'company'=>config('company'),
-            'pay_ali'=>config('pay_ali'),
-            'pay_bank'=>config('pay_bank')
+        $list=[
+            'money_off'=>['title'=>'名义本金<br/>（万元，不可选，用-分隔）','info'=>implode('-', config('money_off'))],
+            'money_on'=>['title'=>'名义本金<br/>（万元，可选，用-分隔）','info'=>implode('-', config('money_on'))],
+            'day'=>['title'=>'周期<br/>（月，用-分隔）','info'=>implode('-', config('day'))],
+            'notice_day'=>['title'=>'期权到期提醒天数<br/>（持仓临近期限提醒）','info'=>config('notice_day')],
+            'sell_day'=>['title'=>'期权买入后可行权天数<br/>（持仓超过此天数才可行权）','info'=>config('sell_day')],
+            'psw_count'=>['title'=>'密码错误次数<br/>（超过将退出登录）','info'=>config('psw_count')],
+            'psw_fail'=>['title'=>'密码错误次数<br/>（超过将不能登录，次日清零）','info'=>config('psw_fail')],
+            
             
         ];
-        $this->assign('info',$info);
+        $this->assign('list',$list);
         
         return $this->fetch();
     }
@@ -67,39 +65,34 @@ class ConfigController extends AdminBaseController
      */
     function editPost(){
        
-        $data= $this->request->param();
-        $tmp=explode('-',$data['paper_day']);
-        foreach($tmp as $k=>$v){
-            if(intval($v)<=0 || intval($v)!=$v){
-                $this->error('借款时间只能为大于等于0的整数，用-分隔');
+        $data0= $this->request->param('','','trim');
+        $data=[];
+        $data['money_off']=explode('-',$data0['money_off']);
+        foreach($data['money_off'] as $k=>$v){
+            $i=intval($v);
+            if($i<=0 || $i!=$v){
+                $this->error('名义本金只能为大于0的整数，用-分隔');
             }
         }
-        $tmp=explode('-',$data['paper_money']);
-        if(count($tmp)!=2 || $tmp[0]<0 || $tmp[0]>=$tmp[1] || 
-            preg_match(config('reg_money'), $tmp[0])!==1 ||
-            preg_match(config('reg_money'), $tmp[1])!==1){
-            $this->error('借款金额范围格式为最小金额-最大金额');
+        $data['money_on']=explode('-',$data0['money_on']);
+        foreach($data['money_on'] as $k=>$v){
+            $i=intval($v);
+            if($i<=0 || $i!=$v){
+                $this->error('名义本金只能为大于0的整数，用-分隔');
+            }
         }
-        if(preg_match('/^[0-9]{1,2}$/', $data['rate'])!==1 || 
-            preg_match('/^[0-9]{1,2}$/', $data['rate_overdue'])!==1){
-            $this->error('利率为0-99的整数');
-         }
-         $data['pay_ali']=[
-             'id'=>$data['pay_ali_id'],
-             'name'=>$data['pay_ali_name'],
-             'title'=>'支付宝'
-         ];
-         $data['pay_bank']=[
-             'id'=>$data['pay_bank_id'],
-             'name'=>$data['pay_bank_name'],
-             'title'=>$data['pay_bank_title'],
-         ];
-         unset($data['pay_ali_id']);
-         unset($data['pay_ali_name']);
-         unset($data['pay_bank_id']);
-         unset($data['pay_bank_name']);
-         unset($data['pay_bank_title']);
-       
+        $data['day']=explode('-',$data0['day']);
+        foreach($data['day'] as $k=>$v){
+            $i=intval($v);
+            if($i<=0 || $i!=$v){
+                $this->error('周期只能为大于0的整数，用-分隔');
+            }
+        }
+        $data['notice_day']=intval($data0['notice_day']);
+        $data['sell_day']=intval($data0['sell_day']);
+        $data['psw_count']=intval($data0['psw_count']);
+        $data['psw_fail']=intval($data0['psw_fail']);
+     
         $result=cmf_set_dynamic_config($data);
         if(empty($result)){
             $this->error('修改失败');

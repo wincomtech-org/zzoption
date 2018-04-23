@@ -1,0 +1,122 @@
+<include file="public@head" />
+  
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+	 
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+	</head>
+		 
+	<body>
+		<div class="point">
+			<div class="alltop">
+				<div class="top">
+					<a href="{:url('info')}">
+						<div class="t_left">
+
+						</div>
+					</a>
+					<div class="t_right">
+						<span>{$html_title}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="name">
+			<div class="myname">
+				<input type="text" name="tel" id="" value="" placeholder="请输入新手机号" />
+			</div>
+			<div class="c_btn">
+				<button type="button" id="sms_btn">点击发送</button>
+			</div>
+		</div>
+		<div class="name">
+			<div class="myname">
+				<input type="text" name="sms" id="" value="" placeholder="请输入短信验证码" />
+			</div>
+		</div>
+		<div class="name">
+			<div class="myname">
+				<input type="text" name="psw1" id="" value="" placeholder="请输入密码" />
+			</div>
+		</div>
+		 
+		<div class="n_button">
+			<a href="">
+				<button type="button" id="mobile_btn">提交</button>
+			</a>
+		</div>
+	</body>
+
+</html>
+<script>
+ 
+//验证手机号;
+function is_mobile(tel){
+	var reg=/^[1][3,4,5,6,7,8][0-9]{9}$/; 
+	return reg.test(tel);
+} 
+//验证密码格式（只能字母+数字组合）;
+function is_password(str){
+	var reg=/^[a-zA-Z0-9]{6,20}$/;
+	return reg.test(str);
+}
+ $('#sms_btn').click(function(){ 
+	var tel=$.trim($('input[name=tel]').val()); 
+  
+   	if(tel=='' || is_mobile(tel) == false){ 
+   		msg('请先填写正确的手机号码');
+  		return false;
+   	}
+    
+   	$.ajax({
+           type: 'POST',
+           url: "{:url('user/register/sendmsg')}",
+           dataType: 'json',
+           data:{'tel':tel,'type':'mobile'},
+           success: function(data){ 
+        	if(data.code==1){
+        		msg('发送成功'); 
+                    //settime();
+           	}else{  
+           		msg(data.msg); 
+           	} 
+           },
+           error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
+         	 
+          	msg('服务器连接失败',event.responseText);
+          }
+       }); 
+   	return false;  
+});
+ 
+  // 找回密码表单验证
+$('#mobile_btn').click(function(){
+   	var tel=$.trim($('input[name=tel]').val());
+ 
+	var code=$.trim($('input[name=sms]').val());
+	var psw1=$.trim($('input[name=psw1]').val());
+ 
+ 
+     if(tel == '' || is_mobile(tel) == false){
+         $('input[name="tel"]').focus();
+        msg('提示：请输入正确手机号');
+         return false;
+     }else if(psw1 == '' || is_password(psw1) == false){
+         $('input[name="psw1"]').focus();
+         msg('提示：请输入正确的密码');
+         return false;
+     } 
+     $.post("{:url('user/info/ajax_mobile')}",
+       		 {'code':code,'tel':tel,'psw':psw1},
+       		 function(data){ 
+       			msg(data.msg); 
+       			 if(data.url!=''){
+               	     location.href=data.url; 
+               	 }
+       	});
+     
+   	return false;
+  });
+  
+</script>
