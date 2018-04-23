@@ -178,7 +178,7 @@ class OrderController extends AdminBaseController
        
         $m->where('id',$data['id'])->update($data_order);
         //询价结果变化通知客户
-        $dsc='('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'元,周期'.$info['month'].'个月)';
+        $dsc=zz_msg_dsc($info);
        
         if($info['status']==1){
             $dsc.='询价成功，权利金为'.$data_order['money1'];
@@ -262,8 +262,8 @@ class OrderController extends AdminBaseController
         $m_user=Db::name('user');
         $user=$m_user->where('id',$info['uid'])->find();
         //询价结果变化通知客户
-        $dsc='('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'元,周期'.$info['month'].'个月)';
        
+        $dsc=zz_msg_dsc($info);
         if($data_order['status']==4){
             $dsc.='买入成功';
         }else{
@@ -379,8 +379,8 @@ class OrderController extends AdminBaseController
         //若选择行权成功则盈利返还用户余额，若由行权成功、过期改为行权中会从余额中扣款，余额不足则失败
         $m_user=Db::name('user');
         $user=$m_user->where('id',$info['uid'])->find();
-       
-        $dsc='('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'元,周期'.$info['month'].'个月)';
+        $dsc=zz_msg_dsc($info);
+        
         if($data_order['status']==7){
             $data_order['money2']=zz_get_money($info['price1_0'], $data_order['price2_0'], $info['money0']);
             //之前结算过，计算新旧盈利的差值后给用户 

@@ -28,10 +28,14 @@ function zz_get_money($price1, $price2, $money0){
     if($tmp1<=0){
         return 0;
     }
-    $tmp2=bcmul($tmp1, $money0,4);
+    $tmp2=bcmul($tmp1, $money0*10000,4);
     return bcdiv($tmp2,$price1,2);
 }
-
+/* 用户通知内容拼接 */
+function zz_msg_dsc($info){
+    return '('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'万元,周期'.$info['month'].'个月)';
+}
+/* 用户通知 */
 function zz_msg($data){
     //先保存消息内容再保存用户消息连接
     $data_txt=[
@@ -50,7 +54,51 @@ function zz_msg($data){
     Db::name('msg')->insert($data_msg);
     
 }
-  
+/* 批量发送消息 */
+function zz_msgs($data){
+    //先保存消息内容再保存用户消息连接
+    $data_txt=[
+        'aid'=>$data['aid'],
+        'title'=>$data['title'],
+        'content'=>$data['content'],
+        'type'=>$data['type'],
+        'time'=>time(),
+    ];
+    $msg_id=Db::name('msg_txt')->insertGetId($data_txt);
+    foreach($data['order'] as $k=>$v){
+        
+    }
+    $data_msg=[
+        'msg_id'=>$msg_id,
+        'uid'=>$data['uid']
+    ];
+    Db::name('msg')->insert($data_msg);
+    
+}
+/* 密码输入 */
+function zz_psw($uid,$psw){
+    $psw_count=config('psw_count');
+    $m_user=Db::name('user');
+    $user=$m_user->where('id',$uid)->find(); 
+    if($user['user_pass']!=session('user.user_pass')){
+        session('user',null);
+        return [0,'密码已修改，请重新登录',url('user/login/login')];
+    }
+    //登录失败6次锁定
+    if($user['psw_fail']>=$psw_count){
+        return [0,'密码错误已达'.$psw_count.'次，请重新登录',url('user/login/login')];
+    }
+   
+    if(cmf_compare_password($psw, $user['user_pass'])){
+        $m_user->where('id',$uid)->update(['psw_fail'=>0]); 
+        return [1];
+    }else{
+        $m_user->where('id',$uid)->setInc('psw_fail'); 
+       
+        return [0,'密码错误'.($user['psw_fail']+1).',连续'.$psw_count.'次将退出登录!',''];
+    }
+    
+}
 /* 发送微信信息 */
 /*  cURL函数简单封装 */
 function zz_curl($url, $data = null)
