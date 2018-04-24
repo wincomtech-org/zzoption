@@ -67,7 +67,7 @@ class Creeper
                         }
                     }
 
-                    $result = Db('stock_news')->insertAll($post);
+                    $result = Db::name('stock_news')->insertAll($post);
                     return $result;
                 }
 
