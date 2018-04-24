@@ -15,10 +15,11 @@ use think\Model;
 
 class UserModel extends Model
 {
-    public function doMobile($user,$psw_count=6)
+    public function doMobile($user)
     {
         $userQuery = Db::name("user");
-        
+        //密码失败锁定的极限次数
+        $psw_count=config('psw_fail');
         $result = $userQuery->where('mobile', $user['mobile'])->find();
         
         
