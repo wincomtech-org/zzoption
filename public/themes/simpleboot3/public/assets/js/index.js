@@ -1,25 +1,4 @@
 $(function(){
-	sessionStorage.removeItem("href_s");
-	sessionStorage.setItem("href_s","./index.html");
-//切换页面再回到首页滚动条回到上次位置，增加用户体验！
-	var num_s=0;
-	var height_s=sessionStorage.getItem("hei");
-	$(window).scrollTop(height_s);
-	$(window).scroll(function(){
-		num_s=$(window).scrollTop();
-		sessionStorage.removeItem("hei");
-		sessionStorage.setItem("hei",num_s);
-	});
-	// //在首页点击foorter的首页回到顶部
-	// $(".footer>ol>a:nth-child(1)").click(function(){
-	// 	$("html,body").animate({
-	// 		scrollTop:"0"
-	// 	},500);
-	// });
-	//点击询价删除参数
-	$(".func>ol>a:nth-child(1)").click(function(){
-		sessionStorage.removeItem("key");
-	});
 	//轮播开始
 	//=================
 	(function(){
@@ -60,7 +39,6 @@ $(function(){
 			if(a>(s-2)){a=0}
 			$($(".body_s>.imgs>ol>li")[a]).addClass("lis").siblings().removeClass("lis");
 			marginL+=wih_s;
-//			console.log(marginL);
 			if(marginL>wih_s*(s-1)){
 				$(".body_s>.imgs>ul").animate({
 					marginLeft:"0px",
@@ -88,11 +66,9 @@ $(function(){
 	//询价轮播开始
 	//==============
 	var bs="<div>"+$(".body_s>.xydan>div>div:nth-child(2)>div>div:first-child").html()+"</div>"
-//	console.log(bs);
 	$(".body_s>.xydan>div>div:nth-child(2)>div").append(bs);
 	var dheig=$(".body_s>.xydan>div>div:nth-child(2)>div").height();
 	var xheigs=$(".body_s>.xydan>div>div:nth-child(2)>div>div").height();
-//	console.log(dheig,xheigs);
 	var marginT=xheigs;
 	setInterval(function(){
 		marginT+=xheigs;

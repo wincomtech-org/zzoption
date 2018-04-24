@@ -1,50 +1,47 @@
 <include file="public@head" />
-  
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
-	 
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
+  		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+	 	<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
 		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
 	</head>
+<body>
+	<div class="point">
+		<div class="alltop">
+			<div class="top">
+				<a href="{:url('info')}">
+					<div class="t_left">
 
-	<body>
-		<div class="point">
-			<div class="alltop">
-				<div class="top">
-					<a href="{:url('info')}">
-						<div class="t_left">
-
-						</div>
-					</a>
-					<div class="t_right">
-						<span>{$html_title}</span>
 					</div>
+				</a>
+				<div class="t_right">
+					<span>{$html_title}</span>
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="name">
-			<div class="myname">
-				<input type="text" name="uname" id="" value="{$user.user_nickname}" placeholder="请输入姓名" />
-			</div>
+	<div class="name">
+		<div class="myname">
+			<input type="text" name="uname" id="" value="{$user.user_nickname}" placeholder="请输入姓名" />
 		</div>
-		<div class="name">
-			<div class="myname">
-				<input type="text" name="idcard" id="" value="{$user.user_login}" placeholder="请输入身份证号" />
-			</div>
+	</div>
+	<div class="name">
+		<div class="myname">
+			<input type="text" name="idcard" id="" value="{$user.user_login}" placeholder="请输入身份证号" />
 		</div>
-		<div class="name">
-			<div class="myname">
-				<input type="text" name="bank" id="" value="{$user.bank_card}" placeholder="请输入银行卡号" />
-			</div>
-
+	</div>
+	<div class="name">
+		<div class="myname">
+			<input type="text" name="bank" id="" value="{$user.bank_card}" placeholder="请输入银行卡号" />
 		</div>
 
-		<div class="n_button">
-			<a href="javascript:void(0);">
-				<button type="button">提交</button>
-			</a>
-		</div>
-	</body>
+	</div>
+
+	<div class="n_button">
+		<a href="javascript:void(0);">
+			<button type="button">提交</button>
+		</a>
+	</div>
+</body>
 
 </html>
 <script>

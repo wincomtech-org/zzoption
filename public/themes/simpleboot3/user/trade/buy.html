@@ -26,7 +26,10 @@
 <!--					改变的数据-->
 				<foreach name="list" item="vo">
 					 <div class="sub_s_h">
-						<span class="auto_br">{$vo.code}/{$vo.name}</span>
+						 <span class="auto_br">
+							 <span class="span_sy1">{$vo.code}</span>
+							 <span class="span_sy1">{$vo.name}</span>
+						 </span>
 						<span>{$vo.money0}万</span>
 						<span>{$vo.month}个月</span>
 						<span>{$vo.money1}元</span>
@@ -49,15 +52,15 @@
 	
 <include file="public@foot"/>
 <script>
-	function auto_br(){
-		var a=$(window).width();
-		if(a<=360){
-			for(var i=0;i<$(".auto_br").length;i++){
-				$($(".auto_br")[i]).html($($(".auto_br")[i]).html().split("/").join("<br>"));
-			}
-		}
-	}
-	auto_br();
+//	function auto_br(){
+//		var a=$(window).width();
+//		if(a<=360){
+//			for(var i=0;i<$(".auto_br").length;i++){
+//				$($(".auto_br")[i]).html($($(".auto_br")[i]).html().split("/").join("<br>"));
+//			}
+//		}
+//	}
+//	auto_br();
 // 提交
  
 var text=['买入','正在买入'];

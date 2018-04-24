@@ -45,9 +45,16 @@
    float: left; 
    width:0.58rem;
    height: 0.58rem;
-   background-image:url(../img/mess.png) ;
-   background-size: cover;
    margin: 0.55rem 0;
    margin-left: 0.5rem;
    
 }
+.s_img>img{
+	width:100%;
+	height:100%;
+}
+
+
+
+
+
