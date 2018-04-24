@@ -140,6 +140,7 @@ class OrderController extends AdminBaseController
         $data=$this->request->param();
         $where=['id'=>$data['id']];
         $info=$m->where($where)->find();
+       
         if(empty($info)){
             $this->error('订单不存在');
         }
@@ -185,7 +186,7 @@ class OrderController extends AdminBaseController
         }else{
             $dsc.='询价失败';
         }
-        $user=Db::name('user')->where('uid',$info['uid'])->find();
+        $user=Db::name('user')->where('id',$info['uid'])->find();
         //先保存消息内容再保存用户消息连接
         $data_msg=[
             'aid'=>$data_action['aid'],
@@ -265,6 +266,7 @@ class OrderController extends AdminBaseController
        
         $dsc=zz_msg_dsc($info);
         if($data_order['status']==4){
+            $data_order['have_time']=$data_order['time'];
             $dsc.='买入成功';
         }else{
             $dsc.='买入失败';
@@ -391,7 +393,7 @@ class OrderController extends AdminBaseController
                 $money_add=$data_order['money2'];
                 $dsc.='行权成功，计算盈利'.$money_add.'元';
             }
-           
+            $data_order['out_time']=$data_order['time'];
             //用户余额操作和用户资金明细记录
             $money=bcadd($user['money'],$money_add,2); 
            
@@ -445,7 +447,171 @@ class OrderController extends AdminBaseController
         $this->success('保存成功！',url('index'));
         
     }
-    
+    /**
+     * 管理员代行权
+     * @adminMenu(
+     *     'name'   => '管理员代行权',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> false,
+     *     'order'  => 10,
+     *     'icon'   => '',
+     *     'remark' => '管理员代行权',
+     *     'param'  => ''
+     * )
+     */
+    public function admin_sell()
+    {
+        $this->time_check();
+        
+        $m=$this->m;
+        
+        $data=$this->request->param();
+        $where=['id'=>$data['id']];
+        $info=$m->where($where)->find();
+        if(empty($info)){
+            $this->error('订单不存在');
+        }
+        if($info['status']!=4 || $info['is_old']!=0){
+            $this->error('信息错误');
+        }
+        $time=time();
+        $data_order=[
+            'status'=>6,  
+            'time'=>$time,
+            'dsc'=>(empty($info['dsc'])?'':($info['dsc'].'，')).'管理员代行权',
+            'sell_time'=>$time,
+            'out_time'=>$time,
+        ];
+         
+        $data_action=[
+            'aid'=>session('ADMIN_ID'),
+            'type'=>'order',
+            'key'=>$info['oid'],
+            'time'=>$data_order['time'],
+            'ip'=>get_client_ip(),
+            'action'=>'对订单'.$info['oid'].'代行权',
+            
+        ];
+         
+        Db::startTrans();
+         
+        //管理员代行权，通知用户
+        $m_user=Db::name('user');
+        $user=$m_user->where('id',$info['uid'])->find();
+        $dsc=zz_msg_dsc($info);
+         
+        $m->where('id',$data['id'])->update($data_order);
+        
+        $data_msg=[
+            'aid'=>$data_action['aid'],
+            'title'=>'管理员代行权',
+            'content'=>$dsc.'管理员代行权',
+            'type'=>2,
+            'uid'=>$user['id'],
+            'mobile'=>$user['mobile'],
+        ];
+        
+        zz_msg($data_msg);
+        
+        Db::name('action')->insert($data_action);
+        Db::commit();
+        
+        $this->success('保存成功！',url('edit',['id'=>$info['id']]));
+        
+    }
+    /**
+     * 管理员代买入
+     * @adminMenu(
+     *     'name'   => '管理员代买入',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> false,
+     *     'order'  => 10,
+     *     'icon'   => '',
+     *     'remark' => '管理员代买入',
+     *     'param'  => ''
+     * )
+     */
+    public function admin_buy()
+    {
+        $this->time_check();
+        
+        $m=$this->m;
+        
+        $data=$this->request->param();
+        $where=['id'=>$data['id']];
+        $info=$m->where($where)->find();
+        if(empty($info)){
+            $this->error('订单不存在');
+        }
+        if($info['status']!=1 || $info['is_old']!=0){
+            $this->error('信息错误');
+        }
+        //余额不足则失败
+        $m_user=Db::name('user');
+        $user=$m_user->where('id',$info['uid'])->find();
+        $money=bcsub($user['money'],$info['money1'],2);
+        if($money<0){
+            $this->error('用户余额不足');
+        }
+        $time=time();
+        $data_order=[
+            'status'=>4,
+            'time'=>$time,
+            'dsc'=>(empty($info['dsc'])?'':($info['dsc'].'，')).'管理员代买入',
+            'buy_time'=>$time,
+            'have_time'=>$time,
+            'end_time'=>strtotime('+'.$info['month'].' months'), 
+        ];
+        
+        $data_action=[
+            'aid'=>session('ADMIN_ID'),
+            'type'=>'order',
+            'key'=>$info['oid'],
+            'time'=>$data_order['time'],
+            'ip'=>get_client_ip(),
+            'action'=>'对订单'.$info['oid'].'代买入',
+            
+        ];
+        
+        Db::startTrans();
+         
+        $dsc=zz_msg_dsc($info);
+        
+        $m->where('id',$data['id'])->update($data_order);
+        
+        $m_user->where('id',$info['uid'])->update(['money'=>$money]);
+        $dsc.='管理员代买入,花费'.$info['money1'].'元';
+        //记录资金明细
+        $data_money=[
+            'uid'=>$user['id'],
+            'money'=>'-'.$info['money1'],
+            'status'=>1,
+            'type'=>1,
+            'time'=>$data_order['time'],
+            'insert_time'=>$data_order['time'],
+            'dsc'=>$dsc,
+        ];
+        Db::name('money')->insert($data_money);
+         
+        $data_msg=[
+            'aid'=>$data_action['aid'],
+            'title'=>'管理员代买入',
+            'content'=>$dsc,
+            'type'=>2,
+            'uid'=>$user['id'],
+            'mobile'=>$user['mobile'],
+        ]; 
+        
+        zz_msg($data_msg);
+       
+        Db::name('action')->insert($data_action);
+        Db::commit();
+        
+        $this->success('保存成功！',url('edit',['id'=>$info['id']]));
+        
+    }
     /* 判断是否交易时间 */
     public function time_check(){
         

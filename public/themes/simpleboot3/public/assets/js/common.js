@@ -4,7 +4,7 @@ $(window).resize(function(){
     var a=$(window).width();
     $("html").css("font-size",a/7.5+"px");
 });
-function msg(text,html=''){
+function msg(text,html='',url=''){
     var str='<div class="show_box"><div class="show_box_s"><p class="text_p1">个股期权温馨提示</p><p class="text_p2">'+text+'</p><button class="btn_ght">确认</button></div></div>'
     $("body").append(str);
 	var timer_s=setTimeout(function(){
@@ -13,6 +13,9 @@ function msg(text,html=''){
 	$(".btn_ght").click(function(){
 		clearInterval(timer_s);
 		$(".show_box").fadeOut().remove();
+		if(url!=''){
+			self.location=url;
+		}
 	});
 	if(html!=''){
 		$('body').append(html);

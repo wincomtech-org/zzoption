@@ -97,8 +97,14 @@
 				 <neq name="info.is_old" value="1">
 					<button type="submit" class="btn btn-primary js-ajax-submit">确认买入信息</button>
 				 </neq>
-				 
-					<a class="btn btn-default" href="javascript:history.go(-1);">{:lang('BACK')}</a>
+				 &nbsp;&nbsp;&nbsp;
+					<a class="btn btn-default" href="{:url('index')}">{:lang('BACK')}</a>
+					&nbsp;&nbsp;&nbsp;
+				<eq name="info.status" value="4">
+				<eq name="info.is_old" value="0">
+					<a class="js-ajax-delete" data-msg="确认代行权吗？" href="{:url('admin_sell',['id'=>$info.id])}">管理员行权</a>
+				</eq>
+				</eq>
 				</div>
 			</div>
 			 <div class="form-group">

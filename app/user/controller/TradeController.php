@@ -27,74 +27,7 @@ class TradeController extends UserBaseController
         $this->assign('html_title','交易');
         $this->assign('html_flag','trade');
     }
-    /*询价 */
-    public function index(){
-        $code0=$this->request->param('code0','','trim');
-        $name=$this->request->param('code','','trim');
-        //查询股票
-        $m_stock=Db::name('stock');
-        if(!empty($code0)){
-            $stock=$m_stock->where('code0',$code0)->find();
-            $this->assign('stock',$stock);
-        }elseif(!empty($name)){
-            $whereOr=[
-                'code|code0|name'=>['eq',$name],
-            ];
-            $stock=$m_stock->whereOr($whereOr)->find();
-            $this->assign('stock',$stock);
-        }
-        if(empty($stock)){
-            $this->assign('code',$name); 
-        }else{
-            $this->assign('stock',$stock);
-        }
-        
-        $guide=Db::name('guide')->where('name','trade')->find();
-        $this->assign('html_title','询价');
-        
-        $this->assign('guide',$guide['title']);
-        $this->assign('day',config('day'));
-        
-        $this->assign('money_off',config('money_off'));
-        $this->assign('money_on',config('money_on'));
-        return $this->fetch();
-    }
-    /*  询价 */
-    public function ajax_inquiry(){
-     
-        $this->time_check();
-        $user=session('user');
-        $data=$this->request->param();
-        
-        $stock=Db::name('stock')->where('code0',$data['code0'])->find();
-        if(empty($stock)){
-            $this->error('股票不存在');
-        }
-        if($stock['name']!=$data['name']){
-            $this->error('请选择股票');
-        }
-        if($stock['status']!=1){
-            $this->error('该股票不能交易');
-        }
-        $time=time();
-        $data_order=[
-            'code'=>$stock['code'],
-            'code0'=>$stock['code0'],
-            'name'=>$stock['name'],
-            'uid'=>$user['id'],
-            'uname'=>$user['user_nickname'],
-            'oid'=>cmf_get_order_sn('yh'),
-            'money0'=>$data['money'],
-            'month'=>$data['month'],
-            'status'=>0,
-            'inquiry_time'=>$time,
-            'time'=>$time,
-        ];
-        $m=$this->m;
-        $m->insert($data_order);
-        $this->success('已提交，等待后台回复',url('buy'));
-        
-    }
+    
     /*买入界面，即询价后 */
     public function buy(){
         $m=$this->m;
@@ -106,6 +39,7 @@ class TradeController extends UserBaseController
         ];
         $list=$m->where($where)->order($this->sort)->select();
         $this->assign('list',$list);
+        $this->assign('html_title','买入');
         $this->assign('order_status',config('order_status'));
         return $this->fetch();
     }
@@ -140,21 +74,19 @@ class TradeController extends UserBaseController
         }
         $money_new=bcsub($user['money'],$order['money1'],2);
         $time=time();
-        //要计算行权最后期限,以提前5天提醒用户
-        //要重新计算,可以放到后台
-        
+         
         $data_order=[ 
             'uname'=>$user['user_nickname'], 
             'status'=>3,
             'buy_time'=>$time,
             'time'=>$time, 
-             
+            'end_time'=>strtotime('+'.$order['month'].' months'), 
         ];
         $m->startTrans();
         $m->where('id',$id)->update($data_order);
         $m_user->where('id',$uid)->update(['money'=>$money_new]);
-        $dsc='('.$order['name'].'('.$order['code0'].'),名义本金'.$order['money0'].'元,周期'.$order['month'].'个月)';
-        //记录资金明细
+        $dsc=zz_msg_dsc($order);
+         //记录资金明细
         $data_money=[
             'uid'=>$uid,
             'money'=>'-'.$order['money1'],
@@ -162,7 +94,7 @@ class TradeController extends UserBaseController
             'type'=>1,
             'time'=>$time,
             'insert_time'=>$time,
-            'dsc'=>'买入'.$dsc, 
+            'dsc'=>$dsc.'买入', 
         ];
         Db::name('money')->insert($data_money);
         $m->commit();
@@ -179,6 +111,7 @@ class TradeController extends UserBaseController
         ];
         $list=$m->where($where)->order($this->sort)->select();
         $this->assign('list',$list);
+        $this->assign('html_title','持仓');
         $this->assign('order_status',config('order_status'));
         return $this->fetch();
     }
@@ -285,7 +218,7 @@ class TradeController extends UserBaseController
         }
        
         $this->assign('list',$tmp);
-        
+        $this->assign('html_title','自选');
         return $this->fetch();
     }
     /*查询 */

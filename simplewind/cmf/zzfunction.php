@@ -57,22 +57,30 @@ function zz_msg($data){
 /* 批量发送消息 */
 function zz_msgs($data){
     //先保存消息内容再保存用户消息连接
+    if(empty($data['data'])){
+        return 0;
+    }
+    
+    $time=time();
+    $m_msg_txt=Db::name('msg_txt');
     $data_txt=[
         'aid'=>$data['aid'],
-        'title'=>$data['title'],
-        'content'=>$data['content'],
+         'title'=>$data['title'],  
         'type'=>$data['type'],
-        'time'=>time(),
+        'time'=>$time,
     ];
-    $msg_id=Db::name('msg_txt')->insertGetId($data_txt);
-    foreach($data['order'] as $k=>$v){
-        
+    $data_msg=[];
+    foreach($data['data'] as $k=>$v){
+        $data_txt['content']=zz_msg_dsc($v).$data['title'];
+        $msg_id=$m_msg_txt->insertGetId($data_txt);
+        $data_msg[]=[
+            'msg_id'=>$msg_id,
+            'uid'=>$v['uid']
+        ]; 
     }
-    $data_msg=[
-        'msg_id'=>$msg_id,
-        'uid'=>$data['uid']
-    ];
-    Db::name('msg')->insert($data_msg);
+    
+    return Db::name('msg')->insertAll($data_msg);
+   
     
 }
 /* 密码输入 */
