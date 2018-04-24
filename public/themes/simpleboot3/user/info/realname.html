@@ -51,19 +51,15 @@
 // 提交
  
 $('button').click(function(){
-	 var obj=$(this);
-	 var text=['提交','正在提交'];
- 	 
- 	var name=$.trim($('input[name=uname]').val());
+	var obj=$(this);
+	var text=['提交','正在提交'];
+	var name=$.trim($('input[name=uname]').val());
  	var idcard=$.trim($('input[name=idcard]').val());
-	 var bank=$.trim($('input[name=bank]').val());
-	if(!is_username(name)){alert("请输ff入正确22姓名");return false;}
-	if(!is_idcard1(idcard)||!is_idcard2(idcard)){alert("请输入正确得身份证");return false}
-	console.log(!is_idcard1(idcard)||!is_idcard2(idcard))
-	if(!is_bankCard(bank)){alert("请输入正确的卡号");return false}
-	console.log(!is_bankCard(bank))
-     button_click(obj,1,text[1]);
-   
+	var bank=$.trim($('input[name=bank]').val());
+	if(!is_username(name)){msg("请正确输入姓名！");return false;}
+	if(!is_idcard(idcard)){msg("请正确输入身份证号码！");return false}
+	if(!is_bankCard(bank)){msg("请正确输入您的银行卡号！");return false}
+    button_click(obj,1,text[1]);
     $.ajax({
         type: 'POST',
         url: "{:url('user/info/ajax_name')}",
@@ -80,8 +76,7 @@ $('button').click(function(){
 			}
         },
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
-      	    
-        	 button_click(obj,0,text[0]);
+      	    button_click(obj,0,text[0]);
         	msg('服务器连接失败',event.responseText);
         }
     });

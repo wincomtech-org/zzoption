@@ -38,7 +38,7 @@ function  gggy_s(){
    	var code=$.trim($('input[name=code]').val()); 
    	var psw=$.trim($('input[name=psw]').val()); 
    	if(tel=='' || is_mobile(tel) == false){ 
-  		alert('请先填写正确的手机号码');
+  		msg('请先填写正确的手机号码');
   		return false;
    	}
    	if(psw == '' || is_password(psw) == false){
@@ -48,7 +48,7 @@ function  gggy_s(){
     }
    	if(code == '' || isCode(code) == false){
         $('input[name="code"]').focus();
-        alert('请输入正确的机构码');
+        msg('请输入正确的机构码');
         return false;
 	}
 	//=======================

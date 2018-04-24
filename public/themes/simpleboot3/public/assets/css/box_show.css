@@ -1,0 +1,53 @@
+body,p,ul,ol{margin:0;padding:0;}
+.show_box{
+    width:100vw;
+    height:100vh;
+    background:rgba(0,0,0,.6);
+    position: fixed;
+    top:0;
+    z-index:99999;
+}
+.show_box_s{
+    width:60vw;
+    min-height:30vw;
+    background:#fff;
+    position: absolute;
+    top:35vh;
+    left:0;right:0;
+    margin:auto;
+    border-radius: 0.5rem;
+	border-top-left-radius:0.1rem;
+	border-bottom-right-radius: 0.1rem;
+    box-sizing: border-box;
+    box-shadow: 0.1rem 0.1rem rgba(0,0,0,0.8) ;
+    padding-bottom: 0.2rem;
+}
+.text_p1{
+    font-size:0.3rem;
+    font-weight: 600;
+    padding:0.2rem 0;
+    text-align: center;
+    background:url(../img/point_s.png) no-repeat 0.15rem center;
+    background-size:0.35rem;
+}
+.text_p2{
+    font-size:0.3rem;
+    font-weight: 600;
+    color:#cd4650;
+    padding:0 0.3rem 0.3rem 0.3rem;
+    text-align: center;
+    word-break: break-all;
+}
+.btn_ght{
+    display: block;
+    outline: none;
+    border:none;
+    width:2rem; 
+    height:0.6rem;
+    margin:auto;
+    border-radius: 0.1rem;
+    background:#cd4650;
+    color:#fff;
+    font-size:0.3rem;
+    text-align: center;
+}

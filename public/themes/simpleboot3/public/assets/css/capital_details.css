@@ -47,8 +47,13 @@ a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
 	text-align: center;
 	line-height: 1.1rem;
 	font-size: 0.26rem;
-	color:#333333;
 	position: relative;
+}
+.nav_ssy>ol>li>a{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	color:#333333;
 }
 .nav_ssy>ol>li>span{
 	display: block;
@@ -79,6 +84,7 @@ a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
 	display: flex;
 	padding-right:.4rem;
 	justify-content: space-between;
+	border-bottom: 0.02rem solid #f3f3f3;
 }
 .show_zong>div>div>a>div:nth-child(1){
 	width:4rem;

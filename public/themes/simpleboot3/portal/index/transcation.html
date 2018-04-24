@@ -81,6 +81,13 @@
 <include file="public@foot"/>
  <include file="public@stock_search"/>
 <script>
+	 $(".body_s>ul>li").click(function(){
+		 	a=$(this).index();
+		 	sessionStorage.removeItem("key");
+		 	sessionStorage.setItem("key",a);
+		 	$($(".body_s>ul>li")[a]).addClass("bh_s").siblings().removeClass("bh_s");
+		 	$($(".body_s>.show_g>div")[a]).css("display","block").siblings().css("display","none");
+		 });
 $('.tijiao').click(function(){
 	location.href="{:url('user/login/login')}";
 });
