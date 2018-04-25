@@ -22,7 +22,7 @@ class IndexController extends HomeBaseController
     }
     /* 首页 */
     public function index(){
-        
+       
        //获取分站信息
         $shop=session('shop');
         $banners=Db::name('banner')->where('shop',$shop['id'])->order('sort asc')->column('id,pic,link');
@@ -90,16 +90,20 @@ class IndexController extends HomeBaseController
     }
     /* 询价*/
     public function transcation(){
+          
+        $code0=$this->request->param('code0','','trim');
         $name=$this->request->param('code','','trim');
-        //登录用户跳转
-        if(!empty(session('user'))){
-            $this->redirect(url('user/trade/index',['code'=>$name]));
-        }
-        if(!empty($name)){
+        //查询股票
+        $m_stock=Db::name('stock');
+        if(!empty($code0)){
+            $stock=$m_stock->where('code0',$code0)->find();
+            $this->assign('stock',$stock);
+        }elseif(!empty($name)){
             $whereOr=[
-              'code|code0|name'=>['eq',$name],  
+                'code|code0|name'=>['eq',$name],
             ];
-            $stock=Db::name('stock')->whereOr($whereOr)->find(); 
+            $stock=$m_stock->whereOr($whereOr)->find();
+            $this->assign('stock',$stock);
         }
         if(empty($stock)){
             $this->assign('code',$name);
@@ -107,16 +111,53 @@ class IndexController extends HomeBaseController
             $this->assign('stock',$stock);
         }
         
-        
         $guide=Db::name('guide')->where('name','trade')->find();
-        $this->assign('html_title','交易');
+        $this->assign('html_title','询价');
         $this->assign('html_flag','trade');
         $this->assign('guide',$guide['title']);
         $this->assign('day',config('day'));
-       
+        
         $this->assign('money_off',config('money_off'));
         $this->assign('money_on',config('money_on'));
         return $this->fetch();
+    }
+    /*  询价 */
+    public function ajax_inquiry(){
+        $user=session('user');
+        if(empty($user['id'])){
+            $this->error('请先登录',url('user/login/login'));
+        }
+        
+        $data=$this->request->param();
+        
+        $stock=Db::name('stock')->where('code0',$data['code0'])->find();
+        if(empty($stock)){
+            $this->error('股票不存在');
+        }
+        if($stock['name']!=$data['name']){
+            $this->error('请选择股票');
+        }
+        if($stock['status']!=1){
+            $this->error('该股票不能交易');
+        }
+        $time=time();
+        $data_order=[
+            'code'=>$stock['code'],
+            'code0'=>$stock['code0'],
+            'name'=>$stock['name'],
+            'uid'=>$user['id'],
+            'uname'=>$user['user_nickname'],
+            'oid'=>cmf_get_order_sn('yh'),
+            'money0'=>$data['money'],
+            'month'=>$data['month'],
+            'status'=>0,
+            'inquiry_time'=>$time,
+            'time'=>$time,
+        ];
+        $m=Db::name('order');
+        $m->insert($data_order);
+        $this->success('已提交，等待后台回复',url('user/trade/buy'));
+        
     }
     
      

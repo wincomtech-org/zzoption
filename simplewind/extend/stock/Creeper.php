@@ -1,6 +1,8 @@
 <?php
 namespace stock;
 
+use think\Db;
+
 /**
  * 采集数据
  */
@@ -65,7 +67,7 @@ class Creeper
                         }
                     }
 
-                    $result = $this->insertAll($post);
+                    $result = Db::name('stock_news')->insertAll($post);
                     return $result;
                 }
 

@@ -27,6 +27,7 @@ class HomeBaseController extends BaseController
         
         if(empty($shop['website'])){
             $web=trim($_SERVER['HTTP_HOST']);
+           
             $shop=Db::name('shop')->where('website',$web)->find();
             $shop0=Db::name('shop')->where('id',1)->find();
             if(empty($shop) ){ 
@@ -226,7 +227,7 @@ class HomeBaseController extends BaseController
             //未登录直接跳转到首页
             //$this->redirect(url('portal/index/index'));
             $this->redirect(url('user/login/login'));
-            
+             
         }
     }
 

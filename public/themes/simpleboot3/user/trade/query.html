@@ -11,25 +11,19 @@
 	</div>
 <!--	切换栏-->
 	<div class="body_s">
-		<ul>
-			<li><a href="{:url('index')}">询价</a></li>
-			<li><a href="{:url('buy')}">买入</a></li>
-			<li><a href="{:url('store')}">持仓</a></li>
-			<li><a href="{:url('collect')}">自选</a></li>
-			<li  class="bh_s"><a href="{:url('query')}">查询</a></li>
-		</ul>
+		 <include file="public@trade_nav" />
 		<div class="show_g">
  
 			<div style="display:block" class="shows_5">
 				<div>
-					<a href="./inquiry_record.html">
+					<a href="{:url('user/trade/inquiry_record')}">
 						询价历史
 						<span></span>
 					</a>
 				</div>
 				
 				<div>
-					<a href="./flat_record.html">
+					<a href="{:url('user/trade/flat_record')}">
 						平仓历史
 						<span></span>
 					</a>

@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	 <title>{$shop.title|default=''}-{$html_title|default=''}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0 minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<!-- <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1,target-densitydpi=device-dpi ">   -->
-<!--	<meta name="apple-mobile-web-app-capable" content="yes" />-->
+	<title>{$shop.title|default=''}-{$html_title|default=''}</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0 minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<meta name="HandheldFriendly" content="true">
 	<meta name="format-detection" content="telphone=no, email=no"/> 
 	<meta name="full-screen" content="yes">
@@ -16,39 +14,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Cache-Control" content="no-siteapp" />
 	<meta name="HandheldFriendly" content="true">
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/box_show.css">
 	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-	<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
-	<script type="text/javascript">
-		var a=$(window).width();
-		$("html").css("font-size",a/7.5+"px");
-		$(window).resize(function(){
-			var a=$(window).width();
-			$("html").css("font-size",a/7.5+"px");
-		});
-		function msg(text,html=''){
-			console.log(text);
-			alert(text);
-			if(html!=''){
-				$('body').append(html);
-			}
-		}
-		function button_click(obj,action=1,text='',type=1){
-			if(action==1){
-				 obj.prop('disabled','disabled');
-				 if(text==''){
-					 text='正在提交';
-				 }
-			}else{
-				 obj.prop('disabled',false);
-				 if(text==''){
-					 text='提交';
-				 }
-			} 
-			if(type=1){
-				 obj.text(text);
-			}else{
-				 obj.val(text);
-			}
-		    
-		}
-	</script>
+	<script src="__TMPL__/public/assets/js/common.js"></script>

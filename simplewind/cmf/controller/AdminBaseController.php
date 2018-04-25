@@ -44,17 +44,31 @@ class AdminBaseController extends BaseController
             }
         }
         $shop=session('shop');
-       //没有分站信息或分站信息更新
-        if(empty($shop['id']) || $shop['id']!=$user['shop']){
-            
-            $shop=Db::name('shop')->where('id',$user['shop'])->find();
-            if(empty($shop) || $shop['type']==2){
-                $shop0=Db::name('shop')->where('id',1)->find();
-                $shop['title']=$shop0['title'];
-                $shop['logo']=$shop0['logo'];
-                $shop['tel']=$shop0['tel'];
-                $shop['qrcode']=$shop0['qrcode'];
-                $shop['dsc']=$shop0['dsc'];
+       //没有分站信息或分站信息更新 
+        if(empty($shop['website'])){
+            $web=trim($_SERVER['HTTP_HOST']);
+            $shop=Db::name('shop')->where('website',$web)->find();
+            $shop0=Db::name('shop')->where('id',1)->find();
+            if(empty($shop) ){
+                $shop=$shop0;
+            }
+            switch ($shop['type']){
+                case 0:
+                    $shop['aid']=1;
+                    break;
+                case 1:
+                    $shop['aid']=$shop['id'];
+                    break;
+                case 2:
+                    $tmp=$shop0;
+                    $tmp['aid']=1;
+                    $tmp['id']=$shop['id'];
+                    $tmp['rate']=$shop['rate'];
+                    $tmp['code']=$shop['code'];
+                    $tmp['website']=$shop['website'];
+                  
+                    $shop=$tmp;
+                    break; 
             }
             session('shop',$shop);
         }
