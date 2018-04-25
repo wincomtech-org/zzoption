@@ -54,7 +54,17 @@ class Dy
         // dump($params);die;
         $content = self::base($params);
         if (isset($code)) {
-            self::Orzl($content,$mobile,$code);
+            if ($content->Code=='OK') {
+                $msg = session('sms');
+                $last_time = isset($msg['time'])?$msg['time']:0;
+                $last_mobile = isset($msg['mobile'])?$msg['mobile']:'';
+                $time = time();
+                if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
+                    return ['code'=>'err','msg'=>'不要频繁发送'];
+                }
+                //保存短信信息
+                session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
+            }
         }
 
         // dump($content);die;
@@ -89,32 +99,16 @@ class Dy
         // fixme 必填: 短信模板Code，应严格按"模板CODE"填写, 请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/template
         $params["TemplateCode"] = $tcid;
 
-        // 短信验证码
-        if (in_array($tc,['register','pwd','phone'])) {
-            $code = rand(1000, 9999);
-        }
+
         // fixme 必填: 模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         // 友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
-        foreach ($tp as $row) {
-            $params['TemplateParamJson'][] = [
-                'code'  => isset($code)?$code:'',
-                'name'  => isset($tp['name'])?$tp['name']:'',
-                'indent'=> isset($tp['indent'])?$tp['indent']:'',
-                'content'=>isset($tp['content'])?$tp['content']:'',
-            ];
-        }
-        $params["TemplateParamJson"]  = json_encode($params["TemplateParamJson"], JSON_UNESCAPED_UNICODE);
-
-
-
-        // $params['TemplateParamJson'] = self::Orz($tp);
-        // $content = self::base($params,2);
-        // if (isset($code)) {
-        //     self::Orzl($content,$mobile,$code);
+        
+        // 短信验证码
+        // $code = '';
+        // if (in_array($tc,['register','pwd','phone'])) {
+        //     $code = rand(1000, 9999);
         // }
-        // dump($content);die;
-        // return ['code'=>$content->Code,'msg'=>$content->Message];
-
+        $params['TemplateParamJson'] = self::Orz($tp,$code);
 
 
         // todo 可选: 上行短信扩展码, 扩展码字段控制在7位或以下，无特殊需求用户请忽略此字段
@@ -131,7 +125,10 @@ class Dy
 
         $params['Action'] = 'SendBatchSms';
 
-        return self::base($params);
+        $content =  self::base($params,2);
+
+        // dump($content);die;
+        return ['code'=>$content->Code,'msg'=>$content->Message];
     }
 
     /**
@@ -147,7 +144,10 @@ class Dy
             'Action'        => 'QuerySendDetails',
         ];
 
-        return self::base($params,3);
+        $content = self::base($params,3);
+
+        // dump($content);die;
+        return ['code'=>$content->Code,'msg'=>$content->Message];
     }
 
     /**
@@ -157,31 +157,31 @@ class Dy
     private static function Orz($tp,$code=null)
     {
         //可选，短信模板变量替换JSON串，如果有则需要，没有就不需要。验证码不能是汉字！
-        $tc = [
-            'code'  => isset($code)?$code:'',
-            'name'  => isset($tp['name'])?$tp['name']:'',
-            'indent'=> isset($tp['indent'])?$tp['indent']:'',
-            'content'=>isset($tp['content'])?$tp['content']:'',
-        ];
-        $tc = json_encode($tc,JSON_UNESCAPED_UNICODE);
-        // $tc = '{"code":"'. $code .'"}';
-
-        return $tc;
-    }
-    public static function Orzl($content,$mobile,$code)
-    {
-        if ($content->Code=='OK') {
-            $msg = session('sms');
-            $last_time = isset($msg['time'])?$msg['time']:0;
-            $last_mobile = isset($msg['mobile'])?$msg['mobile']:'';
-            $time = time();
-            if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
-                return ['code'=>'err','msg'=>'不要频繁发送'];
+        $count = self::getmaxdim($tp);
+        if ($count==1) {
+            $tparr = [
+                'code'  => isset($code)?$code:'',
+                'name'  => isset($tp['name'])?$tp['name']:'',
+                'indent'=> isset($tp['indent'])?$tp['indent']:'',
+                'content'=>isset($tp['content'])?$tp['content']:'',
+            ];
+        } else {
+            foreach ($tp as $row) {
+                $tparr[] = [
+                    'code'  => isset($code)?$code:'',
+                    'name'  => isset($tp['name'])?$tp['name']:'',
+                    'indent'=> isset($tp['indent'])?$tp['indent']:'',
+                    'content'=>isset($tp['content'])?$tp['content']:'',
+                ];
             }
-            //保存短信信息
-            session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
         }
+
+        $tpjson  = json_encode($tparr,JSON_UNESCAPED_UNICODE);
+        // $tparr = '{"code":"'. $code .'"}';
+
+        return $tpjson;
     }
+
     /**
      * 统一查询接口
      * @param $type 1单条发送、2批量、3查询
@@ -218,5 +218,25 @@ class Dy
         $content = $helper->request($accessKeyId, $accessKeySecret, $url, $params,false);
 
         return $content;
+    }
+
+    /**
+     * 返回数组的维度
+     * @param  [type] $vDim [description]
+     * @return [type]       [description]
+     */
+    public static function getmaxdim($vDim)
+    {
+        if (!is_array($vDim)) {
+            return 0;
+        } else {
+            $max1 = 0;
+            // 对每一个子集数组循环判断
+            foreach ($vDim as $item) {
+                $t1 = $this->getmaxdim($item);
+                if ($t1 > $max1) $max1 = $t1;
+            }
+            return $max1 + 1;
+        }
     }
 }
