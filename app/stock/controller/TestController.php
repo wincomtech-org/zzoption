@@ -8,6 +8,7 @@ use sms\Dy;
 use stock\Creeper;
 use stock\Stock;
 use think\Db;
+use wx\Wx;
 
 /**
  * 股票代码测试
@@ -25,7 +26,13 @@ class TestController extends HomeBaseController
         // dump(intval(session('sms.time')));die;
         $result = '';
         $sms = new Dy();
-        $result = $sms->dySms('18715511536',1);
+
+        $tp = [
+            'name' => 'lothar',
+            'indent' => '订单',
+        ];
+        $result = $sms->dySms('18715511536','order',$tp);
+        // $result = $sms->batchSms();
 
         // $result = Dy::oneSms();
 

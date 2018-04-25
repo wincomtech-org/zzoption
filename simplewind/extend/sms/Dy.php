@@ -16,6 +16,7 @@ class Dy
     private static $accessKeyId = '';
     private static $accessKeySecret = '';
     private static $signname = '';
+    private static $templateIds = '';
 
     function __construct()
     {
@@ -23,66 +24,41 @@ class Dy
         self::$accessKeyId = $set['id'];
         self::$accessKeySecret = $set['secret'];
         self::$signname = $set['signname'];
+        self::$templateIds = $set['templateIds'];
     }
 
     /**
      * 一条短信
      * @param  string $mobile [手机号]
      * @param  string $tc     [短信模板ID]
-     * @param  string $type   [短信类型：1验证类、2通知类]
+     * @param  string $tp     [实际替换内容]
      * @return [type]         [description]
      */
-    public static function dySms($mobile = '', $tc = 'SMS_127810124', $type=1)
+    public static function dySms($mobile = '', $tc = 'register', $tp=[])
     {
+        $tcid = self::$templateIds[$tc];
         $params          = [];
 
         $params['PhoneNumbers'] = $mobile;
         $params['SignName'] = self::$signname;//短信签名
-        $params['TemplateCode'] = $tc;//短信模板ID
+        $params['TemplateCode'] = $tcid;//短信模板ID
         // $params['OutId'] = '';//可选，外部流水扩展字段
         $params['Action'] = 'SendSms';//
 
         // 注意：这里只是示例。具体依据短信模板来设定替换变量
-        if ($type==1) {
+        if (in_array($tc,['register','pwd','phone'])) {
             $code = rand(1000, 9999);
-            //可选，短信模板变量替换JSON串，如果有则需要，没有就不需要。验证码不能是汉字！
-            $params['TemplateParam'] = '{"code":"' . $code . '"}';
-        } else {
-
         }
 
-        // 合并固定参数
-        $params = array_merge($params, [
-            "RegionId" => "cn-hangzhou",
-            "Version" => "2017-05-25",
-        ]);
-
-        $accessKeyId     = self::$accessKeyId;
-        $accessKeySecret = self::$accessKeySecret;
-        $url             = self::$url;
-
-        // 初始化SignatureHelper实例用于设置参数，签名以及发送请求
-        $helper = new SignatureHelper();
-        // 此处可能会抛出异常，注意catch
-        $content = $helper->request($accessKeyId, $accessKeySecret, $url, $params,false);
-
-        if ($type==1) {
-            if ($content->Code=='OK') {
-                $msg = session('sms');
-                $last_time = isset($msg['time'])?$msg['time']:0;
-                $last_mobile = isset($msg['mobile'])?$msg['mobile']:'';
-                $time = time();
-                if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
-                    return ['code'=>'err','msg'=>'不要频繁发送'];
-                }
-                //保存短信信息
-                session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
-            }
+        $params['TemplateParam'] = self::Orz($tp);
+        // dump($params);die;
+        $content = self::base($params);
+        if (isset($code)) {
+            self::Orzl($content,$mobile,$code);
         }
 
         // dump($content);die;
         return ['code'=>$content->Code,'msg'=>$content->Message];
-        // return self::Orz($params);
     }
 
     /**
@@ -93,7 +69,7 @@ class Dy
      * $tp = [['name'=>'lothar','price'=>'1.00'],['name'=>'zz','price'=>'1.00']]
      * @return [type]         [description]
      */
-    public static function batchSms($mobile = ['18715511536','15261541317'], $tc='SMS_127810124', $tp = []) {
+    public static function batchSms($mobile = ['18715511536','15261541317'], $tc='register', $tp = []) {
 
         // *** 需用户填写部分 ***
 
@@ -109,18 +85,37 @@ class Dy
             $params["SignNameJson"][] = self::$signname;
         }
 
+        $tcid = self::$templateIds[$tc];
         // fixme 必填: 短信模板Code，应严格按"模板CODE"填写, 请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/template
-        $params["TemplateCode"] = $tc;
+        $params["TemplateCode"] = $tcid;
 
+        // 短信验证码
+        if (in_array($tc,['register','pwd','phone'])) {
+            $code = rand(1000, 9999);
+        }
         // fixme 必填: 模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         // 友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
         foreach ($tp as $row) {
             $params['TemplateParamJson'][] = [
-                // 'name'  => $row['name'],
-                // 'price' => $row['price'],
-                'code'  => $code
+                'code'  => isset($code)?$code:'',
+                'name'  => isset($tp['name'])?$tp['name']:'',
+                'indent'=> isset($tp['indent'])?$tp['indent']:'',
+                'content'=>isset($tp['content'])?$tp['content']:'',
             ];
         }
+        $params["TemplateParamJson"]  = json_encode($params["TemplateParamJson"], JSON_UNESCAPED_UNICODE);
+
+
+
+        // $params['TemplateParamJson'] = self::Orz($tp);
+        // $content = self::base($params,2);
+        // if (isset($code)) {
+        //     self::Orzl($content,$mobile,$code);
+        // }
+        // dump($content);die;
+        // return ['code'=>$content->Code,'msg'=>$content->Message];
+
+
 
         // todo 可选: 上行短信扩展码, 扩展码字段控制在7位或以下，无特殊需求用户请忽略此字段
         // $params["SmsUpExtendCodeJson"] = json_encode(array("90997","90998"));
@@ -129,7 +124,6 @@ class Dy
         // *** 需用户填写部分结束, 以下代码若无必要无需更改 ***
         $params["PhoneNumberJson"] = json_encode($params["PhoneNumberJson"], JSON_UNESCAPED_UNICODE);
         $params["SignNameJson"] = json_encode($params["SignNameJson"], JSON_UNESCAPED_UNICODE);
-        $params["TemplateParamJson"]  = json_encode($params["TemplateParamJson"], JSON_UNESCAPED_UNICODE);
 
         if(!empty($params["SmsUpExtendCodeJson"] && is_array($params["SmsUpExtendCodeJson"]))) {
             $params["SmsUpExtendCodeJson"] = json_encode($params["SmsUpExtendCodeJson"], JSON_UNESCAPED_UNICODE);
@@ -137,7 +131,7 @@ class Dy
 
         $params['Action'] = 'SendBatchSms';
 
-        return self::Orz($params);
+        return self::base($params);
     }
 
     /**
@@ -153,11 +147,44 @@ class Dy
             'Action'        => 'QuerySendDetails',
         ];
 
-        return self::Orz($params);
+        return self::base($params,3);
     }
 
     /**
+     * 模板处理
+     * @param [type] $params [description]
+     */
+    private static function Orz($tp,$code=null)
+    {
+        //可选，短信模板变量替换JSON串，如果有则需要，没有就不需要。验证码不能是汉字！
+        $tc = [
+            'code'  => isset($code)?$code:'',
+            'name'  => isset($tp['name'])?$tp['name']:'',
+            'indent'=> isset($tp['indent'])?$tp['indent']:'',
+            'content'=>isset($tp['content'])?$tp['content']:'',
+        ];
+        $tc = json_encode($tc,JSON_UNESCAPED_UNICODE);
+        // $tc = '{"code":"'. $code .'"}';
+
+        return $tc;
+    }
+    public static function Orzl($content,$mobile,$code)
+    {
+        if ($content->Code=='OK') {
+            $msg = session('sms');
+            $last_time = isset($msg['time'])?$msg['time']:0;
+            $last_mobile = isset($msg['mobile'])?$msg['mobile']:'';
+            $time = time();
+            if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
+                return ['code'=>'err','msg'=>'不要频繁发送'];
+            }
+            //保存短信信息
+            session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
+        }
+    }
+    /**
      * 统一查询接口
+     * @param $type 1单条发送、2批量、3查询
      * 返回成功参数
         object(stdClass)#19 (4) {
           ["Message"] => string(2) "OK"
@@ -173,14 +200,13 @@ class Dy
         }
      * @param [type] $params [description]
      */
-    private static function Orz($params)
+    public static function base($params,$type=1)
     {
         // 合并固定参数
         $params = array_merge($params, [
             "RegionId" => "cn-hangzhou",
             "Version" => "2017-05-25",
         ]);
-
 
         $accessKeyId     = self::$accessKeyId;
         $accessKeySecret = self::$accessKeySecret;
@@ -191,7 +217,6 @@ class Dy
         // 此处可能会抛出异常，注意catch
         $content = $helper->request($accessKeyId, $accessKeySecret, $url, $params,false);
 
-        // dump($content);die;
-        return ['code'=>$content->Code,'msg'=>$content->Message];
+        return $content;
     }
 }
