@@ -31,7 +31,8 @@ class TestController extends HomeBaseController
             'name' => 'lothar',
             'indent' => '订单',
         ];
-        $result = $sms->dySms('18715511536','order',$tp);
+        $result = $sms->dySms('18715511536','pwd');
+        //$result = $sms->dySms('18715511536','order',$tp);
         // $result = $sms->batchSms();
 
         // $result = Dy::oneSms();

@@ -46,26 +46,23 @@ class Dy
         $params['Action'] = 'SendSms';//
 
         // 注意：这里只是示例。具体依据短信模板来设定替换变量
+        $code = '';
         if (in_array($tc,['register','pwd','phone'])) {
             $code = rand(1000, 9999);
+            $msg = session('sms');
+            $last_time = isset($msg['time'])?$msg['time']:0;
+            $last_mobile = isset($msg['mobile'])?$msg['mobile']:'';
+            $time = time();
+            if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
+                return ['code'=>'err','msg'=>'不要频繁发送'];
+            }
+            //保存短信信息
+            session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
         }
 
-        $params['TemplateParam'] = self::Orz($tp);
+        $params['TemplateParam'] = self::Orz($tp,$code);
         // dump($params);die;
         $content = self::base($params);
-        if (isset($code)) {
-            if ($content->Code=='OK') {
-                $msg = session('sms');
-                $last_time = isset($msg['time'])?$msg['time']:0;
-                $last_mobile = isset($msg['mobile'])?$msg['mobile']:'';
-                $time = time();
-                if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
-                    return ['code'=>'err','msg'=>'不要频繁发送'];
-                }
-                //保存短信信息
-                session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
-            }
-        }
 
         // dump($content);die;
         return ['code'=>$content->Code,'msg'=>$content->Message];
@@ -104,7 +101,7 @@ class Dy
         // 友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
         
         // 短信验证码
-        // $code = '';
+        $code = '';
         // if (in_array($tc,['register','pwd','phone'])) {
         //     $code = rand(1000, 9999);
         // }
@@ -156,28 +153,31 @@ class Dy
      */
     private static function Orz($tp,$code=null)
     {
+        if (empty($tp) && empty($code)) {
+            return '';
+        }
         //可选，短信模板变量替换JSON串，如果有则需要，没有就不需要。验证码不能是汉字！
         $count = self::getmaxdim($tp);
         if ($count==1) {
             $tparr = [
-                'code'  => isset($code)?$code:'',
-                'name'  => isset($tp['name'])?$tp['name']:'',
-                'indent'=> isset($tp['indent'])?$tp['indent']:'',
-                'content'=>isset($tp['content'])?$tp['content']:'',
+                'code'  => isset($code)?$code:'1',
+                'name'  => isset($tp['name'])?$tp['name']:'2',
+                'indent'=> isset($tp['indent'])?$tp['indent']:'3',
+                'content'=>isset($tp['content'])?$tp['content']:'4',
             ];
         } else {
             foreach ($tp as $row) {
                 $tparr[] = [
-                    'code'  => isset($code)?$code:'',
-                    'name'  => isset($tp['name'])?$tp['name']:'',
-                    'indent'=> isset($tp['indent'])?$tp['indent']:'',
-                    'content'=>isset($tp['content'])?$tp['content']:'',
+                    'code'  => isset($code)?$code:'1',
+                    'name'  => isset($tp['name'])?$tp['name']:'2',
+                    'indent'=> isset($tp['indent'])?$tp['indent']:'3',
+                    'content'=>isset($tp['content'])?$tp['content']:'4',
                 ];
             }
         }
 
         $tpjson  = json_encode($tparr,JSON_UNESCAPED_UNICODE);
-        // $tparr = '{"code":"'. $code .'"}';
+        // $tpjson = '{"code":"'. $code .'"}';
 
         return $tpjson;
     }
