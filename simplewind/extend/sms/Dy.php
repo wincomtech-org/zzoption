@@ -56,14 +56,16 @@ class Dy
             if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
                 return ['code'=>'err','msg'=>'不要频繁发送'];
             }
-            //保存短信信息
-            session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
         }
 
         $params['TemplateParam'] = self::Orz($tp,$code);
         // dump($params);die;
         $content = self::base($params);
-
+        
+        if ($content->Code=='OK' && $code) {
+            //保存短信信息
+            session('sms', ['mobile'=>$mobile,'code'=>$code,'time'=>$time]);
+        }
         // dump($content);die;
         return ['code'=>$content->Code,'msg'=>$content->Message];
     }
