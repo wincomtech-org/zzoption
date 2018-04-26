@@ -233,7 +233,7 @@ class Dy
             $max1 = 0;
             // 对每一个子集数组循环判断
             foreach ($vDim as $item) {
-                $t1 = $this->getmaxdim($item);
+                $t1 = self::getmaxdim($item);
                 if ($t1 > $max1) $max1 = $t1;
             }
             return $max1 + 1;
