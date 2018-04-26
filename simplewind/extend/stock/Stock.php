@@ -30,7 +30,7 @@ class Stock
         $data = $this->getStockBase($code);
         $tmp  = [];
         foreach ($data as $row) {
-            $tmp[] = [
+            $tmp[$row[0]] = [
                 'name'    => $row[1],
                 'price'   => round($row[2], 2),
                 'percent' => round($row[4], 2),
