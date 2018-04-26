@@ -79,7 +79,7 @@ class Dy
      * $tp = [['name'=>'lothar','price'=>'1.00'],['name'=>'zz','price'=>'1.00']]
      * @return [type]         [description]
      */
-    public static function batchSms($mobile = ['18715511536','15261541317'], $tc='register', $tp = []) {
+    public static function batchSms($mobile = ['13356895214','18952143687'], $tc='register', $tp = []) {
 
         // *** 需用户填写部分 ***
 

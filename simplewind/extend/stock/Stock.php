@@ -127,9 +127,8 @@ class Stock
      */
     public function nowapi_call()
     {
-        $set = config('nowapi_stock');
-        $set['appcode'] = '133ff1c380254976b638d37bf02d6fc0';
-        $appcode = $set['appcode'];
+        $set = config('aliapi');
+        $appcode = $set['AppCode'];
         $host    = "http://stock.api51.cn/sort"; //如需https请修改为 https://smsapi51.cn
         $path    = ""; //path为 single_sms_get 时为GET请求
         $method  = "0"; //post=1 get=0

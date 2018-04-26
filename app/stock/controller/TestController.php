@@ -31,12 +31,33 @@ class TestController extends HomeBaseController
             'name' => 'lothar',
             'indent' => '订单',
         ];
-        $result = $sms->dySms('18715511536','order',$tp);
+        $result = $sms->dySms('','order',$tp);
         // $result = $sms->batchSms();
 
         // $result = Dy::oneSms();
 
         dump($result);
+    }
+    public function auth()
+    {
+        import('stock.Verify');
+
+        // $params['bankcard'] = '银行卡号码';
+        $params['realName'] = '';
+        $params['Mobile']   = '';
+        $params['cardNo']   = '';
+
+        //发送远程请求;
+        $result = bankcardVerify($params);
+        var_dump("<pre>");
+        var_dump($result);
+        //返回结果
+        if ($result['error_code'] == 0) {
+            echo $result['reason']; //信息一致
+        } else {
+            echo $result['reason']; //信息不一致
+        }
+        exit();
     }
 
     public function test()

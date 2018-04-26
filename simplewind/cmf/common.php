@@ -1613,25 +1613,33 @@ function cmf_get_admin_style()
  * @param $data
  * @return mixed
  */
-function cmf_curl_get($url,$data='')
+function cmf_curl_get($url,$params=array(),$method='get')
 {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_URL, $method == "POST" ? $url : $url . '?' . http_build_query($params));
+    // curl_setopt($ch, CURLOPT_HTTPHEADER, array());
     curl_setopt($ch, CURLOPT_FAILONERROR, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+    //超时时间
+    // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
     curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-    $SSL = substr($url, 0, 8) == "https://" ? true : false;
-    if ($SSL) {
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 信任任何证书
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // 检查证书中是否设置域名
+    //如果是https协议
+    if (strpos($url, "https://") !== false) {
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// 信任任何证书
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);// 检查证书中是否设置域名,可用数字2表示
+        //CURL_SSLVERSION_TLSv1
+        // curl_setopt($ch, CURLOPT_SSLVERSION, 1);
     }
-    if (!empty($data)){
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    //通过POST方式提交
+    if ($method == "POST") {
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
     }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $content = curl_exec($ch);
+    //http status
+    // $CURLINFO_HTTP_CODE = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     return $content;
 }
