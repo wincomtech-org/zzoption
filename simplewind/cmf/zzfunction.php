@@ -7,7 +7,7 @@ use think\Route;
 use think\Loader;
 use think\Request;
 use cmf\lib\Storage;
-
+ 
 // 应用公共文件
 
 //设置插件入口路由
@@ -36,6 +36,8 @@ function zz_get_money($price1, $price2, $money0){
 /* 用户通知内容拼接 */
 function zz_msg_dsc($info){
     return '('.$info['name'].'('.$info['code0'].'),名义本金'.$info['money0'].'万元,周期'.$info['month'].'个月)';
+    //return $info['name'];
+ 
 }
 /* 用户通知 */
 function zz_msg($data){
@@ -54,6 +56,36 @@ function zz_msg($data){
         'uid'=>$data['uid']
     ];
     Db::name('msg')->insert($data_msg);
+    $sms=new \sms\Dy();
+    $data_sms=[
+        'name'=>empty($data['uname'])?$data['mobile']:$data['uname'],
+        
+    ];
+    if(empty($data['sms'])){
+        $data['sms']='order';
+    }
+    switch($data['sms']){
+        case 'order':
+            $data_sms['indent']=$data['title'];
+            
+            $sms_type='order';
+            break;
+        case 'money':
+            $data_sms['content']=$data['title'];
+            $sms_type='withdraw';
+            break; 
+        default:
+            return 0;
+            break;
+            
+    }
+    
+    $result=$sms->dySms($data['mobile'],$sms_type,$data_sms);
+    cmf_log('短信'.$data['mobile'].'发送开始');
+    foreach($result as $k=>$v){
+        cmf_log($k.'--'.$v);
+    }
+    cmf_log('短信'.$data['mobile'].'发送结束');
     
 }
 /* 批量发送消息 */
@@ -71,7 +103,12 @@ function zz_msgs($data){
         'type'=>$data['type'],
         'time'=>$time,
     ];
-    $data_msg=[];
+    $data_sms=[];
+    $mobiles=[];
+    $sms_data=[];
+    //批量发送的都是订单
+    
+    $sms_type=empty($data['sms'])?'order':$data['sms'];
     foreach($data['data'] as $k=>$v){
         $data_txt['content']=zz_msg_dsc($v).$data['title'];
         $msg_id=$m_msg_txt->insertGetId($data_txt);
@@ -79,7 +116,19 @@ function zz_msgs($data){
             'msg_id'=>$msg_id,
             'uid'=>$v['uid']
         ]; 
+        $mobiles[]=$v['mobile'];
+        $data_sms[]=[
+            'name'=>$v['uname'],
+            'indent'=>$data['title'],
+        ];
     } 
+    $sms=new \sms\Dy();
+    $result=$sms->batchSms($mobiles,$sms_type,$data_sms);
+    cmf_log('短信'.$sms_type.'发送开始');
+    foreach($result as $k=>$v){
+        cmf_log($k.'--'.$v);
+    }
+    cmf_log('短信'.$data['mobile'].'发送结束');
     return Db::name('msg')->insertAll($data_msg);
     
 }

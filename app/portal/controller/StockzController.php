@@ -43,7 +43,11 @@ class StockzController extends HomeBaseController
         $this->success('获取成功','',$list);
     }
      
-    /* 定时执行订单,把未持仓的订单过期掉,把持仓的订单判断是否可行权,每日2点执行 */ 
+    /* 定时执行订单,把未持仓的订单过期掉,把持仓的订单判断是否可行权,每日2点执行
+     * //所有询价成功没确认买入的,过期
+     *  //已付款的，要返回权利金,并改为买入失败
+     *  //把持仓的订单改为可以行权
+     *  */ 
     public function order_old(){
         //获取凌晨0点时间
         $time=zz_get_time0();
@@ -56,6 +60,8 @@ class StockzController extends HomeBaseController
         }else{
             cmf_set_dynamic_config(['order_old'=>date('Y-m-d')]);
         }
+       
+        
         //所有询价成功没确认买入的否过期
       /*   0 => '询价中',
         1 => '询价成功',
@@ -70,6 +76,8 @@ class StockzController extends HomeBaseController
         $m_order=Db::name('order');
        
         $m_user=Db::name('user');
+        //清除密码锁定
+        $m_user->where('psw_fail','neq',0)->update(['psw_fail'=>0]);
         $m_order->startTrans();
         //所有询价成功没确认买入的,过期
         $where=[
@@ -86,8 +94,13 @@ class StockzController extends HomeBaseController
         ->alias('o')
         ->join('cmf_user u','u.id=o.uid')
         ->where($where)
-        ->column('o.id,o.uid,o.name,o.code0,o.money0,o.money1,o.month,u.mobile,u.user_nickname as uname');
-         
+        ->column('o.id,o.uid,o.name,o.code0,o.money0,o.money1,o.month,u.mobile,u.user_nickname as uname,u.money as umoney');
+        //返回权利金的改为买入失败
+        $where=[
+            'status'=>['eq',3],
+            'is_old'=>['eq',0]
+        ];
+        $m_order->where($where)->update(['is_old'=>1,'time'=>$time1,'status'=>5]);
        
         //记录资金明细
         $data_money=[];
@@ -102,7 +115,8 @@ class StockzController extends HomeBaseController
                 'insert_time'=>$time1,
                 'dsc'=>zz_msg_dsc($v).'买入失败，退款',
             ];
-            $m_user->where('id',$v['uid'])->setInc('money',$v['money1']);
+            $money=bcadd($v['umoney'],$v['money1'],2);
+            $m_user->where('id',$v['uid'])->update(['money'=>$money]);
         }
         Db::name('money')->insertAll($data_money);
         //系统消息
@@ -110,16 +124,11 @@ class StockzController extends HomeBaseController
             'aid'=>1,
             'data'=>$list,
             'title'=>'买入失败，退款',
-            'type'=>2,
+            'type'=>2, 
         ];
         
         zz_msgs($data_msg);
-        //返回权利金的改为买入失败
-        $where=[
-            'status'=>['eq',3],
-            'is_old'=>['eq',0]
-        ];
-        $m_order->where($where)->update(['is_old'=>1,'time'=>$time1,'status'=>5]);
+       
        
         $m_order->commit();
         
@@ -278,7 +287,7 @@ class StockzController extends HomeBaseController
         $data_msg=[
             'aid'=>1,
             'data'=>$list,
-            'title'=>'行权期限今日到期，请尽快行权，否则系统自动行权',
+            'title'=>'行权期限今日到期!',
             'type'=>2,
         ];
         
@@ -335,7 +344,7 @@ class StockzController extends HomeBaseController
         $data_msg=[
             'aid'=>1,
             'data'=>$list,
-            'title'=>'行权期限今日到期，系统自动行权',
+            'title'=>'行权期限已到期，系统自动行权',
             'type'=>2,
         ];
         

@@ -45,11 +45,12 @@ class CountController extends AdminBaseController
      */
     public function index()
     { 
+        exit('ff');
         //新增未完成借款
         $where_new=['status'=>['in',[3,4,5]]];
         $where_user=['user_type'=>['eq',2]];
-        $m1=Db::name('paper');
-        $m2=Db::name('paper_old');
+        $m1=Db::name('order');
+        $m2=Db::name('order_old');
         $m_user=Db::name('user');
         $count1=[];
         $count2=[];
@@ -163,10 +164,26 @@ class CountController extends AdminBaseController
       
         $data=$this->request->param();
         $where=[];
-        if(empty($data['borrower_idcard'])){
-            $data['borrower_idcard']='';
+        $m1=Db::name('order'); 
+        $m_user=Db::name('user');
+        $count=[]; 
+        $where_user=['user_type'=>2];
+        if(empty($data['shop'])){
+            $data['shop']='';
         }else{
-            $where['borrower_idcard']=['eq',$data['borrower_idcard']];
+            $where_user['shop']=$data['shop'];
+            $uids=$m_user->where($where_user)->column('id');
+            $where['uid']=['in',$uids];
+        }
+        if(empty($data['uid'])){
+            $data['uid']='';
+        }else{
+            $where['uid']=['eq',$data['uid']];
+        }
+        if(empty($data['code'])){
+            $data['code']='';
+        }else{
+            $where['code']=['eq',$data['code']];
         }
          
         if(empty($data['start_time'] )){
@@ -187,65 +204,52 @@ class CountController extends AdminBaseController
                 if($start_time0>=$end_time0){
                     $this->error('起始时间不能大于等于结束时间',url('search'));
                 }else{
-                    $where['insert_time']=['between',[$start_time0,$end_time0]];
+                    $where['have_time']=['between',[$start_time0,$end_time0]];
                 }
             }else{
-                $where['insert_time']=['egt',$start_time0];
+                $where['have_time']=['egt',$start_time0];
             }
         }elseif(isset($end_time0)){
-            $where['insert_time']=['elt',$end_time0];
+            $where['have_time']=['elt',$end_time0];
         }
-        $m1=Db::name('paper');
-        $m2=Db::name('paper_old');
-        $m_user=Db::name('user');
-        $count=[];
+       
+       
         
-        $where_user=['user_type'=>2];
-        $where_back=$where;
-        $where_old=$where;
-        if(!empty($where['insert_time'])){
-            $where_user['create_time']=$where['insert_time']; 
-            $where_back['update_time']=$where['insert_time'];  
-            unset($where_back['insert_time']);
+        
+        //3正在出借,4今日到期,5逾期
+        /* 'order_status' =>
+        array (
+            0 => '询价中',
+            1 => '询价成功',
+            2 => '询价失败',
+            3 => '已付款',
+            4 => '持仓中',
+            5 => '买入失败',
+            6 => '行权中',
+            7 => '行权结束',
+            8 => '行权过期', */
+        //已付款，未结束
+        $where['status']=['in',[3,4,6]]; 
+        $count['buy_count']=$m1->where($where)->count();
+        $count['buy_money']=$m1->where($where)->sum('money1');
+        //用户数
+        if(!empty($where['have_time'])){
+            $where_user['create_time']=$where['have_time'];
+            $where['sell_time']=$where['have_time'];
+            unset($where['sell_time']);
         }
         
         $count['user']=$m_user->where($where_user)->count();
-        //3正在出借,4今日到期,5逾期
-        $where['status']=['eq',3]; 
-        $count['intime_count']=$m1->where($where)->count();
-        $count['intime_money']=$m1->where($where)->sum('money');
-        $where['status']=['eq',4]; 
-        $count['ontime_count']=$m1->where($where)->count();
-        $count['ontime_money']=$m1->where($where)->sum('money'); 
-        $where['status']=['eq',5];  
-        $count['overdue1_count']=$m1->where($where)->count();
-        $count['overdue1_money']=$m1->where($where)->sum('money'); 
+        //已行权结束
+        $where['status']=['in',['7,8']];
+        $count['sell_count']=$m1->where($where)->count();
+        $count['sell_money1']=$m1->where($where)->sum('money1'); 
+        $count['sell_money2']=$m1->where($where)->sum('money2');
         
-        //已还款无逾期 
-        $where_old['overdue_day']=['eq',0]; 
-        $count['old0_count']=$m2->where($where_old)->count();
-        $count['old0_money']=$m2->where($where_old)->sum('final_money'); 
-        //逾期还款
-        $where_old['overdue_day']=['gt',0]; 
-        $count['old1_count']=$m2->where($where_old)->count();
-        $count['old1_money']=$m2->where($where_old)->sum('final_money');
-        
-        //借款统计
-        $count['send_count']=$count['intime_count']+$count['ontime_count']+ $count['overdue1_count']+ $count['old0_count']+$count['old1_count'];
-        $count['send_money']=$count['intime_money']+$count['ontime_money']+ $count['overdue1_money']+ $count['old0_money']+$count['old1_money'];
-         
-        //还款 
-        $where_back['overdue_day']=['eq',0];
-        
-        $count['back0_count']=$m2->where($where_back)->count();
-        $count['back0_money']=$m2->where($where_back)->sum('final_money'); 
-        $where_back['overdue_day']=['gt',0];
-        $count['back1_count']=$m2->where($where_back)->count();
-        $count['back1_money']=$m2->where($where_back)->sum('final_money'); 
-        //还款统计
-        $count['back_count']=$count['back0_count']+$count['back1_count'];
-        $count['back_money']=$count['back0_money']+$count['back1_money'];
-        
+        $shops= Db::name('shop')->order('fid asc,id asc')->column('id,code,name,status');
+       
+        $this->assign('shops',$shops);
+        $this->assign('shop_status',config('shop_status'));
         $this->assign('data',$data);
         $this->assign('count',$count);
         

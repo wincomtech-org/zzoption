@@ -215,14 +215,18 @@ class TradeController extends UserBaseController
         ->where('collect.uid',session('user.id'))
         ->order('collect.id asc')
         ->select();
-        $stock=new Stock();
+        $tmp=[];
+       
         //循环得到各股票的实时数据
         $codes='';
         foreach($list as $k=>$v){
             $codes.=',s_'.$v['code0']; 
         }
-        $codes=substr($codes, 1);
-        $prices=$stock->getPrice($codes);
+        if(!empty($codes)){
+            $stock=new Stock();
+            $codes=substr($codes, 1);
+            $prices=$stock->getPrice($codes);
+        }
         
         foreach($list as $k=>$v){
             $price=empty($prices['s_'.$v['code0']])?null:$prices['s_'.$v['code0']];

@@ -104,6 +104,12 @@ class OrderController extends AdminBaseController
         if(empty($info)){
             $this->error('此订单不存在');
         }
+        //当前价格和浮盈
+       
+        $stock=new \stock\Stock();
+        $prices=$stock->getPrice('s_'.$info['code0']);
+        $price=empty($prices['s_'.$info['code0']])?null:$prices['s_'.$info['code0']];
+        $info['price2_tmp']=$price['price'];
         $edit='edit_inquiry';
         if($info['status']<3){
             $edit='edit_inquiry';
@@ -111,10 +117,11 @@ class OrderController extends AdminBaseController
             $edit='edit_buy';
         }else{
             $edit='edit_sell';
+            if($info['status']==6 && !empty($info['price2_tmp'])){
+                $info['money2_tmp']=zz_get_money($info['price1_0'], $info['price2_tmp'], $info['money0']);
+            }
         }
-        //当前价格和浮盈
-        $info['price2_tmp']=0;
-        $info['money2_tmp']=0;
+       
         $this->assign('info',$info); 
         return $this->fetch($edit);
     }
@@ -419,10 +426,7 @@ class OrderController extends AdminBaseController
        
         //记录资金明细
         if(isset($money_add)){ 
-            if($money<0){
-                Db::rollback();
-                $this->error('用户余额不足');
-            } 
+             
             $m_user->where('id',$info['uid'])->update(['money'=>$money]);
             $data_money=[
                 'uid'=>$user['id'],
