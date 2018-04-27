@@ -11,11 +11,11 @@ class LogController extends AdminbaseController {
     
     
     private $dir;
-    
+    private $log;
     public function _initialize() {
         parent::_initialize();
         $this->dir=getcwd().'/log/';
-       
+        $this->log="log.log";
         
     }
     
@@ -37,8 +37,9 @@ class LogController extends AdminbaseController {
          
        $list=[
            ['name'=>'每日任务日志','file'=>'time.log'],
+           ['name'=>'股票订单日志','file'=>'stockz.log'],
            ['name'=>'微信日志','file'=>'wx.log'],
-           ['name'=>'数据库日志','file'=>'zz.log'],
+           ['name'=>'数据库日志','file'=>'sql.log'],
            ['name'=>'日志操作','file'=>'log.log']
        ];
        $this->assign('list',$list);
@@ -69,8 +70,8 @@ class LogController extends AdminbaseController {
         $name=session('name');
        //写入文件为空字符即为删除
         if(file_put_contents($path,'')===0){
-            zz_log($name.'已清空日志', $file);
-            zz_log($name.'已清空日志'.$file, 'log.log');
+            cmf_log($name.'已清空日志', $file);
+            cmf_log($name.'已清空日志'.$file, $this->log);
            
             $this->success('该日志已清空');
         }else{

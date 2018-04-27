@@ -15,10 +15,12 @@ use think\Db;
 use stock\Stock;
 class StockzController extends HomeBaseController
 {
+    private $log;
     public function _initialize()
     {
         
         parent::_initialize();
+        $this->log="stockz.log";
     }
     
     /* 查询指数 */
@@ -49,7 +51,7 @@ class StockzController extends HomeBaseController
         $time_day=trim(config('order_old'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束','time.log');
+            cmf_log('重复任务，结束',$this->log);
             //exit('重复任务，结束');
         }else{
             cmf_set_dynamic_config(['order_old'=>date('Y-m-d')]);
@@ -125,7 +127,7 @@ class StockzController extends HomeBaseController
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
         if($tmp['type']!=0 || $tmp['is_trade']!=1){
-            cmf_log('非交易日，行权日期检查结束','time.log');
+            cmf_log('非交易日，行权日期检查结束',$this->log);
             exit('非交易日，结束');
         }
         //获取可行权的天数限制，要买入后超过指定天数才能行权
@@ -151,7 +153,7 @@ class StockzController extends HomeBaseController
         ];
         $m_order->where($where)->update(['is_old'=>2,'time'=>$time1]);
       
-        cmf_log('可行权日期检查结束','time.log');
+        cmf_log('可行权日期检查结束',$this->log);
         exit('行权日期检查结束');
     }
     
@@ -163,14 +165,14 @@ class StockzController extends HomeBaseController
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
         if($tmp['type']!=0 || $tmp['is_trade']!=1){
-            cmf_log('非交易日，行权即将过期检查结束','time.log');
+            cmf_log('非交易日，行权即将过期检查结束',$this->log);
             exit('非交易日，结束');
         }
         //不需要判断重复，重复无用
        /*  $time_day=trim(config('sell_notice'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束','time.log');
+            cmf_log('重复任务，结束',$this->log);
             exit('重复任务，结束');
         }else{
             cmf_set_dynamic_config(['sell_notice'=>date('Y-m-d')]);
@@ -221,7 +223,7 @@ class StockzController extends HomeBaseController
         ];
         $m_order->where($where)->update(['is_old'=>3,'time'=>$time1,'notice_time'=>$time1]);
         $m_order->commit();
-        cmf_log('行权日期检查结束','time.log');
+        cmf_log('行权日期检查结束',$this->log);
         exit('行权日期检查结束');
     }
     /* 判断订单是否今日过期,下午2点30执行，发送短信通知 */
@@ -232,14 +234,14 @@ class StockzController extends HomeBaseController
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
         if($tmp['type']!=0 || $tmp['is_trade']!=1){
-            cmf_log('非交易日，行权今日过期检查结束','time.log');
+            cmf_log('非交易日，行权今日过期检查结束',$this->log);
             exit('非交易日，结束');
         }
         //不需要判断重复，重复无用
       /*   $time_day=trim(config('sell_old'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束','time.log');
+            cmf_log('重复任务，结束',$this->log);
             exit('重复任务，结束');
         }else{
             cmf_set_dynamic_config(['sell_old'=>date('Y-m-d')]);
@@ -290,7 +292,7 @@ class StockzController extends HomeBaseController
         $m_order->where($where)->update(['is_old'=>4,'time'=>$time1]);
         
         $m_order->commit();
-        cmf_log('行权日期今日到期检查结束','time.log');
+        cmf_log('行权日期今日到期检查结束',$this->log);
         exit('行权日期检查结束');
     }
     /* 订单今日过期,自动行权,下午2点50执行，发送短信通知 */
@@ -301,14 +303,14 @@ class StockzController extends HomeBaseController
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
         if($tmp['type']!=0 || $tmp['is_trade']!=1){
-            cmf_log('非交易日，自动行权检查结束','time.log');
+            cmf_log('非交易日，自动行权检查结束',$this->log);
             exit('非交易日，结束');
         }
         //不需要判断重复，重复无用
        /*  $time_day=trim(config('sell_auto'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束','time.log');
+            cmf_log('重复任务，结束',$this->log);
             exit('重复任务，结束');
         }else{
             cmf_set_dynamic_config(['sell_auto'=>date('Y-m-d')]);
@@ -345,7 +347,7 @@ class StockzController extends HomeBaseController
         ];
         $m_order->where($where)->update(['status'=>6,'time'=>$time1]);
         $m_order->commit();
-        cmf_log('行权日期今日到期检查结束','time.log');
+        cmf_log('行权日期今日到期检查结束',$this->log);
         exit('行权日期检查结束');
     }
    
