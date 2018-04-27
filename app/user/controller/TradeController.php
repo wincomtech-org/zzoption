@@ -134,10 +134,16 @@ class TradeController extends UserBaseController
         }
         $stock=new Stock();
         $price=$stock->getPrice('s_'.$order['code0']);
+        if(empty($price['s_'.$order['code0']])){
+           
+            $order['price2']='--';
+            $order['money2']='--';
+        }else{
+            $price=$price['s_'.$order['code0']];
+            $order['price2']=$price['price'];
+            $order['money2']=zz_get_money($order['price1'], $order['price2'], $order['money0']);
+        }
         
-        $price=$price['s_'.$order['code0']];
-        $order['price2']=$price['price'];
-        $order['money2']=zz_get_money($order['price1'], $order['price2'], $order['money0']);
         //要查询当前价格，计算浮盈
         $this->assign('order',$order);
         
@@ -217,9 +223,9 @@ class TradeController extends UserBaseController
         }
         $codes=substr($codes, 1);
         $prices=$stock->getPrice($codes);
-     
+        
         foreach($list as $k=>$v){
-            $price=$prices['s_'.$v['code0']];
+            $price=empty($prices['s_'.$v['code0']])?null:$prices['s_'.$v['code0']];
             $tmp[]=[
                 'name'=>$v['name'],
                 'code'=>$v['code'],
