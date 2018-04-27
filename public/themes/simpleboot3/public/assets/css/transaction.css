@@ -52,8 +52,9 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	width:0.63rem;
 	height:0.54rem;
 	line-height: 0.54rem;
-	text-align: center;
-	
+	text-align: cente;
+    font-weight:600;
+	font-size:0.3rem;
 }
 /* .body_s>ul>li>a{
 	text-decoration: none;

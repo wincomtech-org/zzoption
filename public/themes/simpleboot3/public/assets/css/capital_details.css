@@ -46,8 +46,10 @@ a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
 	height:1.1rem; 
 	text-align: center;
 	line-height: 1.1rem;
-	font-size: 0.26rem;
+	font-size: 0.3rem;
 	position: relative;
+    font-weight: 600;
+    
 }
 .nav_ssy>ol>li>a{
 	display:inline-block;

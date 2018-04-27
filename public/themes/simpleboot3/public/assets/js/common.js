@@ -44,7 +44,7 @@ function button_click(obj,action=1,text='',type=1){
 function down_s(element,fun){
     element.off();
     var txt_h=element.html();
-    var num_s=10;
+    var num_s=60;
     element.html(num_s);
     var timer=setInterval(function(){
         num_s--;

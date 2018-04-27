@@ -27,7 +27,8 @@ a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
 }
 .three>div{
 	border-bottom:0.02rem solid #c3c3c3 ;
-	margin-top:0.4rem;
+	margin-top:0.2rem;
+    padding-bottom: 0.2rem;
 }
 .three>div>span{
 	display: inline-block;
