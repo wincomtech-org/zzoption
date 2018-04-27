@@ -37,7 +37,7 @@ class IndexController extends AdminBaseController
     {
         $adminMenuModel = new AdminMenuModel();
         $menus          = $adminMenuModel->menuTree();
-
+     
         $this->assign("menus", $menus);
 
         $admin = Db::name("user")->where('id', cmf_get_current_admin_id())->find();

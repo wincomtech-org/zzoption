@@ -13,8 +13,7 @@ namespace app\user\controller;
 use cmf\controller\UserBaseController;
 use think\Db;
 use think\Validate;
-use sms\Msg;
-use function Qiniu\json_decode;
+ 
 /* 个人中心 */
 class InfoController extends UserBaseController
 {
@@ -125,7 +124,23 @@ class InfoController extends UserBaseController
         if(!empty($tmp)){
             $this->error('身份证号码已被占用');
         }
-       
+        import('stock.Verify');
+        
+        // $params['bankcard'] = '银行卡号码';
+        $params=[
+            'realName' => $data_user['user_nickname'],
+            'bankcard'   => $data_user['bank_card'],
+            'cardNo'=>$data_user['user_login'],
+        ];
+         
+        $result = bankcardVerify($params);
+        //error_code: 90026, reason: "发卡方不支持的交易"
+        //error_code: 90099 ,ordersign: "20180427103218164255054960",reason: "认证不通过"
+        //error_code: 0,ordersign: "20180427103541164251005549",reason: "认证通过"
+        if($result['error_code']!=0){
+            $this->error($result['reason']);
+       }
+        
         try {
             $m_user->where('id',$uid)->update($data_user);
         } catch (\Exception $e) {

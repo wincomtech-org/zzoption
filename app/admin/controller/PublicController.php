@@ -24,7 +24,15 @@ class PublicController extends AdminBaseController
      */
     public function login()
     {
-        $this->assign('zztitle',config('zztitle'));
+        
+        $shop=session('shop'); 
+        //没有分站信息或分站信息更新
+        if(empty($shop['website'])){ 
+            $web=trim($_SERVER['HTTP_HOST']);
+            zz_shop(['website'=>$web]); 
+            $shop=session('shop'); 
+        }
+        $this->assign('zztitle',$shop['title']);
         $loginAllowed = session("__LOGIN_BY_CMF_ADMIN_PW__");
         if (empty($loginAllowed)) {
             $this->error('非法登录!', url("admin/Index/index"));
@@ -35,7 +43,7 @@ class PublicController extends AdminBaseController
             redirect(url("admin/Index/index"));
         } else {
             $site_admin_url_password = config("cmf_SITE_ADMIN_URL_PASSWORD");
-            $upw                     = session("__CMF_UPW__");
+            $upw   = session("__CMF_UPW__");
             if (!empty($site_admin_url_password) && $upw != $site_admin_url_password) {
                 redirect(url("admin/public/login"));
             } else {
@@ -83,7 +91,10 @@ class PublicController extends AdminBaseController
         }
 
         $result = Db::name('user')->where($where)->find();
-
+        //如果用户和域名不匹配则退出
+        if($result['shop']!=session('shop.id')){
+            $this->error('你不是这个网站的管理员');
+        }
         if (!empty($result) && $result['user_type'] == 1) {
             if (cmf_compare_password($pass, $result['user_pass'])) {
                 $groups = Db::name('RoleUser')
@@ -103,7 +114,7 @@ class PublicController extends AdminBaseController
                 $result['last_login_time'] = time();
                
                 
-                $token                     = cmf_generate_user_token($result["id"], 'web');
+                $token   = cmf_generate_user_token($result["id"], 'web');
                 //跟新管理员登录session
                 $result['session'] =$token;
                 if (!empty($token)) {

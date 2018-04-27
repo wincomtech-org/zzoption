@@ -33,7 +33,7 @@ class RbacController extends AdminBaseController
      */
     public function index()
     {
-        $data = Db::name('role')->order(["list_order" => "ASC", "id" => "DESC"])->select();
+        $data = Db::name('role')->order(["list_order" => "ASC", "id" => "asc"])->select();
         $this->assign("roles", $data);
         return $this->fetch();
     }

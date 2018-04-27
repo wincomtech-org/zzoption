@@ -12,7 +12,7 @@ namespace app\portal\controller;
 
 use cmf\controller\HomeBaseController;
 use think\Db;
-  
+use stock\Stock;
 class IndexController extends HomeBaseController
 {
     public function _initialize()

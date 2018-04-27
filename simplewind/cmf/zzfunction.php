@@ -23,7 +23,9 @@ function zz_get_time0(){
  
  /* 根据期初价格，期末价格和名义本金计算收益 */
 function zz_get_money($price1, $price2, $money0){
-     
+    if($price1<=0){
+        return 0;
+    }
     $tmp1=bcsub($price2, $price1,4);
     if($tmp1<=0){
         return 0;
@@ -77,11 +79,56 @@ function zz_msgs($data){
             'msg_id'=>$msg_id,
             'uid'=>$v['uid']
         ]; 
+    } 
+    return Db::name('msg')->insertAll($data_msg);
+    
+}
+/* 更新分站信息 */
+function zz_shop($shop){
+    
+    $m_shop=Db::name('shop');
+    // 分站信息更新 
+    $shop0=$m_shop->where('id',1)->find();
+    if(empty($shop['id'])){
+        $website=trim(config('website'));
+        if(empty($shop['website'])){
+            header("Location:http://www.".$website);
+            exit;
+        } 
+        if($shop['website']==$website){
+            $shop=$shop0;
+        }else{
+            $shop['website']=str_replace('.'.$website, '', $shop['website']);
+            $shop=$m_shop->where('website',$shop['website'])->find();
+        }
+    }else{
+        $shop=$m_shop->where('id',$shop['id'])->find();
     }
     
-    return Db::name('msg')->insertAll($data_msg);
-   
-    
+    if(empty($shop['name']) ){
+        header("Location:http://www.".$website);
+        exit;
+    }
+    switch ($shop['type']){
+        case 0:
+            $shop['aid']=1;
+            break;
+        case 1:
+            $shop['aid']=$shop['id'];
+            break;
+        case 2:
+            $tmp=$shop0;
+            $tmp['aid']=1;
+            $tmp['id']=$shop['id'];
+            $tmp['rate']=$shop['rate'];
+            $tmp['code']=$shop['code'];
+            $tmp['website']=$shop['website'];
+            
+            $shop=$tmp;
+            break;
+    } 
+    session('shop',$shop);
+      
 }
 /* 密码输入 */
 function zz_psw($uid,$psw){
@@ -173,7 +220,22 @@ function zz_set_image($pic,$pic_new,$width,$height,$thump=6){
     return $pic_new; 
 }
  
-
+/* 组装图片 */
+function zz_picid($pic,$pic_old,$type,$id){ 
+    $path=getcwd().'/upload/';
+    //logo处理
+    if(!is_file($path.$pic)){
+        return 0;
+    } 
+    $size=config('pic_'.$type);
+    $pic_new=$type.'/'.$id.'.jpg';
+    //文件为新上传
+    if($pic!=$pic_old){
+        zz_set_image($pic, $pic_new, $size['width'], $size['height'], 6);
+        unlink($path.$pic);
+    }
+    return $pic_new;
+}
 /* 为网址补加http:// */
 function zz_link($link){
     //处理网址，补加http://

@@ -195,6 +195,8 @@ class OrderController extends AdminBaseController
             'type'=>2,
             'uid'=>$user['id'],
             'mobile'=>$user['mobile'],
+            'uname'=>$user['user_nickname'],
+            'sms'=>'order',
         ];
         zz_msg($data_msg); 
         Db::name('action')->insert($data_action);
@@ -309,6 +311,8 @@ class OrderController extends AdminBaseController
             'type'=>2,
             'uid'=>$user['id'],
             'mobile'=>$user['mobile'],
+            'uname'=>$user['user_nickname'],
+            'sms'=>'order',
         ];
        
         zz_msg($data_msg);
@@ -437,6 +441,8 @@ class OrderController extends AdminBaseController
                 'type'=>2,
                 'uid'=>$user['id'],
                 'mobile'=>$user['mobile'],
+                'uname'=>$user['user_nickname'],
+                'sms'=>'order',
             ];
             
             zz_msg($data_msg);
@@ -510,6 +516,8 @@ class OrderController extends AdminBaseController
             'type'=>2,
             'uid'=>$user['id'],
             'mobile'=>$user['mobile'],
+            'uname'=>$user['user_nickname'],
+            'sms'=>'order',
         ];
         
         zz_msg($data_msg);
@@ -602,6 +610,8 @@ class OrderController extends AdminBaseController
             'type'=>2,
             'uid'=>$user['id'],
             'mobile'=>$user['mobile'],
+            'uname'=>$user['user_nickname'],
+            'sms'=>'order',
         ]; 
         
         zz_msg($data_msg);

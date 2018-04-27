@@ -27,31 +27,9 @@ class HomeBaseController extends BaseController
         
         if(empty($shop['website'])){
             $web=trim($_SERVER['HTTP_HOST']);
-           
-            $shop=Db::name('shop')->where('website',$web)->find();
-            $shop0=Db::name('shop')->where('id',1)->find();
-            if(empty($shop) ){ 
-                $shop=$shop0;
-            }
-            switch ($shop['type']){
-                case 0:
-                    $shop['aid']=1;
-                    break;
-                case 1:
-                    $shop['aid']=$shop['id'];
-                    break;
-                case 2:
-                    $tmp=$shop0;
-                    $tmp['aid']=1;
-                    $tmp['id']=$shop['id'];
-                    $tmp['rate']=$shop['rate'];
-                    $tmp['code']=$shop['code'];
-                    $tmp['website']=$shop['website'];
-                    $shop=$tmp;
-                    break;
-                    
-            }
-            session('shop',$shop);
+            zz_shop(['website'=>$web]);
+            
+            $shop=session('shop');
         }
        
         View::share('site_info', $siteInfo);

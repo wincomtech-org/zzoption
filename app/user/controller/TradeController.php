@@ -12,8 +12,8 @@ namespace app\user\controller;
 
 use cmf\controller\UserBaseController;
 use think\Db;
-use app\portal\controller\StockzController;
- 
+
+use stock\Stock;
 /* 交易 */
 class TradeController extends UserBaseController
 {
@@ -132,6 +132,12 @@ class TradeController extends UserBaseController
         }elseif($order['status']!=4 && $order['status']!=6){
             $this->error('无此订单3');
         }
+        $stock=new Stock();
+        $price=$stock->getPrice('s_'.$order['code0']);
+        
+        $price=$price['s_'.$order['code0']];
+        $order['price2']=$price['price'];
+        $order['money2']=zz_get_money($order['price1'], $order['price2'], $order['money0']);
         //要查询当前价格，计算浮盈
         $this->assign('order',$order);
         
@@ -203,18 +209,25 @@ class TradeController extends UserBaseController
         ->where('collect.uid',session('user.id'))
         ->order('collect.id asc')
         ->select();
+        $stock=new Stock();
         //循环得到各股票的实时数据
-        $tmp=[];
+        $codes='';
         foreach($list as $k=>$v){
+            $codes.=',s_'.$v['code0']; 
+        }
+        $codes=substr($codes, 1);
+        $prices=$stock->getPrice($codes);
+     
+        foreach($list as $k=>$v){
+            $price=$prices['s_'.$v['code0']];
             $tmp[]=[
                 'name'=>$v['name'],
                 'code'=>$v['code'],
                 'code0'=>$v['code0'],
                 'status'=>$v['status'],
-                'price'=>1.22,
-                'percent'=>0.2,
+                'price'=>$price['price'],
+                'percent'=>$price['percent'],
             ];
-            
         }
        
         $this->assign('list',$tmp);
@@ -266,6 +279,12 @@ class TradeController extends UserBaseController
         $order=$m->where($where)->find();
          $status=config('order_status');
          $order['status_name']=$status[$order['status']];
+         $stock=new Stock();
+         $price=$stock->getPrice('s_'.$order['code0']);
+         
+         $price=$price['s_'.$order['code0']];
+         $order['price2']=$price['price'];
+         $order['money2']=zz_get_money($order['price1'], $order['price2'], $order['money0']);
         $this->assign('order',$order);
         $this->assign('html_title','询价详情');
         

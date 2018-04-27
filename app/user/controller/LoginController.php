@@ -195,7 +195,7 @@ class LoginController extends HomeBaseController
         if(empty($verify) ||($time-$verify['time'])>600){
             $this->error('验证码不存在或已过期');
         }
-        if($verify['code']!=$data1['sms']){
+        if($verify['code']!=$data1['code']){
             $this->error('验证码错误');
         }
         if($verify['mobile']!=$data1['tel'] ){

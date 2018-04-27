@@ -12,7 +12,7 @@ namespace app\portal\controller;
 
 use cmf\controller\HomeBaseController;
 use think\Db;
-
+use stock\Stock;
 class StockzController extends HomeBaseController
 {
     public function _initialize()
@@ -37,8 +37,10 @@ class StockzController extends HomeBaseController
             $where['name']=['like','%'.$code.'%'];
         }
         $list=Db::name('stock')->where($where)->limit(10)->column('code0,code,name');
+        
         $this->success('获取成功','',$list);
     }
+     
     /* 定时执行订单,把未持仓的订单过期掉,把持仓的订单判断是否可行权,每日2点执行 */ 
     public function order_old(){
         //获取凌晨0点时间

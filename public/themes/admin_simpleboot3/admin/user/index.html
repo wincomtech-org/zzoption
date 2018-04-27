@@ -8,9 +8,9 @@
 		</ul>
         <form class="well form-inline margin-top-20" method="post" action="{:url('User/index')}">
             用户名:
-            <input type="text" class="form-control" name="user_login" style="width: 120px;" value="{:input('request.user_login/s','')}" placeholder="请输入{:lang('USERNAME')}">
+            <input type="text" class="form-control" name="user_login" style="width: 120px;" value="{$data.user_login}" placeholder="请输入{:lang('USERNAME')}">
             手机:
-            <input type="text" class="form-control" name="mobile" style="width: 120px;" value="{:input('request.mobile/s','')}" placeholder="请输入手机号">
+            <input type="text" class="form-control" name="mobile" style="width: 120px;" value="{$data.mobile}" placeholder="请输入手机号">
             <input type="submit" class="btn btn-primary" value="搜索" />
             <a class="btn btn-danger" href="{:url('User/index')}">清空</a>
         </form>
@@ -23,6 +23,8 @@
 					<th>{:lang('LAST_LOGIN_TIME')}</th>
 					<th>手机号</th>
 					<th>{:lang('EMAIL')}</th>
+					<th>分站域名</th>
+					<th>分站机构</th>
 					<th>{:lang('STATUS')}</th>
 					<th width="130">{:lang('ACTIONS')}</th>
 				</tr>
@@ -43,6 +45,8 @@
 					</td>
 					<td>{$vo.mobile}</td>
 					<td>{$vo.user_email}</td>
+					<td>{$vo.website}.{$website}</td>
+					<td>{$vo.name}-{$vo.code}</td>
 					<td>{$user_statuses[$vo['user_status']]}</td>
 					<td>
 						<if condition="$vo['id'] eq 1 || $vo['id'] eq cmf_get_current_admin_id()">

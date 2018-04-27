@@ -56,22 +56,43 @@ class AdminIndexController extends AdminBaseController
      */
     public function index()
     {
-        $where   = [];
-        $request = input('request.');
-
-        if (!empty($request['uid'])) {
-            $where['id'] = intval($request['uid']);
+        $where   = ["u.user_type" => 2];
+        $request = $this->request->param();
+        //判断管理员权限
+        $shop0=session('shop');
+        if($shop0['id']!=1){
+            $where['u.shop']=$shop0['id'];
+        } 
+        if (empty($request['uid'])) {
+            $request['uid']=''; 
+        }else{
+            $where['u.id'] = intval($request['uid']);
+        }
+        if (empty($request['code'])) {
+            $request['code']='';
+        }else{
+            $where['s.code'] = intval($request['code']);
         }
         $keywordComplex = [];
-        if (!empty($request['keyword'])) {
+        if (empty($request['keyword'])) {
+            $request['keyword']='';
+        }else{
             $keyword = $request['keyword'];
-
-            $keywordComplex['user_login|user_nickname|mobile']    = ['eq', $keyword];
+            $keywordComplex['u.user_login|u.user_nickname|u.mobile']    = ['eq', $keyword];
         }
-        $usersQuery = Db::name('user'); 
-        $list = $usersQuery->whereOr($keywordComplex)->where($where)->order("create_time DESC")->paginate(10);
+        
+        
+        $list= Db::name('user')
+        ->field('u.*,s.website,s.name,s.code')
+        ->alias('u')
+        ->join('cmf_shop s','s.id=u.shop')
+        ->whereOr($keywordComplex)
+        ->where($where)
+        ->order("u.create_time desc")
+        ->paginate(10);
         // 获取分页显示
-        $page = $list->render();
+        $page = $list->appends($request)->render();
+        $this->assign('data', $request);
         $this->assign('list', $list);
         $this->assign('page', $page);
         // 渲染模板输出
@@ -183,21 +204,67 @@ class AdminIndexController extends AdminBaseController
         $data_action=[
             'aid'=>session('ADMIN_ID'),
             'type'=>'user',
+            'key'=>$user['id'],
             'time'=>time(),
             'ip'=>get_client_ip(),
             'action'=>'对用户'.$user['user_nickname'].'的操作:', 
         ];
         $action=0;
+        $data_user=[];
+        $m_user->startTrans();
         if($user['is_name']!=$data['is_name']){
             $action=1;
+            $data_user['is_name']=$data['is_name'];
             $data_action['action'].='更改实名认证'.$user['is_name'].'为'.$data['is_name'].'.';
         }
-       
+        if(!empty($data['add_money'])){
+            $action=1;
+            $data['add_money']=round($data['add_money'],2);
+            //2充值，3提现
+           
+            if($data['add_money']>0){
+                $money_type=2;
+                $money_dsc='手动充值';
+                $money_abs=$data['add_money'];
+            }else{
+                $money_type=3;
+                $money_dsc='手动提现';
+                $money_abs=abs($data['add_money']);
+            }
+            $dsc='管理员'.$money_dsc.$money_abs.'元.';
+            $data_action['action'].=$dsc;
+            $data_user['money']=bcadd($user['money'],$data['add_money'],2);
+            //记录资金明细
+            $data_money=[
+                'uid'=>$user['id'],
+                'money'=>$data['add_money'],
+                'status'=>1,
+                'type'=>$money_type,
+                'time'=>$data_action['time'],
+                'insert_time'=>$data_action['time'],
+                'dsc'=>$dsc,
+            ];
+            Db::name('money')->insert($data_money);
+            $data_msg=[
+                'aid'=>$data_action['aid'],
+                'title'=>'管理员'.$money_dsc,
+                'content'=>$dsc,
+                'type'=>2,
+                'uid'=>$user['id'],
+                'mobile'=>$user['mobile'],
+                'uname'=>$user['user_nickname'],
+                'sms'=>'money'
+            ];
+            zz_msg($data_msg);
+        }
+        
         if($action==0){ 
+            $m_user->commit();
             $this->success('未修改',url('index'));
         }else{
-            $m_user->where('id',$data['id'])->update($data);
+            $m_user->where('id',$data['id'])->update($data_user);
             Db::name('action')->insert($data_action);
+            $m_user->commit();
             $this->success('保存成功',url('index'));
         }
       

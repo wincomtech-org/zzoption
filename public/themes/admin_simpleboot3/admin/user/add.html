@@ -32,6 +32,17 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="input-shop" class="col-sm-2 control-label"><span class="form-required">*</span>所属分站</label>
+				<div class="col-md-6 col-sm-10">
+					<select name="shop" id="">
+					<foreach name="shops" item="vo">
+						<option value="{$vo.id}">{$vo.code}-{$vo.name}</option>
+					</foreach>
+					</select>
+					 
+				</div>
+			</div>
+			<div class="form-group">
 				<label for="input-user_email" class="col-sm-2 control-label"><span class="form-required">*</span>{:lang('ROLE')}</label>
 				<div class="col-md-6 col-sm-10">
 					<foreach name="roles" item="vo">

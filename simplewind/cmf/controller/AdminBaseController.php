@@ -20,8 +20,6 @@ class AdminBaseController extends BaseController
         // 监听admin_init
         hook('admin_init');
         parent::_initialize();
-        
-        
        
         $session_admin_id = session('ADMIN_ID');
         if (!empty($session_admin_id)) {
@@ -33,7 +31,7 @@ class AdminBaseController extends BaseController
             if (!$this->checkAccess($session_admin_id)) {
                 $this->error("您没有访问权限！");
             }
-            
+          
             $this->assign("admin", $user);
         } else {
             if ($this->request->isPost()) {
@@ -44,33 +42,10 @@ class AdminBaseController extends BaseController
             }
         }
         $shop=session('shop');
-       //没有分站信息或分站信息更新 
-        if(empty($shop['website'])){
-            $web=trim($_SERVER['HTTP_HOST']);
-            $shop=Db::name('shop')->where('website',$web)->find();
-            $shop0=Db::name('shop')->where('id',1)->find();
-            if(empty($shop) ){
-                $shop=$shop0;
-            }
-            switch ($shop['type']){
-                case 0:
-                    $shop['aid']=1;
-                    break;
-                case 1:
-                    $shop['aid']=$shop['id'];
-                    break;
-                case 2:
-                    $tmp=$shop0;
-                    $tmp['aid']=1;
-                    $tmp['id']=$shop['id'];
-                    $tmp['rate']=$shop['rate'];
-                    $tmp['code']=$shop['code'];
-                    $tmp['website']=$shop['website'];
-                  
-                    $shop=$tmp;
-                    break; 
-            }
-            session('shop',$shop);
+       
+        if($user['shop']!=$shop['id']){
+            session('ADMIN_ID', null);
+            $this->error("您不是这个网站的管理员", url("admin/public/login"));
         }
         View::share('zztitle',$shop['title']);
     }

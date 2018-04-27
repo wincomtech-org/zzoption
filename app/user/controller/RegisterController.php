@@ -50,18 +50,21 @@ class RegisterController extends HomeBaseController
         $type=$this->request->param('type','reg'); 
         
         $tmp=Db::name('user')->where('mobile',$phone)->find(); 
+        $sms_type='register';
         switch ($type){
             //注册
             case 'reg': 
                 if(!empty($tmp)){
                     $this->error('该手机号已被使用');
                 } 
+                $sms_type='register';
                 break;
             //找回密码
             case 'find': 
                 if(empty($tmp)){
                     $this->error('该手机号不存在');
                 } 
+                $sms_type='pwd';
                 break;
             //换手机号
             case 'mobile':
@@ -71,14 +74,14 @@ class RegisterController extends HomeBaseController
                 //判断密码
                 $psw=$this->request->param('psw',0);
                 $user=Db::name('user')->where('id',session('user.id'))->find();
-                
+                $sms_type='phone';
                 break;
             default:
                  $this->error('未知操作');
                  
         }
-       
-        $tmp=\sms\Dy::dySms($phone);
+        $sms= new \sms\Dy();
+        $tmp=$sms->dySms($phone,$sms_type);
       
         if(empty($tmp['code'])){
             $this->error('error');
