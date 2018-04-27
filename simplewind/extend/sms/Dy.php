@@ -9,6 +9,7 @@ use sms\aliyun\SignatureHelper;
 
 /**
 * 阿里大于类
+* 静态方法不支持 __construct()构造，仍然需要 new Dy; 实例化
 */
 class Dy
 {
@@ -51,9 +52,8 @@ class Dy
             $code = rand(1000, 9999);
             $msg = session('sms');
             $last_time = isset($msg['time'])?$msg['time']:0;
-            $last_mobile = isset($msg['mobile'])?$msg['mobile']:'';
             $time = time();
-            if(!empty($msg) && $last_mobile==$mobile && ($time-$msg['time'])<60){
+            if(!empty($msg) && ($time-$last_time)<60) {
                 return ['code'=>'err','msg'=>'不要频繁发送'];
             }
         }

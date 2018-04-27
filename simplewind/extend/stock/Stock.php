@@ -21,7 +21,7 @@ class Stock
     /**
      * 获取股票价格
      * s_开头  [S内盘指数]
-     * s_sh600001  sh600001
+     * s_sh600001
      * @param  string $code [description]
      * @return [type]       [description]
      */

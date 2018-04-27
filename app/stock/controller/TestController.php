@@ -18,14 +18,8 @@ class TestController extends HomeBaseController
 {
     public function sms()
     {
-        // session('sms',null);
-        // $msg = session('sms');
-        // // $msg = [];
-        // dump($msg);
-        // dump($msg['time']);die;
-        // dump(intval(session('sms.time')));die;
         $result = '';
-        $sms = new Dy();
+        // $sms = new Dy();
 
         $tp = [
             'name' => 'lothar',
@@ -35,7 +29,7 @@ class TestController extends HomeBaseController
         //$result = $sms->dySms('18715511536','order',$tp);
         // $result = $sms->batchSms();
 
-        // $result = Dy::oneSms();
+        // $result = Dy::dySms('18715511536','pwd');
 
         dump($result);
     }

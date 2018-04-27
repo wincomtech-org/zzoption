@@ -60,6 +60,7 @@ class NewsController extends HomeBaseController
       
         $id=$this->request->param('id',0,'intval');
         $info=$m->where('id',$id)->find();
+        $info['content'] = cmf_replace_content_file_url(htmlspecialchars_decode($info['content']));
         
         $this->assign('info',$info);
        
