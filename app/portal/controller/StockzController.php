@@ -51,12 +51,12 @@ class StockzController extends HomeBaseController
     public function order_old(){
         //获取凌晨0点时间
         $time=zz_get_time0();
-       $time1=time();
+        $time1=time();
         $time_day=trim(config('order_old'));
         //判断重复任务
         if(strtotime($time_day)===$time){
             cmf_log('重复任务，结束',$this->log);
-            //exit('重复任务，结束');
+            exit('重复任务，结束');
         }else{
             cmf_set_dynamic_config(['order_old'=>date('Y-m-d')]);
         }
@@ -245,15 +245,15 @@ class StockzController extends HomeBaseController
             cmf_log('非交易日，行权今日过期检查结束',$this->log);
             exit('非交易日，结束');
         }
-        //不需要判断重复，重复无用
-      /*   $time_day=trim(config('sell_old'));
+        // 判断重复 
+         $time_day=trim(config('sell_old'));
         //判断重复任务
         if(strtotime($time_day)===$time){
             cmf_log('重复任务，结束',$this->log);
             exit('重复任务，结束');
         }else{
             cmf_set_dynamic_config(['sell_old'=>date('Y-m-d')]);
-        } */
+        } 
         
         //加一个工作日，防止结束时间在假期
         $day=1;
@@ -315,7 +315,7 @@ class StockzController extends HomeBaseController
             exit('非交易日，结束');
         }
         //不需要判断重复，重复无用
-       /*  $time_day=trim(config('sell_auto'));
+          $time_day=trim(config('sell_auto'));
         //判断重复任务
         if(strtotime($time_day)===$time){
             cmf_log('重复任务，结束',$this->log);
@@ -323,7 +323,7 @@ class StockzController extends HomeBaseController
         }else{
             cmf_set_dynamic_config(['sell_auto'=>date('Y-m-d')]);
         }
-         */
+         
          
         //      is_old是否过期，0正常，1过期,2可以行权，3即将过期
         $m_order=Db::name('order');
