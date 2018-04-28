@@ -66,7 +66,7 @@ function is_password(str){
     return reg.test(str);
 }
 function is_bankCard(str){
-    var reg=/^([1-9]{1})(\d{14}|\d{18})$/;
+    var reg=/^\d{15}|\d{19}$/;
     return reg.test(str);
 }
 function is_username(str){
