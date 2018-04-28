@@ -46,5 +46,6 @@ class IndexController extends UserBaseController
         session("user", null);//只有前台用户退出
         $this->redirect(url('user/login/login'));
     }
+    
 
 }

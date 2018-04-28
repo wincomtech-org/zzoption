@@ -1,0 +1,38 @@
+<include file="public@head" />
+ 
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/join.css" />	
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+	</head>
+
+	<body>
+		<div class="point">
+			<div class="alltop">
+				<div class="top">
+					<a href="{:url('portal/index/my')}">
+						<div class="t_left">
+
+						</div>
+					</a>
+					<div class="t_right">
+						<span>{$html_title}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	    <div class="j_time">
+	    	<p>联系电话：{$shop.tel}</p>
+	    </div>
+	    
+	    <div class="j_center">
+	    	 {$join.content}
+	    </div>
+	    
+	    <div class="j_button">
+			<a href="{:url('portal/index/join_info')}">
+	    		<button type="button">点击加盟</button>
+			</a>
+	    </div>
+	</body>
+</html>

@@ -49,14 +49,15 @@ class StockzController extends HomeBaseController
      *  //把持仓的订单改为可以行权
      *  */ 
     public function order_old(){
+        $txt='订单过期检查';
         //获取凌晨0点时间
         $time=zz_get_time0();
         $time1=time();
         $time_day=trim(config('order_old'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束',$this->log);
-            exit('重复任务，结束');
+            cmf_log($txt.'重复任务，结束',$this->log);
+            exit($txt.'重复任务，结束');
         }else{
             cmf_set_dynamic_config(['order_old'=>date('Y-m-d')]);
         }
@@ -135,9 +136,10 @@ class StockzController extends HomeBaseController
         //把持仓的订单改为可以行权
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
+        $txt='订单由持仓变为可行权';
         if($tmp['is_trade']!=1){
-            cmf_log('非交易日，行权日期检查结束',$this->log);
-            exit('非交易日，结束');
+            cmf_log($txt.'非交易日，检查结束',$this->log);
+            exit($txt.'非交易日，结束');
         }
         //获取可行权的天数限制，要买入后超过指定天数才能行权
         $day=config('sell_day');
@@ -162,8 +164,8 @@ class StockzController extends HomeBaseController
         ];
         $m_order->where($where)->update(['is_old'=>2,'time'=>$time1]);
       
-        cmf_log('可行权日期检查结束',$this->log);
-        exit('行权日期检查结束');
+        cmf_log($txt.'检查结束',$this->log);
+        exit($txt.'检查结束');
     }
     
     /* 判断订单是否要过期,下午2点执行，发送短信通知 */
@@ -173,9 +175,10 @@ class StockzController extends HomeBaseController
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
+        $txt='订单即将过期短信提醒';
         if($tmp['is_trade']!=1){
-            cmf_log('非交易日，行权即将过期检查结束',$this->log);
-            exit('非交易日，结束');
+            cmf_log($txt.'非交易日，检查结束',$this->log);
+            exit($txt.'非交易日，结束');
         }
         //不需要判断重复，重复无用
        /*  $time_day=trim(config('sell_notice'));
@@ -231,8 +234,8 @@ class StockzController extends HomeBaseController
         ];
         $m_order->where($where)->update(['is_old'=>3,'time'=>$time1,'notice_time'=>$time1]);
         $m_order->commit();
-        cmf_log('行权日期检查结束',$this->log);
-        exit('行权日期检查结束');
+        cmf_log($txt.'检查结束',$this->log);
+        exit($txt.'检查结束');
     }
     /* 判断订单是否今日过期,下午2点30执行，发送短信通知 */
     public function sell_old(){
@@ -241,16 +244,17 @@ class StockzController extends HomeBaseController
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
+        $txt='订单今日过期短信通知';
         if($tmp['is_trade']!=1){
-            cmf_log('非交易日，行权今日过期检查结束',$this->log);
-            exit('非交易日，结束');
+            cmf_log($txt.'非交易日，行权今日过期检查结束',$this->log);
+            exit($txt.'非交易日，结束');
         }
         // 判断重复 
          $time_day=trim(config('sell_old'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束',$this->log);
-            exit('重复任务，结束');
+            cmf_log($txt.'重复任务，结束',$this->log);
+            exit($txt.'重复任务，结束');
         }else{
             cmf_set_dynamic_config(['sell_old'=>date('Y-m-d')]);
         } 
@@ -300,8 +304,8 @@ class StockzController extends HomeBaseController
         $m_order->where($where)->update(['is_old'=>4,'time'=>$time1]);
         
         $m_order->commit();
-        cmf_log('行权日期今日到期检查结束',$this->log);
-        exit('行权日期检查结束');
+        cmf_log($txt.'检查结束',$this->log);
+        exit($txt.'检查结束');
     }
     /* 订单今日过期,自动行权,下午2点50执行，发送短信通知 */
     public function sell_auto(){
@@ -310,16 +314,17 @@ class StockzController extends HomeBaseController
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
+        $txt='订单自动行权短信通知';
         if($tmp['is_trade']!=1){
-            cmf_log('非交易日，自动行权检查结束',$this->log);
-            exit('非交易日，结束');
+            cmf_log($txt.'非交易日，检查结束',$this->log);
+            exit($txt.'非交易日，结束');
         }
         //不需要判断重复，重复无用
           $time_day=trim(config('sell_auto'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束',$this->log);
-            exit('重复任务，结束');
+            cmf_log($txt.'重复任务，结束',$this->log);
+            exit($txt.'重复任务，结束');
         }else{
             cmf_set_dynamic_config(['sell_auto'=>date('Y-m-d')]);
         }
@@ -355,8 +360,8 @@ class StockzController extends HomeBaseController
         ];
         $m_order->where($where)->update(['status'=>6,'time'=>$time1]);
         $m_order->commit();
-        cmf_log('行权日期今日到期检查结束',$this->log);
-        exit('行权日期检查结束');
+        cmf_log($txt.'检查结束',$this->log);
+        exit($txt.'检查结束');
     }
     
      

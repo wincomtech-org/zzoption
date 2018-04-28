@@ -53,10 +53,20 @@ class OrderController extends AdminBaseController
     public function index()
     { 
         $m=$this->m;
-        $where=[];
+        $shop=session('shop');
+        if($shop['id']==1){
+            $where=[];
+        }elseif($shop['type']==2){
+            $where=['o.shop'=>['eq',$shop['id']]]; 
+        }else{
+            $ids=Db::name('shop')->where('fid',$shop['id'])->column('id');
+            $ids[]=$shop['id'];
+            $where=['o.shop'=>['in',$ids]];
+        }
+        
         $data=$this->request->param();
         if(isset($data['status']) &&  $data['status']!='-1'){
-            $where['status']=$data['status'];
+            $where['o.status']=['eq',$data['status']];
         }else{
             $data['status']='-1';
         }
@@ -64,14 +74,20 @@ class OrderController extends AdminBaseController
         if(empty($data['uname'])){
             $data['uname']='';
         }else{
-            $where['uname']=$data['uname'];
+            $where['o.uname']=['eq',$data['uname']];
         }
         if(empty($data['code'])){
             $data['code']='';
         }else{
-            $where['code']=$data['code'];
+            $where['o.code']=['eq',$data['code']];
         }
-        $list= $m->where($where)->order($this->order)->paginate(10);
+        $list= $m
+        ->field('o.*,s.name as sname,s.code as scode')
+        ->alias('o')
+        ->join('cmf_shop s','s.id=o.shop')
+        ->where($where)
+        ->order($this->order)
+        ->paginate(10);
        
         // 获取分页显示
         $page = $list->render(); 

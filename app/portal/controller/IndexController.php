@@ -22,7 +22,7 @@ class IndexController extends HomeBaseController
     }
     /* 首页 */
     public function index(){
-       
+         
        //获取分站信息
         $shop=session('shop');
         $banners=Db::name('banner')->where('shop',$shop['id'])->order('sort asc')->column('id,pic,link');
@@ -161,6 +161,96 @@ class IndexController extends HomeBaseController
         
     }
     
-     
-     
+    /* 招商加盟*/
+    public function join(){
+        $this->error('通过电话联系客服');
+        $join=Db::name('guide')->where('name','join')->find();
+        $this->assign('html_title','招商加盟');
+        $this->assign('join',$join);
+        return $this->fetch();
+    }
+    /* 招商加盟*/
+    public function join_info(){
+         $this->error('通过电话联系客服');
+        $this->assign('html_title','招商加盟');
+       
+        return $this->fetch();
+    }
+    /* 招商加盟*/
+    public function ajax_join(){
+        set_time_limit(300);
+        $uid=session('user.id');
+        if(empty($uid)){
+            $uid=0;
+        }
+        if(empty($_FILES['pic'])){
+            $this->error('请上传相关证件');
+        }
+        $data=$this->request->param();
+        $file=$_FILES['pic'];
+        
+        if($file['error']==0){
+            if($file['size']>config('avatar_size')){
+                $this->error('文件超出大小限制');
+            }
+            $pic='join/'.$data['tel'].'-'.time().'.jpg';
+            $path=getcwd().'/upload/';
+            
+            $destination=$path.$pic;
+            if(move_uploaded_file($file['tmp_name'], $destination)){
+               
+                
+            }else{
+                $this->error('文件上传失败');
+            }
+        }else{
+            $this->error('文件传输失败');
+        }
+    }
+    /* 招商加盟*/
+    public function join_do(){
+        set_time_limit(300);
+        $uid=session('user.id');
+        if(empty($uid)){
+            $uid=0;
+        }
+        $data=$this->request->param();
+        
+        if(empty($_FILES['file'])){
+            $this->error('请上传相关证件');
+        }
+        $time=time();
+        $data_join=[ 
+            'tel'=>$data['tel'],
+            'uname'=>$data['uname'],
+            'uid'=>$uid,
+            'company'=>$data['company'],
+            'type'=>$data['type'],
+            'shop'=>session('shop.aid'),
+            'dsc'=>empty($data['dsc'])?'':$data['dsc'],
+            'insert_time'=>$time,
+            'time'=>$time,
+        ];
+        $file=$_FILES['file'];
+        
+        if($file['error']==0){
+            if($file['size']>config('avatar_size')){
+                $this->error('文件超出大小限制');
+            }
+            $pic='join/'.$data_join['tel'].'-'.$time.'.jpg';
+            $path=getcwd().'/upload/';
+            
+            $destination=$path.$pic;
+            if(move_uploaded_file($file['tmp_name'], $destination)){
+                $data_join['pic']=$pic;
+                Db::name('join')->insert($data_join);
+                $this->success('已提交后台，请保持通讯畅通');
+                
+            }else{
+                $this->error('文件上传失败');
+            }
+        }else{
+            $this->error('文件传输失败');
+        }
+    }
 }

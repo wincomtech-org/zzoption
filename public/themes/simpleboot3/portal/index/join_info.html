@@ -1,0 +1,58 @@
+ <include file="public@head" />
+	 
+	<script src="__TMPL__/public/assets/js/join_details.js"></script>
+	<link rel="stylesheet" href="__TMPL__/public/assets/css/join_details.css">
+</head>
+<body>
+<!--	顶部-->
+	<div class="dingbu">
+		<a href="{:url('portal/index/join')}"></a>
+		<p>招商加盟</p>
+	</div>
+<!--	输入信息栏-->
+<form action="{:url('portal/index/join_do')}" method="post" id="join_form" enctype="multipart/form-data">
+	<div class="xinxi">
+		<input type="text" name="company" placeholder="请输入公司名称" name="">
+		<input type="text" name="uname" placeholder="请输入姓名" name="">
+		<input type="text" name="tel" placeholder="请输入手机号码" name="">
+		<label for="filed">请上传营业执照(小于2M)</label>
+	</div>
+	<div class="shangchuan">
+		<input id="filed" type="file" name="file" capture="camera" accept="image/*" style="display: none;">
+		<label for="filed">
+			<img src="" style="display: none;">
+		</label>
+	</div>
+	<div class="guyuan_sty">
+		<span>代理人：</span>
+		<p class="red_sssu">普通代理人</p>
+		<p>高级代理人</p>
+		<input type="hidden" value="1" name="type" id="web_type"/>
+	</div>
+	<div class="text_area">
+		<p>写下你想说的话</p>
+		<textarea name="dsc" id="dsc" cols="20" rows="3">
+			
+		</textarea>
+		<input id="join_submit" type="submit" value="提交">
+	</div>
+</form>
+</body>
+</html>
+<script type="text/javascript">
+	var click=0;
+	$('#join_form').submit(function() {
+		if(click==0){
+ 			click=1;
+ 		}else{
+ 			return false;
+ 		}
+		 
+ 		var company=$('input[name=company]').val();
+ 		var tel=$('input[name=tel]').val();
+ 		var uname=$('input[name=uname]').val();
+ 		var type=1;
+ 		var dsc=$('#dsc').text();
+ 		 
+	});
+</script>
