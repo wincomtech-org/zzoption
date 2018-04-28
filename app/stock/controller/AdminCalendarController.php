@@ -46,6 +46,18 @@ class AdminCalendarController extends AdminBaseController
         return $this->fetch();
     }
 
+    /**
+     * @adminMenu(
+     *     'name'   => '日历管理',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> true,
+     *     'order'  => 3,
+     *     'icon'   => '',
+     *     'remark' => '日历管理',
+     *     'param'  => ''
+     * )
+     */
     public function calendar()
     {
         $id = $this->request->param('id/d', 0, 'intval');
@@ -56,6 +68,18 @@ class AdminCalendarController extends AdminBaseController
         return $this->fetch();
     }
 
+    /**
+     * @adminMenu(
+     *     'name'   => '日历管理',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> false,
+     *     'order'  => 4,
+     *     'icon'   => '',
+     *     'remark' => '日历管理',
+     *     'param'  => ''
+     * )
+     */
     public function calendarPost()
     {
         $data = $this->request->param();

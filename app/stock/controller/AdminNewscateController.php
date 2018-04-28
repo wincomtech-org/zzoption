@@ -36,10 +36,37 @@ class AdminNewscateController extends AdminBaseController
         $this->assign('pager', $list->render());
         return $this->fetch();
     }
+
+    /**
+     * 分类管理
+     * @adminMenu(
+     *     'name'   => '新闻分类添加',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> true,
+     *     'order'  => 10000,
+     *     'icon'   => '',
+     *     'remark' => '新闻分类添加',
+     *     'param'  => ''
+     * )
+     */
     public function add()
     {
         return $this->fetch();
     }
+    /**
+     * 分类管理
+     * @adminMenu(
+     *     'name'   => '新闻分类添加提交',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> false,
+     *     'order'  => 10000,
+     *     'icon'   => '',
+     *     'remark' => '',
+     *     'param'  => ''
+     * )
+     */
     public function addPost()
     {
         $data = $this->request->param();
@@ -52,7 +79,19 @@ class AdminNewscateController extends AdminBaseController
         $this->success('添加成功!', url('AdminNewscate/index'));
     }
 
-    // 编辑
+    /**
+     * 分类管理
+     * @adminMenu(
+     *     'name'   => '新闻分类编辑',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> true,
+     *     'order'  => 10000,
+     *     'icon'   => '',
+     *     'remark' => '新闻分类编辑',
+     *     'param'  => ''
+     * )
+     */
     public function edit()
     {
         $id   = $this->request->param('id', 0, 'intval');
@@ -60,6 +99,19 @@ class AdminNewscateController extends AdminBaseController
         $this->assign($post);
         return $this->fetch();
     }
+    /**
+     * 分类管理
+     * @adminMenu(
+     *     'name'   => '新闻分类编辑提交',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> false,
+     *     'order'  => 10000,
+     *     'icon'   => '',
+     *     'remark' => '',
+     *     'param'  => ''
+     * )
+     */
     public function editPost()
     {
         $data = $this->request->param();
@@ -72,6 +124,18 @@ class AdminNewscateController extends AdminBaseController
         $this->success('保存成功!');
     }
 
+    /**
+     * @adminMenu(
+     *     'name'   => '新闻分类排序',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> false,
+     *     'order'  => 10000,
+     *     'icon'   => '',
+     *     'remark' => '',
+     *     'param'  => ''
+     * )
+     */
     public function listOrder()
     {
         parent::listOrders($this->mq);

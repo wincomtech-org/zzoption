@@ -84,15 +84,14 @@ class AdminStockController extends AdminBaseController
         return $this->fetch();
     }
     /**
-     * 股票编辑1
      * @adminMenu(
-     *     'name'   => '股票编辑1',
+     *     'name'   => '股票编辑提交',
      *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> false,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '股票编辑1',
+     *     'remark' => '',
      *     'param'  => ''
      * )
      */
@@ -172,13 +171,13 @@ class AdminStockController extends AdminBaseController
     /**
      * 股票添加1
      * @adminMenu(
-     *     'name'   => '股票添加1',
+     *     'name'   => '股票添加提交',
      *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> false,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '股票添加1',
+     *     'remark' => '股票添加提交',
      *     'param'  => ''
      * )
      */
