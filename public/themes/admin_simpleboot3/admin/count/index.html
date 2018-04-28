@@ -8,15 +8,16 @@
 	<div class="wrap">
 		<ul class="nav nav-tabs"> 
 			<li class="active"><a href="{:url('index')}">12月统计</a></li> 
-		 	 
+		 	 <li  class=""><a href="{:url('search')}">订单统计查询</a></li> 
+			<li  class=""><a href="{:url('money')}">分站统计</a></li> 
 		</ul>
-		 <h4 class="well">前12个月共新增注册用户{$users[0]}，单月统计如下：</h4>
+		 <h4 class="well">前12个月共新增用户{$users[0]}，单月统计如下：</h4>
 		<canvas id="user" width="800" height="400"></canvas>
 		<br/>
-		<h4 class="well">前12个月共放款{$count1['order'][0]}次，收款{$count2['order'][0]}次，单月统计如下：</h4>
+		<h4 class="well">前12个月共买入实际下单{$count1['order'][0]}次单月统计如下：</h4>
 		<canvas id="order" width="800" height="400"></canvas>
 		<br/>
-		<h4 class="well">前12个月共放款￥{$count1['money'][0]}，收款￥{$count2['money'][0]},单月统计如下：</h4>
+		<h4 class="well">前12个月共实际下单￥{$count1['money'][0]}单月统计如下：</h4>
 		
 		<canvas id="money" width="800" height="400"></canvas>
 		<br/>
@@ -54,19 +55,7 @@
 			i--;
 			money1[i]='{$vo}';
 		</volist>
-		var order2=new Array(12);
-		i=12;
-		<volist name="count2.order" id="vo" offset="0" length='12'>
-			i--;
-			order2[i]='{$vo}';
-		</volist>
-		
-		var money2=new Array(12);
-		i=12;
-		<volist name="count2.money" id="vo" offset="0" length='12'>
-			i--;
-			money2[i]='{$vo}';
-		</volist>
+		 
 		 
 		var data_user = {
 				labels : labels,
@@ -85,21 +74,14 @@
 			labels : labels,
 			datasets : [
 				{
-					lineItemName : "每月借款次数",
+					lineItemName : "每月下单次数",
 					fillColor : "rgba(220,220,220,0.5)",
 					strokeColor : "rgba(220,220,220,1)",
 					pointColor : "rgba(220,220,220,1)",
 					pointStrokeColor : "#fff",
 					data : order1
 				},
-				{
-					lineItemName : "每月还款次数",
-					fillColor : "rgba(151,187,205,0.5)",
-					strokeColor : "rgba(151,187,205,1)",
-					pointColor : "rgba(151,187,205,1)",
-					pointStrokeColor : "#fff",
-					data : order2
-				}
+				 
 			]
 		};
 		var data_money = {
@@ -107,20 +89,13 @@
 				datasets : [
 					 
 					{
-						lineItemName : "每月借款金额",
+						lineItemName : "每月下单金额",
 						fillColor : "rgba(220,220,220,0.5)",
 						strokeColor : "rgba(220,220,220,1)",
 						pointColor : "rgba(220,220,220,1)",
 						data : money1
 					},
-					{
-						lineItemName : "每月还款金额",
-						fillColor : "rgba(151,187,205,0.5)",
-						strokeColor : "rgba(151,187,205,1)",
-						pointColor : "rgba(151,187,205,1)",
-						pointStrokeColor : "#fff",
-						data : money2
-					}
+					 
 				]
 			};
 		 

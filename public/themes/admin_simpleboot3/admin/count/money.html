@@ -1,0 +1,76 @@
+<include file="public@header" />
+</head>
+<body>
+
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs"> 
+		 	<li class=""><a href="{:url('index')}">12月统计</a></li> 
+			<li  class=""><a href="{:url('search')}">订单统计查询</a></li> 
+			<li  class="active"><a href="{:url('money')}">分站统计</a></li> 
+		</ul>
+		<form class="well form-inline margin-top-20" method="post"
+			action="{:url('money')}">
+			 
+			   时间:
+        <input type="text" class="form-control js-bootstrap-datetime" name="start_time"
+               value="{$data.start_time}"
+               style="width: 140px;" autocomplete="off">-
+        <input type="text" class="form-control js-bootstrap-datetime" name="end_time"
+               value="{$data.end_time}"
+               style="width: 140px;" autocomplete="off"> &nbsp; &nbsp;
+			<input type="submit"
+				class="btn btn-primary" value="搜索" /> 
+			<a class="btn btn-danger"
+				href="{:url('money')}">清空</a>
+				&nbsp;&nbsp;&nbsp;
+		 
+		</form>
+		 
+		 <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr> 
+            	<th>分站id</th> 
+            	<th>分站机构</th>
+                <th>分站机构码</th>
+                <th>分站订单数</th>
+                <th>分站订单金额</th>
+                <th>分站提成比例</th>
+                <th>分站提成</th>
+                <th>分站下级分享提成</th>
+                <th>总提成</th>
+                  
+            </tr>
+            </thead>
+            <tbody> 
+            	<tr>
+                 	<td>--</td>
+                 	<td>系统总计</td>
+                 	<td>--</td>
+                 	<td>{$count.counts}</td>
+                 	<td>{$count.moneys}</td>
+                 	<td>--</td>
+                 	<td>{$count.moneys1}</td>
+                 	<td>{$count.moneys2}</td>
+                 	<td>{$count.moneys3}</td>
+                  
+                </tr>
+            <foreach name="list" item="vo">
+                <tr>
+                 	<td>{$vo.id}</td>
+                 	<td>{$vo.name}</td>
+                 	<td>{$vo.code}</td>
+                 	<td>{$vo.counts}</td>
+                 	<td>{$vo.moneys}</td>
+                 	<td>{$vo.rate}</td>
+                 	<td>{$vo.moneys1}</td>
+                 	<td>{$vo.moneys2}</td>
+                 	<td>{$vo.moneys3}</td>
+                  
+                </tr>
+           </foreach>     
+              </tbody>
+           </table>
+		 </div>
+	<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>
