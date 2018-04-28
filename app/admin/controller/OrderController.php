@@ -34,6 +34,7 @@ class OrderController extends AdminBaseController
         $this->assign('flag','订单');
         
         $this->assign('order_status', $this->order_status);
+        $this->assign('is_old',config('is_old'));
     }
      
     /**
