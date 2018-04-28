@@ -141,8 +141,8 @@ class CountController extends AdminBaseController
             $data['shop']='';
         }else{
             $where_user['shop']=$data['shop'];
-            $uids=$m_user->where($where_user)->column('id');
-            $where['uid']=['in',$uids];
+            
+            $where['shop']=['eq',$data['shop']];
         }
         if(empty($data['uid'])){
             $data['uid']='';
