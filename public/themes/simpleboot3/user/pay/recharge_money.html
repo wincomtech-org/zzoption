@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+		<title>充值</title>
+		<meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1,target-densitydpi=device-dpi ">
+		<!--	<meta name="apple-mobile-web-app-capable" content="yes" />-->
+		<meta name="HandheldFriendly" content="true">
+		<meta name="format-detection" content="telphone=no, email=no" />
+		<meta name="full-screen" content="yes">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="msapplication-tap-highlight" content="no">
+		<script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+		<script type="text/javascript">
+		var a=$(window).width();
+		console.log(a);
+		$("html").css("font-size",a/7.5+"px");
+		$(window).resize(function(){
+			var a=$(window).width();
+			$("html").css("font-size",a/7.5+"px");
+		});
+        </script>
+        <link rel="stylesheet" href="./css/recharge_money.css">
+        <link rel="stylesheet" type="text/css" href="css/top.css" />
+</head>
+<body>
+    <div class="point">
+        <div class="alltop">
+            <div class="top">
+                <a href="./user.html">
+                    <div class="t_left">
+
+                    </div>
+                </a>
+                <div class="t_right">
+                    <span>充值</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="p_text">默认金额</p>
+    <div class="parent_u">
+        <ul class="recharge_j">
+            <li class="no_click_s"><span>20</span>万</li>
+            <li class="no_click_s"><span>50</span>万</li>
+            <li class="click_yes red"><span>100</span>万</li>
+            <li class="click_yes"><span>150</span>万</li>
+            <li class="click_yes"><span>200</span>万</li>
+            <li class="click_yes"><span>300</span>万</li>
+            <li class="click_yes"><span>500</span>万</li>
+            <li class="click_yes"><span>600</span>万</li>
+        </ul>
+    </div>
+    <p class="p_text">自定义金额</p>
+    <div class="custom_s">
+        <span>￥</span>
+        <input class="jine_okl" type="text" placeholder="请输入金额">
+    </div>
+    <div class="gta_five">
+        <span id="label_s"></span>
+        <p>
+            <label class="label_s">
+                我已阅读并同意
+            </label>
+            <a href="#">《交易协议》</a>期权有风险，入市须谨慎！
+        </p>
+    </div>
+    <div class="gta_six">
+        <input class="tijiao" type="button" value="确定">
+    </div>
+</body>
+</html>
+<script>
+    var jine;
+    $(".recharge_j>.click_yes").click(function(){ 
+	    var a=$(this).index(); 
+        jine=$(this).children("span").html();
+        $(".jine_okl").val(jine+"0000");
+	    $($(".recharge_j>li")[a]).addClass("red").siblings().removeClass("red");
+    });
+    //同意项
+    (function(){
+		var a=0;
+		$("#label_s").click(function(){
+			a++;
+			if(a%2===1){
+				$(this).addClass("spans");
+				$(".tijiao").addClass("tijiao_s");
+			}else{
+				$(this).removeClass("spans");
+				$(".tijiao").removeClass("tijiao_s");
+			}
+			
+		});
+		$(".label_s").click(function(){
+			$("#label_s").click();
+		})
+	})();
+</script>

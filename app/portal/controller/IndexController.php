@@ -153,6 +153,7 @@ class IndexController extends HomeBaseController
             'status'=>0,
             'inquiry_time'=>$time,
             'time'=>$time,
+            'shop'=>session('shop.id'),
         ];
         $m=Db::name('order');
         $m->insert($data_order);

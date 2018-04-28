@@ -577,3 +577,27 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	background:#CFCFCF;
 	border:none !important;
 }
+.quit_s{
+	width:80%;
+	height:0.9rem;
+	margin:0.4rem auto 0 auto;
+}
+.quit_s>a{
+	display:block;
+	width:80%;
+	height:0.7rem;
+	margin: auto;
+	line-height: 0.7rem;
+	text-align: center;
+	color:#fff;
+	font-size:0.4rem;
+	font-weight: 600;
+/*	letter-spacing: 0.05rem;*/
+	text-decoration: none;
+	border:0.02rem solid #cd4650;
+	border-radius: 0.06rem;
+    background:url(../img/jia.png) no-repeat center;
+    background-size:0.35rem;
+}
+
+

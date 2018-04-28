@@ -31,6 +31,9 @@ class PayController extends UserBaseController
     public function index(){
         
         $this->assign('html_title','充值提现');
+        $user=Db::name('user')->where('id',session('user.id'))->find();
+        session('user',$user);
+        $this->assign('user',$user);
         return $this->fetch();
     }
     /*资金明细*/

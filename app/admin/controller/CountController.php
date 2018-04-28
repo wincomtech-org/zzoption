@@ -45,15 +45,15 @@ class CountController extends AdminBaseController
      */
     public function index()
     { 
-        exit('ff');
-        //新增未完成借款
-        $where_new=['status'=>['in',[3,4,5]]];
-        $where_user=['user_type'=>['eq',2]];
+        
+        //购买订单
+        $where_order=['status'=>['in',[4,6,7,8]]];
+        $where_user=[];
         $m1=Db::name('order');
-        $m2=Db::name('order_old');
+       
         $m_user=Db::name('user');
         $count1=[];
-        $count2=[];
+        
         $users=[];
         //计算月份
         $time=time();
@@ -81,30 +81,15 @@ class CountController extends AdminBaseController
             $where_user['create_time']=['between',[$times[$i],$times[$i+1]]]; 
             $users[$i]=$m_user->where($where_user)->count();
              
-            // 未还款借款借款
-            $where_new['money_time']=array('between',array($times[$i],$times[$i+1]));
-            $count1['order'][$i]=$m1->where($where_new)->count();
-            $count1['money'][$i]=$m1->where($where_new)->sum('money');
+            // 买入期权
+            $where_order['have_time']=array('between',array($times[$i],$times[$i+1]));
+            $count1['order'][$i]=$m1->where($where_order)->count();
+            $count1['money'][$i]=$m1->where($where_order)->sum('money2');
             if(empty($count1['money'][$i])){
                 $count1['money'][$i]=0;
             }
-            //已还款借款
-            $where_new1=['money_time'=>array('between',array($times[$i],$times[$i+1]))];
-            $tmp1=$m2->where($where_new1)->count();
-            $tmp2=$m2->where($where_new1)->sum('money');
-            if(empty($tmp2)){
-                $tmp2=0;
-            }
-            //已还款和未还款的借款相加
-            $count1['order'][$i]+=$tmp1;
-            $count1['money'][$i]+=$tmp2;
-            //还款
-            $where_old=['update_time'=>array('between',array($times[$i],$times[$i+1]))];
-            $count2['order'][$i]=$m2->where($where_old)->count();
-            $count2['money'][$i]=$m2->where($where_old)->sum('final_money');
-            if(empty($count2['money'][$i])){
-                $count2['money'][$i]=0;
-            }
+             
+            
             
             $mon--;
             if($mon==0){
@@ -117,32 +102,16 @@ class CountController extends AdminBaseController
         $where_user['create_time']=['between',[$times[1],$times[13]]]; 
         $users[0]=$m_user->where($where_user)->count();
         
-        $where_new['insert_time']=array('between',array($times[1],$times[13]));
-        $count1['order'][0]=$m1->where($where_new)->count();
-        $count1['money'][0]=$m1->where($where_new)->sum('money');
-        $where_new1=['insert_time'=>array('between',array($times[1],$times[13]))];
-        $tmp1=$m2->where($where_new1)->count();
-        $tmp2=$m2->where($where_new1)->sum('money');
+        $where_order['have_time']=array('between',array($times[1],$times[13]));
+        $count1['order'][0]=$m1->where($where_order)->count();
+        $count1['money'][0]=$m1->where($where_order)->sum('money2');
         if(empty($count1['money'][0])){
             $count1['money'][0]=0;
-        }
-        if(empty($tmp2)){
-            $tmp2=0;
-        }
-        //已还款和未还款的借款相加
-        $count1['order'][0]+=$tmp1;
-        $count1['money'][0]+=$tmp2;
-        
-        $where_old=['update_time'=>array('between',array($times[1],$times[13]))];
-        $count2['order'][0]=$m2->where($where_old)->count();
-        $count2['money'][0]=$m2->where($where_old)->sum('final_money');
-        if(empty($count2['money'][0])){
-            $count2['money'][0]=0;
         }
          
         $this->assign('labels',$labels);
         $this->assign('count1',$count1);
-        $this->assign('count2',$count2);
+       
         $this->assign('users',$users);
         return $this->fetch();
     }
@@ -172,8 +141,8 @@ class CountController extends AdminBaseController
             $data['shop']='';
         }else{
             $where_user['shop']=$data['shop'];
-            $uids=$m_user->where($where_user)->column('id');
-            $where['uid']=['in',$uids];
+            
+            $where['shop']=['eq',$data['shop']];
         }
         if(empty($data['uid'])){
             $data['uid']='';
@@ -253,6 +222,107 @@ class CountController extends AdminBaseController
         $this->assign('data',$data);
         $this->assign('count',$count);
         
+        return $this->fetch();
+    }
+    
+    /**
+     * 分站统计
+     * @adminMenu(
+     *     'name'   => '分站统计',
+     *     'parent' => 'default',
+     *     'display'=> true,
+     *     'hasView'=> true,
+     *     'order'  => 10,
+     *     'icon'   => '',
+     *     'remark' => '分站统计',
+     *     'param'  => ''
+     * )
+     */
+    public function money()
+    {
+        
+        $data=$this->request->param();
+        $where=[];
+        //根据时间查找
+        if(empty($data['start_time'] )){
+            $data['start_time']='';
+        }else{
+            $data['start_time']=$data['start_time'];
+            $start_time0=strtotime($data['start_time']);
+        }
+        if(empty($data['end_time'] )){
+            $data['end_time']='';
+        }else{
+            $data['end_time']=$data['end_time'];
+            $end_time0=strtotime($data['end_time']);
+        }
+        
+        if(isset($start_time0)){
+            if(isset($end_time0)){
+                if($start_time0>=$end_time0){
+                    $this->error('起始时间不能大于等于结束时间',url('search'));
+                }else{
+                    $where['o.have_time']=['between',[$start_time0,$end_time0]];
+                }
+            }else{
+                $where['o.have_time']=['egt',$start_time0];
+            }
+        }elseif(isset($end_time0)){
+            $where['o.have_time']=['elt',$end_time0];
+        }
+        
+         
+        //已买入期权
+        $where['o.status']=['in',[4,6,7,8]];
+        
+       $list=Db::name('shop')
+       ->field('s.id,s.name,s.rate,s.type,s.status,s.code,s.fid,sum(o.money1) as moneys,count(o.id) as counts')
+       ->alias('s')
+       ->join('order o','s.id=o.shop','left')
+       ->where($where)
+       ->order('s.fid asc,s.id asc')
+       ->select();
+       //"385985.00"
+       //计算上下级提成
+       $tmp=[];
+       //统计总数
+       $count['moneys']=0;
+       $count['counts']=0;
+       $count['moneys1']=0;
+       $count['moneys2']=0;
+       $count['moneys3']=0;
+        
+       foreach($list as $k=>$v){
+           $tmp[$v['id']]=$v;
+           $count['counts']+=$v['counts'];
+           $count['moneys']+=$v['moneys'];
+           //自己分站的提成//如果不是总站，计算提成
+           if($v['id']==1){
+               $tmp[$v['id']]['moneys1']=0;
+           }else{
+               $tmp[$v['id']]['moneys1']=bcmul($v['moneys'],$v['rate'],2);
+           }
+           $count['moneys1']+=$tmp[$v['id']]['moneys1'];
+           $count['moneys3']+=$count['moneys1'];
+           //分站子站的提成
+           $tmp[$v['id']]['moneys2']=0; 
+           $tmp[$v['id']]['moneys3']=$tmp[$v['id']]['moneys1'];
+           //如果不是总站，计算分站提成
+           if($v['fid']!=1){
+               $rate_sub=bcsub($tmp[$v['fid']]['rate'],$v['rate'],4);
+               $money_sub=bcmul($rate_sub,$v['moneys'],2);
+               $tmp[$v['fid']]['moneys2']+=$money_sub;
+               $tmp[$v['fid']]['moneys3']+=$money_sub;
+               $count['moneys2']+=$money_sub;
+               $count['moneys3']+=$money_sub;
+           }
+       }
+        
+        $this->assign('shop_status',config('shop_status'));
+        $this->assign('shop_types',config('shop_types'));
+        $this->assign('data',$data);
+        $this->assign('list',$tmp);
+        $this->assign('count',$count); 
         return $this->fetch();
     }
     

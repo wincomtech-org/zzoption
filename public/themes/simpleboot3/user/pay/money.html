@@ -12,7 +12,7 @@
 	<div class="nav_ssy">
 		<ol>
 		<foreach name="money_type" item="vo">
-			<li class="{($type==$key)?:'red_ss'}"><a href="{:url('user/pay/money',['type'=>$key])}">{$vo}</a>
+			<li class="<if condition='$type eq $key'>red_ss</if>"><a href="{:url('user/pay/money',['type'=>$key])}">{$vo}</a>
 				<span></span>
 			</li>
 			 
