@@ -135,7 +135,7 @@ class StockzController extends HomeBaseController
         //把持仓的订单改为可以行权
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
-        if($tmp['type']!=0 || $tmp['is_trade']!=1){
+        if($tmp['is_trade']!=1){
             cmf_log('非交易日，行权日期检查结束',$this->log);
             exit('非交易日，结束');
         }
@@ -146,7 +146,7 @@ class StockzController extends HomeBaseController
         while($day){ 
             $tmp=$m_day->where('time',$time0)->find();
             $time0=$time0-86400;
-            if($tmp['type']!=0 || $tmp['is_trade']!=1){
+            if($tmp['is_trade']==1){
                 $day--;
             }
         }
@@ -173,7 +173,7 @@ class StockzController extends HomeBaseController
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
-        if($tmp['type']!=0 || $tmp['is_trade']!=1){
+        if($tmp['is_trade']!=1){
             cmf_log('非交易日，行权即将过期检查结束',$this->log);
             exit('非交易日，结束');
         }
@@ -194,9 +194,8 @@ class StockzController extends HomeBaseController
         while($day){
             $tmp=$m_day->where('time',$time0)->find();
             $time0=$time0+86400;
-            if($tmp['type']!=0 || $tmp['is_trade']!=1){
-                $day--;
-                
+            if($tmp['is_trade']==1){
+                $day--; 
             }
         }
         
@@ -242,7 +241,7 @@ class StockzController extends HomeBaseController
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
-        if($tmp['type']!=0 || $tmp['is_trade']!=1){
+        if($tmp['is_trade']!=1){
             cmf_log('非交易日，行权今日过期检查结束',$this->log);
             exit('非交易日，结束');
         }
@@ -263,7 +262,7 @@ class StockzController extends HomeBaseController
         while($day){
             $tmp=$m_day->where('time',$time0)->find();
             $time0=$time0+86400;
-            if($tmp['type']!=0 || $tmp['is_trade']!=1){
+            if($tmp['is_trade']==1){
                 $day--; 
             }
         }
@@ -311,7 +310,7 @@ class StockzController extends HomeBaseController
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
-        if($tmp['type']!=0 || $tmp['is_trade']!=1){
+        if($tmp['is_trade']!=1){
             cmf_log('非交易日，自动行权检查结束',$this->log);
             exit('非交易日，结束');
         }
@@ -359,5 +358,7 @@ class StockzController extends HomeBaseController
         cmf_log('行权日期今日到期检查结束',$this->log);
         exit('行权日期检查结束');
     }
+    
+     
    
 }
