@@ -59,7 +59,7 @@ class JoinController extends AdminBaseController
         if(empty($data['name'])){
             $data['name']='';
         }else{
-            $whereOr['uname|name']=['like','%'.$data['name'].'%'];
+            $whereOr['uname|company']=['like','%'.$data['name'].'%'];
         }
         //主站显示所有,分站显示自己网站的申请
         $shopid=session('shop.id');

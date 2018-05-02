@@ -24,10 +24,12 @@
 		</label>
 	</div>
 	<div class="guyuan_sty">
-		<span>代理人：</span>
-		<p class="red_sssu">普通代理人</p>
-		<p>高级代理人</p>
-		<input type="hidden" value="1" name="type" id="web_type"/>
+		<span>代理类型：</span>
+		 
+		<foreach name="shop_types" item="vo">
+			<p class="">{$vo}<input type="hidden" value="{$key}" class="web_type"/></p>
+		</foreach>
+		<input type="hidden" value="0" name="type" id="web_type"/>
 	</div>
 	<div class="text_area">
 		<p>写下你想说的话</p>
@@ -42,17 +44,20 @@
 <script type="text/javascript">
 	var click=0;
 	$('#join_form').submit(function() {
-		if(click==0){
- 			click=1;
- 		}else{
+		if(click==1){ 
  			return false;
- 		}
+ 		 }
+		 var type=parseInt($('.red_sssu .web_type').val());
+		 if(type>0){
+			 $('#web_type').val(type); 
+	 		 click=1; 
+	 		 return true;
+		 }else{
+			 msg('请选择代理类型');
+			 
+			 return false;
+		 }
 		 
- 		var company=$('input[name=company]').val();
- 		var tel=$('input[name=tel]').val();
- 		var uname=$('input[name=uname]').val();
- 		var type=1;
- 		var dsc=$('#dsc').text();
  		 
 	});
 </script>
