@@ -4,14 +4,35 @@ $(window).resize(function(){
     var a=$(window).width();
     $("html").css("font-size",a/7.5+"px");
 });
-function msg(text,html='',url=''){
-    var str='<div class="show_box"><div class="show_box_s"><p class="text_p1">个股期权温馨提示</p><p class="text_p2">'+text+'</p><button class="btn_ght">确认</button></div></div>'
+
+function msg(text,fun,isbtn,html='',url=''){
+//第一个参数为弹框显示的文本，
+//第二个参数为一个函数，点击确认之后执行的函数，
+//第三个参数为true 或 false（表示是否添加“取消”按钮）；
+//若只想用弹框则只传递一个弹框文本内容即可；
+    var ht2="";
+    console.log(isbtn===true);
+    if(isbtn===true){
+        ht2='<button class="btn_ght bt_js1">取消</button>';
+    };
+    var str='<div class="show_box"><div class="show_box_s"><p class="text_p1">个股期权温馨提示</p><p class="text_p2">'+text+'</p><div class="show_s_k">'+ht2+'<button class="btn_ght bt_js2">确认</button></div></div></div>'
     $("body").append(str);
 	var timer_s=setTimeout(function(){
-		$(".btn_ght").click();
+		$(".bt_js2").click();
 	},6000);
-	$(".btn_ght").click(function(){
+    if(!(isbtn==undefined)){
+       clearInterval(timer_s);
+    };
+    $(".bt_js1").click(function(){
+        
+        $(".show_box").fadeOut().remove();
+    
+    });
+	$(".bt_js2").click(function(){
 		clearInterval(timer_s);
+        if(!(fun==undefined)){
+            fun();
+        }
 		$(".show_box").fadeOut().remove();
 		if(url!=''){
 			self.location=url;

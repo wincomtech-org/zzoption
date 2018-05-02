@@ -10,8 +10,37 @@
 		<a href="{:url('portal/guide/help')}"></a>
 	</div>
 <!--	切换栏-->
+    
 	<div class="body_s">
 		 <include file="public@trade_nav" />
+       
+        
+        <div class="header_syhu">
+            <div class="ghnhd_lkhf">
+                <input class="hnvb_lkdju" type="text" placeholder="输入股票代码，添加自选">
+<!--                <span class="hbg_poi"></span>-->
+            </div>
+            <div class="botton_input ghyop_sd">
+                            <p>60000/浦发银行</p>
+                            <p>54088/人民大会堂</p>
+                            <p>20150/FBI协会</p>
+                            <p>98616/美国大战叙利亚</p>
+                            <p>60000/浦发银行</p>
+                            <p>54088/人民大会堂</p>
+                            <p>20150/FBI协会</p>
+                            <p>98616/美国大战叙利亚</p>
+            </div>
+<!--
+            <div class="gl_khs">
+                <a href="jsvascript:void(0)">
+                    管理
+                </a>
+            </div>
+-->
+	    </div>
+        
+        
+        
 		<div class="show_g">
  <!--			买入-->
 			<div style="display:block" class="shows_4">
@@ -20,34 +49,86 @@
 					<span>现价</span>
 					<span>涨跌幅</span>
 				</div>
-				<div>
+				<div id="shuju_ji">
 				 
 <!--					改变的数据-->
+<!--
 				<foreach name="list" item="vo">
 					 <div class="sub_ss_jk">
-						<span>{$vo.code}/{$vo.name}</span>
-						<span>{$vo.price|default='--'}元</span>
+						<sppan>{$vo.code}/{$vo.name}</span>
+						<san>{$vo.price|default='--'}元</span>
 						<span>{$vo.percent|default='--'}%</span>
 						<span class="<eq name='vo.status' value='1'>sp_red</eq>">询价</span>
 					 <input class="code0" type="hidden" value="{$vo.code0}"/>
 					 <input class="status" type="hidden" value="{$vo.status}"/>
 					</div>
 				</foreach>
+-->
+<!--                    ====================================================-->
+                    <div class="sub_ss_jk">
+						<span>
+                            <span>60001</span><br>
+                            <span>中国航空</span>
+                        </span>
+						<span>223333元</span>
+						<span>29%</span>
+						<span class="btn_sd1 sp_red">询价</span>
+                        <span class="btn_sd2">删除</span>
+					</div>
+                     <div class="sub_ss_jk">
+						<span>
+                            <span>60001</span><br>
+                            <span>中国航空</span>
+                        </span>
+						<span>223333元</span>
+						<span>29%</span>
+						<span class="btn_sd1 sp_red">询价</span>
+                        <span class="btn_sd2">删除</span>
+					</div>
+<!--                    ====================================================-->
 				</div>
 				
-                <div class="quit_s">
-<!--                <a href="{:url('user/index/logout')}">-->
-                    <a href="#">
-<!--                        添加自选-->
-                    </a>
-                     
-		        </div>
+
 			</div>
 		</div>
 	</div>
 	
 <include file="public@foot"/>
 <script>
+    
+    //输入时
+     var text_i;
+	$(".hnvb_lkdju").bind('input porpertychange',function(){
+		$(".botton_input").fadeIn();
+		text_i=$(this).val();
+	});
+	$(".botton_input>p").click(function(){
+		$(".botton_input").css("display","none");
+		$(".hnvb_lkdju").val($(this).html());
+		text_i=$(this).html();
+	});
+	$element = $('.botton_input');
+	$(document).on('click', function(){
+        $element.css("display","none");
+    }).on('click', '.need-hidden-element', function(event){
+        event.stopPropagation();
+    })
+    
+//搜索框内点击添加自选股票;
+    $(".botton_input>p").click(function(){
+        var html_kj='<div class="sub_ss_jk"><span><span>60001</span><br><span>中国航空</span></span><span>223333元</span><span>29%</span><span class="btn_sd1 sp_red">询价</span><span class="btn_sd2">删除</span></div>'
+        $("#shuju_ji").append($(html_kj));
+    });
+//删除
+    $(document).on("click",".btn_sd2",function(){
+        var zhixing=()=>{
+            $(this).parent().remove();
+            console.log(23);
+        }
+//        zhixing();
+        msg("确定要删除吗？",zhixing,true);
+        
+    });
 // 提交
  
 

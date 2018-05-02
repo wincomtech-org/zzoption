@@ -8,7 +8,7 @@ body,p,ul,ol{margin:0;padding:0;}
     z-index:99999;
 }
 .show_box_s{
-    width:60vw;
+    width:75vw;
     min-height:30vw;
     background:#fff;
     position: absolute;
@@ -37,6 +37,11 @@ body,p,ul,ol{margin:0;padding:0;}
     padding:0 0.3rem 0.3rem 0.3rem;
     text-align: center;
     word-break: break-all;
+}
+.show_s_k{
+    display:flex;
+    flex-flow: row nowrap;
+    
 }
 .btn_ght{
     display: block;
