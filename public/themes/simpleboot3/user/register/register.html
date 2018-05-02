@@ -52,7 +52,7 @@ function  gggy_s(){
         return false;
 	}
 	//=======================
-	down_s($("#sms"),gggy_s);
+//	down_s($("#sms"),gggy_s);
 	//=======================
    	$.ajax({
            type: 'POST',
@@ -61,11 +61,13 @@ function  gggy_s(){
            data:{'tel':tel},
            success: function(data){ 
         	if(data.code==1){
+                msg('发送成功'); 
+                down_s($("#sms"),gggy_s);
 					//settime();
 				
            	}else{  
 				   msg(data.msg); 
-				   console.log(3);   
+//				   console.log(3);   
            	} 
            },
            error: function(){
@@ -75,26 +77,26 @@ function  gggy_s(){
    	return false;  
 }
 $('#sms').click(gggy_s);
- // 注册提交
+ // 注册提交 
 $('.tijiao').click(function(){
  	var code=$.trim($('input[name=code]').val());
  	var password=$.trim($('input[name=psw]').val()); 
  	var tel=$.trim($('input[name=tel]').val());
  	var sms=$.trim($('input[name=sms]').val());
-  /* 
-     if(tel== '' || isPhoneNo(tel) == false){
+   
+     if(tel== '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
-         alert('提示：请输入正确手机号');
+         msg('提示：请输入正确手机号');
          return false;
-     }else  if(password == '' || isPassword(password) == false){
+     }else  if(password == '' || is_password(password) == false){
          $('input[name="password"]').focus();
-         alert('提示：请输入6位数字密码');
+         msg('提示：请输入6位数字密码');
          return false;
      }else  if(sms == '' || isSms(sms) == false){
          $('input[name="sms"]').focus();
-         alert('短信验证码错误');
+         msg('短信验证码错误');
          return false;
-     }  */
+     }  
 
 
 

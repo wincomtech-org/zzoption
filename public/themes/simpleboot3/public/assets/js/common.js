@@ -43,14 +43,14 @@ function button_click(obj,action=1,text='',type=1){
 //短信计时函数
 function down_s(element,fun){
     element.off();
-    var txt_h=element.html();
+//    var txt_h=element.html();
     var num_s=60;
     element.html(num_s);
     var timer=setInterval(function(){
         num_s--;
         if(num_s<0){
             element.on("click",fun);
-            element.html(txt_h);
+            element.html("重新发送");
             clearInterval(timer);
         }else{
             element.html(num_s);
@@ -77,6 +77,10 @@ function is_username(str){
 //18位|15位
 function is_idcard(str){
     var reg=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+    return reg.test(str);
+}
+function isSms(str){
+    var reg=/^\d{4}$/;
     return reg.test(str);
 }
         

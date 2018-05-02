@@ -89,7 +89,7 @@ function time_d(){
   		return false;
 	}
 	//=========================	
-	   down_s($("#sms_btn"),time_d);
+//	  down_s($("#sms_btn"),time_d);
 	//========================
    	$.ajax({
            type: 'POST',
@@ -99,6 +99,7 @@ function time_d(){
            success: function(data){ 
         	if(data.code==1){
         		msg('发送成功'); 
+                down_s($("#sms_btn"),time_d);
                     //settime();
            	}else{  
            		msg(data.msg); 
