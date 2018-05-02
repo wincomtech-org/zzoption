@@ -69,6 +69,7 @@ class IndexController extends HomeBaseController
          $this->assign('html_title','个人中心');
          $this->assign('html_flag','my');
          $this->assign('user',$user);
+         $this->assign('baiduqiao',config('baiduqiao'));
         return $this->fetch();
     }
     
@@ -163,7 +164,7 @@ class IndexController extends HomeBaseController
     
     /* 招商加盟*/
     public function join(){
-        $this->error('通过电话联系客服');
+       
         $join=Db::name('guide')->where('name','join')->find();
         $this->assign('html_title','招商加盟');
         $this->assign('join',$join);
@@ -171,7 +172,7 @@ class IndexController extends HomeBaseController
     }
     /* 招商加盟*/
     public function join_info(){
-         $this->error('通过电话联系客服');
+        
         $this->assign('html_title','招商加盟');
        
         return $this->fetch();
@@ -221,13 +222,13 @@ class IndexController extends HomeBaseController
         }
         $time=time();
         $data_join=[ 
-            'tel'=>$data['tel'],
+            'utel'=>$data['tel'],
             'uname'=>$data['uname'],
             'uid'=>$uid,
             'company'=>$data['company'],
             'type'=>$data['type'],
             'shop'=>session('shop.aid'),
-            'dsc'=>empty($data['dsc'])?'':$data['dsc'],
+            'content'=>empty($data['dsc'])?'':$data['dsc'],
             'insert_time'=>$time,
             'time'=>$time,
         ];
@@ -237,14 +238,14 @@ class IndexController extends HomeBaseController
             if($file['size']>config('avatar_size')){
                 $this->error('文件超出大小限制');
             }
-            $pic='join/'.$data_join['tel'].'-'.$time.'.jpg';
+            $pic='join/'.$data_join['utel'].'-'.$time.'.jpg';
             $path=getcwd().'/upload/';
             
             $destination=$path.$pic;
             if(move_uploaded_file($file['tmp_name'], $destination)){
                 $data_join['pic']=$pic;
                 Db::name('join')->insert($data_join);
-                $this->success('已提交后台，请保持通讯畅通');
+                $this->success('已提交后台，请保持通讯畅通',url('portal/index/join'));
                 
             }else{
                 $this->error('文件上传失败');

@@ -1,0 +1,72 @@
+<include file="public@header" />
+ <link href="__TMPL__/public/assets/simpleboot3/css/zzinfo.css" rel="stylesheet">
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class=""><a href="{:url('index')}">所有{$flag}</a></li>
+        
+			<li class="active"><a href="{:url('add')}">添加{$flag}</a></li>
+		</ul>
+		<form method="post"
+			class="form-horizontal js-ajax-form margin-top-20"
+			action="{:url('addPost')}">
+			 
+		  
+			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">公司名称</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="company" value="" />
+				</div>
+			</div>
+			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">联系人</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="uname" value="" />
+				</div>
+			</div>
+			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">联系号码</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="utel" value="" />
+				</div>
+			</div>
+			  <div style="clear: both"></div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">加盟留言</label>
+				<div class="col-md-6 col-sm-10">
+					<textarea name="content"  class="form-control" rows="10"></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group ">
+				<label class="col-sm-2 control-label">网站类型</label>
+				<div class="col-md-6 col-sm-10">
+				<foreach name="shop_type" item="vo">
+					 
+					<input type="radio" name="type" value="{$key}"  />
+					{$vo}
+				</foreach>
+				</div>
+			</div>
+			 
+			 
+		  <div style="clear: both"></div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+			 
+					<button type="submit" class="btn btn-primary js-ajax-submit">添加</button>
+					<a class="btn btn-default" href="javascript:history.go(-1);">{:lang('BACK')}</a>
+				</div>
+			</div>
+			 <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+				 <p> </p>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+	 
+</body>
+</html>

@@ -244,6 +244,10 @@ class TradeController extends UserBaseController
         $this->assign('html_title','自选');
         return $this->fetch();
     }
+    /*自选股票 */
+    public function add_self(){
+        return $this->fetch();
+    }
     /*查询 */
     public function query(){
         

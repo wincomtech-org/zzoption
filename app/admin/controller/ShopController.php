@@ -5,7 +5,21 @@ namespace app\admin\controller;
  
 use cmf\controller\AdminBaseController; 
 use think\Db; 
- 
+/**
+ * Class ShopController
+ * @package app\admin\controller
+ *
+* @adminMenuRoot(
+ *     'name'   =>'分站管理',
+ *     'action' =>'default',
+ *     'parent' =>'',
+ *     'display'=> true,
+ *     'order'  => 10,
+ *     'icon'   =>'',
+ *     'remark' =>'分站管理'
+ * )
+ *
+ */
 class ShopController extends AdminBaseController
 {
     private $m;
@@ -25,15 +39,15 @@ class ShopController extends AdminBaseController
     }
      
     /**
-     * 分站代理
+     * 分站代理列表
      * @adminMenu(
-     *     'name'   => '分站代理',
-     *     'parent' => '',
+     *     'name'   => '分站代理列表',
+     *     'parent' => 'default',
      *     'display'=> true,
      *     'hasView'=> true,
      *     'order'  => 10,
      *     'icon'   => '',
-     *     'remark' => '分站代理',
+     *     'remark' => '分站代理列表',
      *     'param'  => ''
      * )
      */
@@ -61,9 +75,9 @@ class ShopController extends AdminBaseController
         }
         //主站显示所有和分站显示自己和子级
         $shopid=session('shop.id');
-        $m_shop=Db::name('shop');
+       
         if($shopid!=1){
-            $ids=$m_shop->where('fid',$shopid)->column('id');
+            $ids=$m->where('fid',$shopid)->column('id');
             $ids[]=$shopid;
             $where['id']=['in',$ids];
         }
