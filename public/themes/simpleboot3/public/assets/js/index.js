@@ -80,7 +80,11 @@ $(function(){
         $(".body_s>.xydan>div>div:nth-child(2)>div").append(bs);
         fgt_ds();
     }else{
-        $(".body_s>.xydan>div>div:nth-child(2)>div").append("暂无数据。。。。。。。");
+        $(".body_s>.xydan>div>div:nth-child(2)>div").append("暂无数据。。。。。。").css({
+            lineHeight:"1rem",
+            textIndent:"0.5rem",
+            color:"#cd4650",
+        });
     }
     
 	function fgt_ds(){
