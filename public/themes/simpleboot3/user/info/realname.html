@@ -53,9 +53,9 @@ $('button').click(function(){
 	var name=$.trim($('input[name=uname]').val());
  	var idcard=$.trim($('input[name=idcard]').val());
 	var bank=$.trim($('input[name=bank]').val());
-	if(!is_username(name)){msg("请正确输入姓名！",false,false,false,false);return false;}
-	if(!is_idcard(idcard)){msg("请正确输入身份证号码！",false,false,false,false);return false}
-	if(!is_bankCard(bank)){msg("请正确输入您的银行卡号！",false,false,false,false);return false}
+	if(!is_username(name)){msg("请正确输入姓名！");return false;}
+	if(!is_idcard(idcard)){msg("请正确输入身份证号码！");return false}
+	if(!is_bankCard(bank)){msg("请正确输入您的银行卡号！");return false}
     button_click(obj,1,text[1]);
     var sub_s=function(){
         $.ajax({
@@ -70,16 +70,16 @@ $('button').click(function(){
 			}else{
 				 button_click(obj,0,text[0]);
 				 
-				msg(data.msg,false,false,false,false);
+				msg(data.msg);
 			}
         },
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
       	    button_click(obj,0,text[0]);
-        	msg('服务器连接失败',false,false,event.responseText,false);
+        	msg('服务器连接失败',false,false,event.responseText);
         }
     });
     }
-    msg("确认提交吗？",sub_s,true,false,false);
+    msg("确认提交吗？",sub_s,true);
 	return false;
  });
 </script>

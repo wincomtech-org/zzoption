@@ -32,7 +32,7 @@ $('.tijiao').click(function(){
  	var name=$.trim($('.input1').val());
  	var name0=$.trim($('#name').val());
  	if(code0=='' || name=='' || name!=name0){
- 		msg('请选择股票',false,false,false,false);
+ 		msg('请选择股票');
  		return false;
  	}
  	var money=$.trim($('.principal .red span').text());
@@ -53,7 +53,7 @@ $('.tijiao').click(function(){
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
       	    
         	 button_click(obj,0,text[0],2);
-        	msg('服务器连接失败',false,false,event.responseText,false);
+        	msg('服务器连接失败',false,false,event.responseText);
         }
     });
 	return false;

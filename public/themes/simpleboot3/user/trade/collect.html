@@ -87,15 +87,13 @@
 			if(data.code==1){
 				$div.remove();
 			}else{
-				msg(data.msg,false,false,false,false);
-				if(data.url!=''){
-					location.href=data.url;
-				}
+				msg(data.msg,false,false,false,data.url);
+				 
 			}
 		},'json');
         }
 //        zhixing();
-        msg("确定要删除吗？",zhixing,true,false,false);
+        msg("确定要删除吗？",zhixing,true);
         
     });
 // 提交

@@ -5,7 +5,7 @@ $(window).resize(function(){
     $("html").css("font-size",a/7.5+"px");
 });
 
-function msg(text,fun,isbtn,htmls,urls){
+function msg(text,fun=false,isbtn=false,html='',url=''){
 //第一个参数为弹框显示的文本，
 //第二个参数为一个函数，点击确认之后执行的函数，不执行传递false即可；
 //第三个参数为true 或 false（表示是否添加“取消”按钮）；
@@ -32,17 +32,13 @@ function msg(text,fun,isbtn,htmls,urls){
             fun();
         }
 		$(".show_box").fadeOut().remove();
-		if(urls!==false){
-            if(urls!=''){
-                self.location=urls;
-            }
-        }
+		if(url!=''){
+			self.location=url;
+		}
 	});
-    if(htmls!==false){
-        if(htmls!=''){
-            $('body').append(htmls);
-        }
-    }
+	if(html!=''){
+		$('body').append(html);
+	}
 }
 function button_click(obj,action=1,text='',type=1){
     if(action==1){
