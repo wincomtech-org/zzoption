@@ -81,22 +81,21 @@
     	//获取ID，执行删除，成功后删除页面元素
     	var $div=$(this).parent();
     	var id=$div.find('.id').val();
-    	$.post(url_delete,{'id':id},function(data){
+    	
+         var zhixing=()=>{
+            $.post(url_delete,{'id':id},function(data){
 			if(data.code==1){
 				$div.remove();
 			}else{
-				msg(data.msg);
+				msg(data.msg,false,false,false,false);
 				if(data.url!=''){
 					location.href=data.url;
 				}
 			}
 		},'json');
-       /*  var zhixing=()=>{
-            $(this).parent().remove();
-            console.log(23);
         }
 //        zhixing();
-        msg("确定要删除吗？",zhixing,true); */
+        msg("确定要删除吗？",zhixing,true,false,false);
         
     });
 // 提交

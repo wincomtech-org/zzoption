@@ -66,17 +66,15 @@
 var text=['买入','正在买入'];
 $('.sp_red').click(function(){
 	var obj=$(this);
-	   if(!confirm('确认买入吗？')){
-		 return false;
-	 } 
-	 var id=$(this).siblings('.id').val();
-    $.ajax({
+    var by_s=function(){
+        var id=$('.sp_red').siblings('.id').val();
+        $.ajax({
         type: 'POST',
         url: "{:url('user/trade/ajax_buy')}",
         dataType: 'json',
         data: {'id':id},
         success: function(data){ 
-        	msg(data.msg);
+        	msg(data.msg,false,false,false,false);
         	button_click(obj,0,text[0]);  
         	if(data.url!=''){ 
 				self.location=data.url;
@@ -84,10 +82,13 @@ $('.sp_red').click(function(){
         },
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
       	    
-        	 button_click(obj,0,text[0]);
-        	msg('服务器连接失败',event.responseText);
+            button_click(obj,0,text[0]);
+        	msg('服务器连接失败',false,false,event.responseText,false);
         }
     });
+    }
+	   msg('确认买入吗？',by_s,true,false,false,false)
+        
 	return false;
  });
 </script>

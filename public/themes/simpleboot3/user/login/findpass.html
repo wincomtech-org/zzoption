@@ -85,7 +85,7 @@ function time_d(){
 	var tel=$.trim($('input[name=tel]').val()); 
   
    	if(tel=='' || is_mobile(tel) == false){ 
-   		msg('请先填写正确的手机号码');
+   		msg('请先填写正确的手机号码',false,false,false,false);
   		return false;
 	}
 	//=========================	
@@ -98,16 +98,16 @@ function time_d(){
            data:{'tel':tel,'type':'find'},
            success: function(data){ 
         	if(data.code==1){
-        		msg('发送成功'); 
+        		msg('发送成功',false,false,false,false); 
                 down_s($("#sms_btn"),time_d);
                     //settime();
            	}else{  
-           		msg(data.msg); 
+           		msg(data.msg,false,false,false,false); 
            	} 
            },
            error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
          	 
-          	msg('服务器连接失败',event.responseText);
+          	msg('服务器连接失败',false,false,event.responseText,false);
           }
        }); 
    	return false;  
@@ -124,21 +124,21 @@ $('#psw_btn').click(function(){
  
      if(tel == '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
-        msg('提示：请输入正确手机号');
+        msg('提示：请输入正确手机号',false,false,false,false);
          return false;
      }else if(psw1 == '' || is_password(psw1) == false){
          $('input[name="psw1"]').focus();
-         msg('提示：请输入正确的密码');
+         msg('提示：请输入正确的密码',false,false,false,false);
          return false;
      }else if(psw2 == '' || psw2 != psw1 ){
          $('input[name="psw2"]').focus();
-         msg('提示：两次密码不一致');
+         msg('提示：两次密码不一致',false,false,false,false);
          return false;
      }  
      $.post("{:url('user/login/ajax_findpsw')}",
     		 {'code':code,'tel':tel,'psw':psw1},
     		 function(data){ 
-    			msg(data.msg); 
+    			msg(data.msg,false,false,false,false); 
     		  	if(data.url!=''){  
     				self.location=data.url;
     			} 

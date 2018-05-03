@@ -32,7 +32,7 @@ $('.tijiao').click(function(){
  	var name=$.trim($('.input1').val());
  	var name0=$.trim($('#name').val());
  	if(code0=='' || name=='' || name!=name0){
- 		msg('请选择股票');
+ 		msg('请选择股票',false,false,false,false);
  		return false;
  	}
  	var money=$.trim($('.principal .red span').text());
@@ -47,13 +47,13 @@ $('.tijiao').click(function(){
         data: {'code0':code0,'month':month,'name':name,'money':money},
         success: function(data){ 
 			button_click(obj,0,text[0],2); 
-			msg(data.msg,'',data.url); 
+			msg(data.msg,false,false,false,data.url); 
 			 
         },
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
       	    
         	 button_click(obj,0,text[0],2);
-        	msg('服务器连接失败',event.responseText);
+        	msg('服务器连接失败',false,false,event.responseText,false);
         }
     });
 	return false;

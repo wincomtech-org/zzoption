@@ -31,11 +31,11 @@ $('.tijiao').click(function(){
   
     if(tel== '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
-         msg('提示：请输入正确手机号');
+         msg('提示：请输入正确手机号',false,false,false,false);
          return false;
      }else  if(password == '' || is_password(password) == false){
          $('input[name="password"]').focus();
-         msg('提示：请输入6~20位字母数字组合密码');
+         msg('提示：请输入6~20位字母数字组合密码',false,false,false,false);
          return false;
      } 
       
@@ -55,7 +55,7 @@ $('.tijiao').click(function(){
 			}else{
 				$('.tijiao').prop('disabled',false);
 				$('.tijiao').val('登录');
-				msg(data.msg);
+				msg(data.msg,false,false,false,false);
 			}
         },
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
@@ -63,7 +63,7 @@ $('.tijiao').click(function(){
         	$('.tijiao').prop('disabled',false);
 			$('.tijiao').val('登录');
         	 
-        	msg('服务器连接失败',event.responseText);
+        	msg('服务器连接失败',false,false,event.responseText,false);
         }
     });
 	return false;

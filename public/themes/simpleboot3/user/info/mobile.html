@@ -53,7 +53,7 @@
 	var tel=$.trim($('input[name=tel]').val()); 
   
    	if(tel=='' || is_mobile(tel) == false){ 
-   		msg('请先填写正确的手机号码');
+   		msg('请先填写正确的手机号码',false,false,false,false);
   		return false;
 	   }
 	   //====================
@@ -66,15 +66,15 @@
            data:{'tel':tel,'type':'mobile'},
            success: function(data){ 
         	if(data.code==1){
-        		msg('发送成功'); 
+        		msg('发送成功',false,false,false,false); 
                     //settime();
            	}else{  
-           		msg(data.msg); 
+           		msg(data.msg,false,false,false,false); 
            	} 
            },
            error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
          	 
-          	msg('服务器连接失败',event.responseText);
+          	msg('服务器连接失败',false,false,event.responseText,false);
           }
        }); 
    	return false;  
@@ -92,22 +92,24 @@ $('#mobile_btn').click(function(){
  
      if(tel == '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
-        msg('提示：请输入正确手机号');
+        msg('提示：请输入正确手机号',false,false,false,false);
          return false;
      }else if(psw1 == '' || is_password(psw1) == false){
          $('input[name="psw1"]').focus();
-         msg('提示：请输入正确的密码');
+         msg('提示：请输入正确的密码',false,false,false,false);
          return false;
      } 
-     $.post("{:url('user/info/ajax_mobile')}",
+    var sub_phon=function(){
+         $.post("{:url('user/info/ajax_mobile')}",
        		 {'code':code,'tel':tel,'psw':psw1},
        		 function(data){ 
-       			msg(data.msg); 
+       			msg(data.msg,false,false,false,false); 
        			 if(data.url!=''){
                	     location.href=data.url; 
                	 }
        	});
-     
+    }
+    msg("确认更换手机号为"+tel+"吗？",sub_phon,true,false,false)
    	return false;
   });
   
