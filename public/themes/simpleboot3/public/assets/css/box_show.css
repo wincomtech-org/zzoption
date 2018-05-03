@@ -43,6 +43,22 @@ body,p,ul,ol{margin:0;padding:0;}
     flex-flow: row nowrap;
     
 }
+.uhn_s{
+    display: inline-block;
+    width:2rem;
+    height:0.6rem;
+    line-height: 0.6rem;
+    text-align: right;
+    position:absolute;
+    bottom:0.2rem;;right:0.1rem;
+/*    font-weight: 600;*/
+    font-size:0.1rem;
+    letter-spacing: 0;
+}
+.hkih1{
+    color:#cd4650;
+    font-weight: 600;
+}
 .btn_ght{
     display: block;
     outline: none;

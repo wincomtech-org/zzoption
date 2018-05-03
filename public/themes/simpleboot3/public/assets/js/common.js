@@ -10,16 +10,27 @@ function msg(text,fun=false,isbtn=false,html='',url=''){
 //第二个参数为一个函数，点击确认之后执行的函数，不执行传递false即可；
 //第三个参数为true 或 false（表示是否添加“取消”按钮）；
     var ht2="";
+    var secends=6000;
+    var sec=secends/1000;
     if(isbtn===true){
         ht2='<button class="btn_ght bt_js1">取消</button>';
     };
-    var str='<div class="show_box"><div class="show_box_s"><p class="text_p1">个股期权温馨提示</p><p class="text_p2">'+text+'</p><div class="show_s_k">'+ht2+'<button class="btn_ght bt_js2">确认</button></div></div></div>'
+    var str='<div class="show_box"><div class="show_box_s"><p class="text_p1">个股期权温馨提示</p><p class="text_p2">'+text+'</p><div class="show_s_k">'+ht2+'<button class="btn_ght bt_js2">确认</button></div><span class="uhn_s"><span class="hkih1">'+sec+'</span>&nbsp;秒后关闭</span></div></div>'
     $("body").append(str);
 	var timer_s=setTimeout(function(){
 		$(".bt_js2").click();
-	},6000);
+	},secends);
+    var timer_s_s2=setInterval(function(){
+        sec--;
+        if(sec<0){
+            clearInterval(timer_s_s2);
+        }
+        $(".hkih1").html(sec);
+    },1000);
     if(isbtn==true){
        clearInterval(timer_s);
+       clearInterval(timer_s_s2);
+       $(".uhn_s").remove();
     };
     $(".bt_js1").click(function(){
         
