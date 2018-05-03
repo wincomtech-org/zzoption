@@ -172,9 +172,14 @@ class IndexController extends HomeBaseController
     }
     /* 招商加盟*/
     public function join_info(){
-        
+        $types=config('shop_type');
+        $shop=session('shop');
+        unset($types[0]);
+        if($shop['aid']!=1){
+            unset($types[1]);
+        } 
         $this->assign('html_title','招商加盟');
-       
+        $this->assign('shop_types',$types);
         return $this->fetch();
     }
     /* 招商加盟*/

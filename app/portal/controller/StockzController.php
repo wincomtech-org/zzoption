@@ -38,7 +38,7 @@ class StockzController extends HomeBaseController
         }else{
             $where['name']=['like','%'.$code.'%'];
         }
-        $list=Db::name('stock')->where($where)->limit(10)->column('code0,code,name');
+        $list=Db::name('stock')->where($where)->limit(10)->column('id,code0,code,name');
         
         $this->success('获取成功','',$list);
     }

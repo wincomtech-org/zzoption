@@ -52,6 +52,5 @@ class PayController extends UserBaseController
         $this->assign('html_title','资金明细');
         return $this->fetch();
     }
-    
      
 }

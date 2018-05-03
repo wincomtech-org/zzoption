@@ -205,14 +205,13 @@ class TradeController extends UserBaseController
         $m=Db::name('collect');
         //0询价，1询价有结果，2询价失败，3买入，4买入成功，5买入失败，6卖出，7结束
         $where=[
-            'uid'=>session('user.id'),
-            
+            'collect.uid'=>session('user.id'), 
         ];
         $list=Db::name('collect')
-        ->field('stock.*')
+        ->field('stock.*,collect.id as cid')
         ->alias('collect')
         ->join('cmf_stock stock','stock.id=collect.stock')
-        ->where('collect.uid',session('user.id'))
+        ->where($where)
         ->order('collect.id asc')
         ->select();
         $tmp=[];
@@ -231,6 +230,7 @@ class TradeController extends UserBaseController
         foreach($list as $k=>$v){
             $price=empty($prices['s_'.$v['code0']])?null:$prices['s_'.$v['code0']];
             $tmp[]=[
+                'id'=>$v['cid'],
                 'name'=>$v['name'],
                 'code'=>$v['code'],
                 'code0'=>$v['code0'],
@@ -239,14 +239,45 @@ class TradeController extends UserBaseController
                 'percent'=>$price['percent'],
             ];
         }
-       
+        
         $this->assign('list',$tmp);
         $this->assign('html_title','自选');
         return $this->fetch();
     }
-    /*自选股票 */
-    public function add_self(){
-        return $this->fetch();
+    /*自选股票添加 */
+    public function collect_add(){
+       $codeid=$this->request->param('codeid',0,'intval');
+       
+       if($codeid<=0){
+           $this->error('数据错误');
+       }
+       $uid=session('user.id');
+       $where=['uid'=>$uid,'stock'=>$codeid];
+       $m_collect=Db::name('collect');
+       $tmp=$m_collect->where($where)->find();
+       if(empty($tmp)){
+           $m_collect->insert($where);
+           $this->success('添加成功',url('user/trade/collect'));
+       }else{
+           $this->error('该股票已在自选中');
+       }
+    }
+    /*自选股票删除 */
+    public function collect_delete(){
+        $id=$this->request->param('id',0,'intval');
+        
+        if($id<=0){
+            $this->error('数据错误');
+        }
+        $uid=session('user.id');
+        $where=['id'=>$id,'uid'=>$uid];
+        $m_collect=Db::name('collect');
+        $result=$m_collect->where($where)->delete();
+        if($result==1){ 
+            $this->success('删除成功','');
+        }else{
+            $this->error('数据错误，删除失败',url('user/trade/collect'));
+        }
     }
     /*查询 */
     public function query(){

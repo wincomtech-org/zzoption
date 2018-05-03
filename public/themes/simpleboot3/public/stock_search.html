@@ -3,6 +3,7 @@
 var text_i="{$code|default=''}";
 var spans='';
 var url_search="{:url('portal/stockz/stock_search')}";
+var html_title="{$html_title|default=''}";
 if(text_i!=''){
 	$(".input1").val(text_i);
 	stock_search(text_i);
@@ -12,12 +13,13 @@ $(".input1").bind('input porpertychange',function(){
 	stock_search(text_i);
 	 
 });
-function stock_search(code){ 
+function stock_search(code){
 	spans=''; 
 	$.post(url_search,{'code':code},function(data){
 		stocks=data.data; 
 		for(var i in stocks){
-			spans+='<p><input type="hidden" class="code0" value="'+stocks[i]['code0']
+			spans+='<p><input type="hidden" class="codeid" value="'+stocks[i]['id']
+			+'" /><input type="hidden" class="code0" value="'+stocks[i]['code0']
 			+'" /><input type="hidden" class="name" value="'+stocks[i]['name']
 			+'" />'+stocks[i]['code']+'/'+stocks[i]['name']+'</p>';
 		}
@@ -28,10 +30,23 @@ function stock_search(code){
 	},'json');
 }
 $(document).on('click','.botton_input>p',function(){
-	$('#code0').val($(this).find('.code0').val());
-	$('#name').val($(this).find('.name').val());
-	$('.input1').val($(this).find('.name').val());
-	$(".botton_input").css("display","none");
+	var codeid=$.trim($(this).find('.codeid').val());
+	if(html_title=='自选'){
+		$.post("{:url('user/trade/collect_add')}",{'codeid':codeid},function(data){
+			if(data.code==1){
+				location.href=data.url;
+			}else{
+				msg(data.msg);
+			}
+		},'json');
+	}else{
+		$('#code0').val($(this).find('.code0').val());
+		$('#name').val($(this).find('.name').val());
+		$('.input1').val($(this).find('.name').val());
+		$(".botton_input").css("display","none");
+	}
+	
+	
 });
 $element = $('.botton_input');
 $(document).on('click', function(){
