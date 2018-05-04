@@ -120,7 +120,7 @@
 <include file="public@foot"/>
   <include file="public@stock_search"/>
 <script>
-//setInterval(indice,3000);
+setInterval(indice,3000);
 var indice_url="{:url('portal/stockz/stock_indice')}";
 function indice(){
 	$.post(indice_url,{'id':0},function(data){
