@@ -32,6 +32,7 @@ body{background:#f3f3f3}
 	justify-content: center;
 	align-items: center;
 	background:#fff;
+    position:relative;
 }
 .div_ding>span{
 	display: block;
@@ -39,7 +40,7 @@ body{background:#f3f3f3}
 	height:0.45rem;
 	background:#c3c3c3;
 }
-.div_ding>div{
+.div_ding>.div_spoi{
 	width:2rem;
 	height:0.45rem;
 	display: flex;
@@ -47,15 +48,15 @@ body{background:#f3f3f3}
 	justify-content: center;
 	align-items: center;
 }
-.div_ding>div>span{
+.div_ding>.div_spoi>span{
 	display:block;
 }
-.div_ding>div>span:nth-child(1){
+.div_ding>.div_spoi>span:nth-child(1){
 	color:#333333;
 	font-size:0.26rem;
 	margin-right: 0.08rem;
 }
-.div_ding>div>span:nth-child(2){
+.div_ding>.div_spoi>span:nth-child(2){
 	width:0.25rem;
 	height:0.15rem;
 	background:url(../img/bottom_jiantou.png) no-repeat;
@@ -68,6 +69,7 @@ body{background:#f3f3f3}
 	line-height: 0.9rem;
 	background:#fff;
 	border-bottom:0.02rem solid #c3c3c3;
+   
 }
 .body_dding>p{
 	display: inline-block;
@@ -114,7 +116,31 @@ body{background:#f3f3f3}
 	text-align:center;
 	border-radius: 0.06rem;
 }
-
+.show_dis1{
+    width:100%;
+    position:absolute;
+    top:0.9rem;
+    background:#fff;
+    border-top:0.02rem solid #c3c3c3;
+    border-bottom:0.02rem solid #c3c3c3;
+    box-shadow: 0 0.03rem 0.03rem 0 #333;
+    display:none;
+}
+.show_dis1>a{
+    display:block;
+    height:0.6rem;
+    line-height: 0.6rem;
+    text-decoration: none;
+    color:#333;
+    text-indent: 1rem;
+    font-size:0.2rem;
+    font-weight: 600;
+    border-bottom:0.02rem solid #c3c3c3;
+}
+.show_dis1>a:hover{
+    background:#cd4650;
+    color:#fff;
+}
 @media all and (max-width:360px){
 	.body_dding {
 		padding: 0 0 0 0.2rem;

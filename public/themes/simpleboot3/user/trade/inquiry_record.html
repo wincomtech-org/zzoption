@@ -9,15 +9,23 @@
 		询价记录
 	</div>
 	<div class="div_ding">
-		<div>
+		<div class="div_spoi gio_opl_s1">
 			<span>年份</span>
 			<span></span>
 		</div>
 		<span></span>
-		<div>
+		<div class="div_spoi gio_opl_s2">
 			<span>状态</span>
 			<span></span>
 		</div>
+        <div class="show_dis1 aireb_1">
+            <a href="javascript:void(0)">日期</a>
+            <a href="javascript:void(0)">金额</a>
+        </div>
+         <div class="show_dis1 aireb_2">
+            <a href="javascript:void(0)">询价中</a>
+            <a href="javascript:void(0)">询价失败</a>
+        </div>
 	</div>
 	<div class="body_dding">
 		<p>代码/股票</p>
@@ -55,4 +63,56 @@
 		}
 	}
 	auto_br_s();
+    var isshow_s1=false;
+    var isshow_s2=false;
+    //年份点击
+    $(".gio_opl_s1").click(function(e){
+        isshow_s1=!isshow_s1;
+        e.stopPropagation();
+        if(isshow_s1){
+            $(".aireb_1").fadeIn();
+        }else{
+            $(".aireb_1").fadeOut();
+        }
+        if(isshow_s2){
+            $(".aireb_2").fadeOut();
+            isshow_s2=!isshow_s2;
+        }
+    })//年份下面的a点击事件
+        
+    $(".aireb_1>a").click(function(){
+        console.log($(this).html());
+    })
+    
+    //月份点击
+    $(".gio_opl_s2").click(function(e){
+        isshow_s2=!isshow_s2;
+        if(isshow_s2){
+            $(".aireb_2").fadeIn();
+        }else{
+            $(".aireb_2").fadeOut();
+        }
+        e.stopPropagation();
+        if(isshow_s1){
+            $(".aireb_1").fadeOut();
+            isshow_s1=!isshow_s1;
+        }
+    });
+    //月份下面的a点击事件
+    
+     $(".aireb_2>a").click(function(){
+        console.log($(this).html());
+    })
+    
+     //点击其他任何地方弹框消失
+    $(document).click(function(){
+        if(isshow_s2){
+            $(".aireb_2").fadeOut();
+            isshow_s2=!isshow_s2;
+        }
+        if(isshow_s1){
+            $(".aireb_1").fadeOut();
+            isshow_s1=!isshow_s1;
+        }
+    });
 </script>

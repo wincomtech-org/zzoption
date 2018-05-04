@@ -1,5 +1,5 @@
 .aboutus{
-	margin: 0.5rem auto;
+	margin:0 auto 0.5rem auto;
 	width: 4rem;
 	
 	margin-bottom: 0.35rem;
@@ -41,3 +41,7 @@
 	color: #666;
 	margin-top: 0.45rem;
 } 
+.posn_s{
+    padding:0.45rem 0;
+    background:#fff;
+}

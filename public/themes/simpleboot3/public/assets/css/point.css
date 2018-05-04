@@ -2,9 +2,13 @@ body{
 	background-color: #f3f3f3;
 }
 
-
+.poinsyg{
+    padding:0.41rem 0;
+    margin-top:0.02rem;
+    background:#fff;
+}
 
 .point_c{
 	width: 80%;
-	margin: 0.41rem auto;
+	margin:auto;
 }

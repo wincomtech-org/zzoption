@@ -15,7 +15,7 @@ function msg(text,fun=false,isbtn=false,html='',url=''){
     if(isbtn===true){
         ht2='<button class="btn_ght bt_js1">取消</button>';
     };
-    var str='<div class="show_box"><div class="show_box_s"><p class="text_p1">个股期权温馨提示</p><p class="text_p2">'+text+'</p><div class="show_s_k">'+ht2+'<button class="btn_ght bt_js2">确认</button></div><span class="uhn_s"><span class="hkih1">'+sec+'</span>&nbsp;秒后关闭</span></div></div>'
+    var str='<div class="show_box"><div class="show_box_s"><p class="text_p1">个股期权温馨提示</p><p class="text_p2">'+text+'</p><div class="show_s_k">'+ht2+'<button class="btn_ght bt_js2">确认</button></div><span class="uhn_s"><span class="hkih1">'+sec+'</span>&nbsp;秒后确认</span></div></div>'
     $("body").append(str);
 	var timer_s=setTimeout(function(){
 		$(".bt_js2").click();

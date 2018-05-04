@@ -47,8 +47,11 @@ body{background:#f3f3f3}
 	font-size:0.26rem;
 	color:#333333;
 	box-sizing: border-box;
-	padding:0 0 0 0.7rem;
+	padding:0 1rem 0 0.7rem;
 	position: relative;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .div_s>div>a>span{
 	position: absolute;
