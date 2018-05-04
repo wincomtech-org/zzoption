@@ -10,21 +10,25 @@
 	</div>
 	<div class="div_ding">
 		<div class="div_spoi gio_opl_s1">
-			<span>年份</span>
+			<span>年份<neq name="year" value="0">-{$year}</neq></span>
 			<span></span>
 		</div>
 		<span></span>
 		<div class="div_spoi gio_opl_s2">
-			<span>状态</span>
+			<span>状态<neq name="status" value="-1">-{$order_status[$status]}</neq></span>
 			<span></span>
 		</div>
         <div class="show_dis1 aireb_1">
-            <a href="javascript:void(0)">日期</a>
-            <a href="javascript:void(0)">金额</a>
+         <a href="{:url('user/trade/inquiry_record',['year'=>0,'status'=>$status])}">所有</a> 
+        <foreach name="order_year" item="vo">
+            <a href="{:url('user/trade/inquiry_record',['year'=>$vo,'status'=>$status])}">{$vo}</a> 
+        </foreach>
         </div>
          <div class="show_dis1 aireb_2">
-            <a href="javascript:void(0)">询价中</a>
-            <a href="javascript:void(0)">询价失败</a>
+          <a href="{:url('user/trade/inquiry_record',['year'=>$year,'status'=>-1])}">所有</a> 
+         <foreach name="order_status" item="vo">
+            <a href="{:url('user/trade/inquiry_record',['year'=>$year,'status'=>$key])}">{$vo}</a> 
+         </foreach>
         </div>
 	</div>
 	<div class="body_dding">

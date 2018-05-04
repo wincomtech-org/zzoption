@@ -291,12 +291,24 @@ class TradeController extends UserBaseController
         $m=$this->m;
         //0询价，1询价有结果，2询价失败，3买入，4买入成功，5买入失败，6卖出，7结束
         $where=[
-            'uid'=>session('user.id'), 
+            'uid'=>['eq',session('user.id')], 
         ];
+        $year=$this->request->param('year',0,'intval');
+        $status=$this->request->param('status',-1,'intval');
+        if($year!=0){ 
+            $where['inquiry_time']=['between',[strtotime($year.'-1-1'),strtotime(($year+1).'-1-1')]];
+        }
+        if($status!=-1){
+            $where['status']=['eq',$status];
+        }
+       
         $list=$m->where($where)->order($this->sort)->select();
+        $this->assign('status',$status);
+        $this->assign('year',$year);
         $this->assign('list',$list);
         $this->assign('html_title','询价记录');
-        
+        $this->assign('order_status',config('order_status'));
+        $this->assign('order_year',config('order_year'));
         return $this->fetch();
     }
     /*平仓记录 */

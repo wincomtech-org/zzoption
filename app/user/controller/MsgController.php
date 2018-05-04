@@ -48,9 +48,9 @@ class MsgController extends UserBaseController
             ->find();
             $list[$k]=['name'=>$v];
             if(empty($tmp)){
-                $list[$k]['no_read']=0;
+                $list[$k]['noread']=0;
             }else{
-                $list[$k]['no_read']=1;
+                $list[$k]['noread']=1;
             }
         }
         $this->assign('list',$list);

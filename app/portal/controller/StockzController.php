@@ -181,14 +181,14 @@ class StockzController extends HomeBaseController
             exit($txt.'非交易日，结束');
         }
         //不需要判断重复，重复无用
-       /*  $time_day=trim(config('sell_notice'));
+         $time_day=trim(config('sell_notice'));
         //判断重复任务
         if(strtotime($time_day)===$time){
-            cmf_log('重复任务，结束',$this->log);
-            exit('重复任务，结束');
+            cmf_log($txt.'重复任务，结束',$this->log);
+            exit($txt.'重复任务，结束');
         }else{
             cmf_set_dynamic_config(['sell_notice'=>date('Y-m-d')]);
-        } */
+        } 
        
         //提前多少天提醒,就加多少天得到未来的结束时间
         $day=config('notice_day');

@@ -58,8 +58,9 @@ class MsgController extends AdminBaseController
         }else{
             $where['u.mobile']=$data['mobile'];
         }
+        //concat(a.user_login,'-',a.user_nickname) as aname
         $list=$m
-        ->field('m.*,mt.title,mt.type,mt.time,u.user_nickname as uname,u.mobile,a.user_nickname as aname')
+        ->field('m.*,mt.title,mt.type,mt.time,u.user_nickname as uname,u.mobile,concat(a.user_login,"-",a.user_nickname) as aname')
         ->alias('m')
         ->join('cmf_msg_txt mt','mt.id=m.msg_id','left')
         ->join('cmf_user u','u.id=m.uid','left')
@@ -96,7 +97,7 @@ class MsgController extends AdminBaseController
         
         $id=$this->request->param('id',0,'intval');
         $info=$m
-        ->field('m.*,mt.title,mt.type,mt.content,mt.time,u.user_nickname as uname,u.mobile,a.user_nickname as aname')
+        ->field('m.*,mt.title,mt.type,mt.content,mt.time,u.user_nickname as uname,u.mobile,concat(a.user_login,"-",a.user_nickname) as aname')
         ->alias('m')
         ->join('cmf_msg_txt mt','mt.id=m.msg_id','left')
         ->join('cmf_user u','u.id=m.uid','left')
