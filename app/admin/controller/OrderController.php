@@ -206,6 +206,9 @@ class OrderController extends AdminBaseController
         $dsc=zz_msg_dsc($info);
        
         if($info['status']==1){
+            if($data_order['money1']<=100 || $data_order['price1_0']<=0){
+                $this->error('请填写权利金和期初价格');
+            }
             $dsc.='询价成功，权利金为'.$data_order['money1'];
         }else{
             $dsc.='询价失败';
@@ -412,6 +415,9 @@ class OrderController extends AdminBaseController
         $dsc=zz_msg_dsc($info);
         
         if($data_order['status']==7){
+            if($data_order['price2_0']<=0){
+                $this->error('请填写期末价格');
+            }
             $data_order['money2']=zz_get_money($info['price1_0'], $data_order['price2_0'], $info['money0']);
             //之前结算过，计算新旧盈利的差值后给用户 
             if($info['status']==7){
