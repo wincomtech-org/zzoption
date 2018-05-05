@@ -197,25 +197,30 @@ class Calendar
         // 不足则自动填充
         $week = date('w',$caculate[0]['time']);
         if ($week>0) {
-            for ($sp=0; $sp < $week; $sp++) { 
+            for ($sp=0; $sp <$week; $sp++) { 
                 $fill[] = ['id'=>'','type'=>'','is_trade'=>'','time'=>'','day'=>''];
             }
             $caculate = array_merge($fill,$caculate);
         }
         $length = count($caculate);
-        
+       
         foreach ($caculate as $index => $date) {
-            if ($index % 7 == 0) {
+            if ($index % 7 == 0 ) {
                 //第一列
                 $tr = array($date);
+                
             } elseif ($index % 7 == 6 || $index == ($length - 1)) {
                 array_push($tr, $date);
                 array_push($result, $tr); //添加到返回的数据中
                 $tr = array(); //清空数组列表
             } else {
-                array_push($tr, $date);
-            }
+                array_push($tr, $date); 
+            } 
         }
+        //最后添加，否则最后一天是周日会遗失
+        if(!empty($tr)){
+            array_push($result, $tr);
+        } 
         return $result;
     }
 

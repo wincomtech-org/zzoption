@@ -55,8 +55,8 @@
                     <foreach name="draws" item="week">
                         <tr>
                             <foreach name="week" item="d">
-                                <td class="{$d.type?='rest'} {$today==strtotime($year.'-'.$month.'-'.$d.day)?='cur'}">
-                                    <p class="{$d.type==2?='holiday'} {$d.is_trade?'':'outter'}" onclick="calendarXD('{$d.id}');">
+                                <td class=" {$d.is_trade?='rest'} {$today==strtotime($year.'-'.$month.'-'.$d.day)?='cur'}">
+                                    <p class=" {$d.type==2?='holiday'} {$d.is_trade?'':'outter'}" onclick="calendarXD('{$d.id}');">
                                         {$d.day}
                                     </p>
                                 </td>
