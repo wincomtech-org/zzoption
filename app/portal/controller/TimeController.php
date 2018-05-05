@@ -18,14 +18,13 @@ class TimeController extends HomeBaseController
     {
         //上证指数、深证成指、创业板指
         $stockModel = new Stock;
-        for ($i=0; $i < 20; $i++) { 
+        for ($i=0; $i < 30; $i++) { 
             $post = $stockModel->getIndice();
             model('stock/StockIndice')->isUpdate(true)->saveAll($post);
-            sleep(3);
+            sleep(2);
         }
-        cmf_log('股市指数获取结束', 'stock_indice.log');exit;
-        // sleep(3);
-        // $this->redirect('portal/Time/indice');
+        exit;
+        
     }
 
     /*处理每日定时任务，crontab每日凌晨1点执行一次  */
@@ -41,6 +40,7 @@ class TimeController extends HomeBaseController
      */
     public function stock_list()
     {
+        set_time_limit(300);
         $stockModel = new Stock;
         $result = $stockModel->nowapi_call();
 
@@ -87,6 +87,7 @@ class TimeController extends HomeBaseController
     }
     public function stock_list2()
     {
+        set_time_limit(300);
         //股票列表
         $stockModel = new Stock;
         $result = $stockModel->nowapi_call(); //总计4705个股票代码
@@ -144,6 +145,8 @@ class TimeController extends HomeBaseController
      */
     public function news()
     {
+        set_time_limit(300);
+       
         // 证券时报网
         $deal[0]['source'] = ['type' => 1, 'name' => '证券时报网'];
         $deal[0]['url']    = [
@@ -196,5 +199,6 @@ class TimeController extends HomeBaseController
         $dnum  = $scModel->where('create_time', 'lt', $dtime)->delete();
 
         cmf_log('更新 ' . $result . ' 条，删除 ' . $dnum . ' 条', 'news.log');
+        exit();
     }
 }

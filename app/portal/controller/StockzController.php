@@ -50,6 +50,8 @@ class StockzController extends HomeBaseController
      *  */ 
     public function order_old(){
         $txt='订单过期检查';
+        cmf_log($txt.'开始',$this->log);
+        set_time_limit(300);
         //获取凌晨0点时间
         $time=zz_get_time0();
         $time1=time();
@@ -75,17 +77,19 @@ class StockzController extends HomeBaseController
         8=>'行权过期', */
         //      is_old是否过期，0正常，1过期,2可以行权，3即将过期
         $m_order=Db::name('order');
-       
+       $count=[];
         $m_user=Db::name('user');
         //清除密码锁定
-        $m_user->where('psw_fail','neq',0)->update(['psw_fail'=>0]);
+        $count['user']=$m_user->where('psw_fail','neq',0)->update(['psw_fail'=>0]);
+        cmf_log('更新用户密码错误次数'.$count['user'].'个',$this->log);
         $m_order->startTrans();
         //所有询价成功没确认买入的,过期
         $where=[
             'status'=>['in',[1,2,5]],
             'is_old'=>['eq',0]
         ];
-        $m_order->where($where)->update(['is_old'=>1,'time'=>$time1]);
+        $count['inquiry_old']=$m_order->where($where)->update(['is_old'=>1,'time'=>$time1]);
+        cmf_log('询价过期'.$count['inquiry_old'].'个',$this->log);
         //已付款的，要返回权利金,并改为买入失败
         $where=[
             'o.status'=>['eq',3], 
@@ -101,8 +105,8 @@ class StockzController extends HomeBaseController
             'status'=>['eq',3],
             'is_old'=>['eq',0]
         ];
-        $m_order->where($where)->update(['is_old'=>1,'time'=>$time1,'status'=>5]);
-       
+        $count['buy_old']=$m_order->where($where)->update(['is_old'=>1,'time'=>$time1,'status'=>5]);
+        cmf_log('已付款的，返回权利金'.$count['buy_old'].'个',$this->log);
         //记录资金明细
         $data_money=[];
         foreach ($list as $k=>$v){
@@ -132,7 +136,7 @@ class StockzController extends HomeBaseController
        
        
         $m_order->commit();
-        
+        cmf_log($txt.'检查结束',$this->log);
         //把持仓的订单改为可以行权
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
@@ -162,20 +166,22 @@ class StockzController extends HomeBaseController
             'is_old'=>['eq',0],
             'buy_time'=>['egt',$time0], 
         ];
-        $m_order->where($where)->update(['is_old'=>2,'time'=>$time1]);
+        $count['sell_old']=$m_order->where($where)->update(['is_old'=>2,'time'=>$time1]);
       
-        cmf_log($txt.'检查结束',$this->log);
+        cmf_log($txt.'检查结束，更新订单可行权'.$count['sell_old'].'个',$this->log);
         exit($txt.'检查结束');
     }
     
     /* 判断订单是否要过期,下午2点执行，发送短信通知 */
     public function sell_notice(){
+        set_time_limit(300);
         //获取凌晨0点时间
         $time=zz_get_time0();
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
-        $txt='订单即将过期短信提醒';
+        $txt='订单即将过期短信提醒,';
+        cmf_log($txt.'检查开始',$this->log);
         if($tmp['is_trade']!=1){
             cmf_log($txt.'非交易日，检查结束',$this->log);
             exit($txt.'非交易日，结束');
@@ -232,19 +238,21 @@ class StockzController extends HomeBaseController
             'is_old'=>['eq',2],
             'end_time'=>['elt',$time0],
         ];
-        $m_order->where($where)->update(['is_old'=>3,'time'=>$time1,'notice_time'=>$time1]);
+        $count_notice=$m_order->where($where)->update(['is_old'=>3,'time'=>$time1,'notice_time'=>$time1]);
         $m_order->commit();
-        cmf_log($txt.'检查结束',$this->log);
+        cmf_log($txt.'检查结束,提示订单'.$count_notice.'个',$this->log);
         exit($txt.'检查结束');
     }
     /* 判断订单是否今日过期,下午2点30执行，发送短信通知 */
     public function sell_old(){
+        set_time_limit(300);
         //获取凌晨0点时间
         $time=zz_get_time0();
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
-        $txt='订单今日过期短信通知';
+        $txt='订单今日过期短信通知，';
+        cmf_log($txt.'检查开始',$this->log);
         if($tmp['is_trade']!=1){
             cmf_log($txt.'非交易日，行权今日过期检查结束',$this->log);
             exit($txt.'非交易日，结束');
@@ -301,20 +309,22 @@ class StockzController extends HomeBaseController
             'is_old'=>['eq',3],
             'end_time'=>['elt',$time0],
         ];
-        $m_order->where($where)->update(['is_old'=>4,'time'=>$time1]);
+        $count_old=$m_order->where($where)->update(['is_old'=>4,'time'=>$time1]);
         
         $m_order->commit();
-        cmf_log($txt.'检查结束',$this->log);
+        cmf_log($txt.'检查结束，提醒订单'.$count_old.'个',$this->log);
         exit($txt.'检查结束');
     }
     /* 订单今日过期,自动行权,下午2点50执行，发送短信通知 */
     public function sell_auto(){
+        set_time_limit(300);
         //获取凌晨0点时间
         $time=zz_get_time0();
         $time1=time();
         $m_day=Db::name('stock_calendar');
         $tmp=$m_day->where('time',$time)->find();
-        $txt='订单自动行权短信通知';
+        $txt='订单自动行权短信通知,';
+        cmf_log($txt.'检查开始',$this->log);
         if($tmp['is_trade']!=1){
             cmf_log($txt.'非交易日，检查结束',$this->log);
             exit($txt.'非交易日，结束');
@@ -358,9 +368,9 @@ class StockzController extends HomeBaseController
             'status'=>['eq',4],
             'is_old'=>['eq',4], 
         ];
-        $m_order->where($where)->update(['status'=>6,'time'=>$time1]);
+        $count_old=$m_order->where($where)->update(['status'=>6,'time'=>$time1]);
         $m_order->commit();
-        cmf_log($txt.'检查结束',$this->log);
+        cmf_log($txt.'检查结束，处理订单'.$count_old.'个',$this->log);
         exit($txt.'检查结束');
     }
     

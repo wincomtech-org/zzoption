@@ -48,21 +48,27 @@ class AdminNewsController extends AdminBaseController
         // if($cid==0){
         //    $cid=key($cates);
         // }
-        $where=[
-            // 'cate_id'=>['eq',$cid],
-            'shop'=>['in',[0,session('shop.aid')]],
-        ];
-
+        $shop=session('shop.id');
+        if($shop==1){
+            $where=[];
+        }else{
+            $where=[
+                // 'cate_id'=>['eq',$cid],
+                'a.shop'=>['eq',$shop],
+            ];
+        }
+        
         $keyword = isset($param['keyword']) ? $param['keyword'] : '';
         if (!empty($keyword)) {
-            $where['title'] = ['like', '%' . $keyword . '%'];
+            $where['a.title'] = ['like', '%' . $keyword . '%'];
         }
 
         $list = $this->scModel->alias('a')
-            ->field('a.id,title,source,create_time,a.list_order,b.name')
+            ->field('a.id,a.title,a.source,a.create_time,a.list_order,a.shop,b.name,s.name as sname')
             ->join('stock_news_category b', 'a.cate_id=b.id','LEFT')
+            ->join('shop s', 's.id=a.shop','LEFT')
             ->where($where)
-            ->order('list_order,create_time DESC')
+            ->order('a.list_order,a.create_time DESC')
             ->paginate(15);
 
         $this->assign('keyword', $keyword);
@@ -105,7 +111,7 @@ class AdminNewsController extends AdminBaseController
     public function addPost()
     {
         $data         = $this->request->param();
-        $data['shop'] = Db::name('user')->where('id',cmf_get_current_admin_id())->value('shop');
+        $data['shop'] =session('shop.id');
 
         // $result = $this->mq->insert($data);
         $result = $this->scModel->isUpdate(false)->allowField(true)->save($data);
@@ -161,10 +167,16 @@ class AdminNewsController extends AdminBaseController
     public function editPost()
     {
         $data = $this->request->param();
-        if (empty($data['shop'])) {
-            $data['shop'] = Db::name('user')->where('id',cmf_get_current_admin_id())->value('shop');
+        //只能编辑自己上传的
+        $shop=session('shop.id');
+        if($shop!=1){
+            $info= $this->scModel->get($data['id']);
+            if($shop!=$info['shop']){
+                $this->success('无权编辑此新闻');
+            }
         }
-
+       
+        
         // $result = $this->mq->update($data);
         $result = $this->scModel->isUpdate(true)->allowField(true)->save($data);
 

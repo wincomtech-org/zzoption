@@ -37,48 +37,7 @@ class AdminNewscateController extends AdminBaseController
         return $this->fetch();
     }
 
-    /**
-     * 分类管理
-     * @adminMenu(
-     *     'name'   => '新闻分类添加',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> true,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '新闻分类添加',
-     *     'param'  => ''
-     * )
-     */
-    public function add()
-    {
-        return $this->fetch();
-    }
-    /**
-     * 分类管理
-     * @adminMenu(
-     *     'name'   => '新闻分类添加提交',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> false,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '',
-     *     'param'  => ''
-     * )
-     */
-    public function addPost()
-    {
-        $data = $this->request->param();
-
-        $result = $this->mq->insert($data);
-
-        if ($result === false) {
-            $this->error('添加失败!');
-        }
-        $this->success('添加成功!', url('AdminNewscate/index'));
-    }
-
+     
     /**
      * 分类管理
      * @adminMenu(
@@ -141,9 +100,5 @@ class AdminNewscateController extends AdminBaseController
         parent::listOrders($this->mq);
         $this->success("排序更新成功！", '');
     }
-
-    public function delete()
-    {
-        # code...
-    }
+ 
 }

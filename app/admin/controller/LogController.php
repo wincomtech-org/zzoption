@@ -33,13 +33,14 @@ class LogController extends AdminbaseController {
      * )
      */ 
     public function index(){
-        
          
        $list=[
-           ['name'=>'每日任务日志','file'=>'time.log'],
-           ['name'=>'股票订单日志','file'=>'stockz.log'],
-           ['name'=>'微信日志','file'=>'wx.log'],
+          
+           ['name'=>'股票列表获取日志', 'file'=>'stock_list.log'],
+           ['name'=>'每日新闻获取日志', 'file'=>'news.log'],
+           ['name'=>'每日订单更新日志','file'=>'stockz.log'], 
            ['name'=>'数据库日志','file'=>'sql.log'],
+           ['name'=>'默认日志','file'=>'log.text'],
            ['name'=>'日志操作','file'=>'log.log']
        ];
        $this->assign('list',$list);
