@@ -72,7 +72,7 @@ body{background:#f3f3f3}
 .body_dding{
 	height:0.9rem;
 	box-sizing: border-box;
-	padding:0 0 0 0.2rem;
+	padding:0 0 0 0.4rem;
 	line-height: 0.9rem;
 	background:#fff;
 	border-bottom:0.02rem solid #c3c3c3;
@@ -83,36 +83,39 @@ body{background:#f3f3f3}
 	font-size: 0.22rem;
 }
 .body_dding>p:nth-child(1){
-	width:2.2rem;
+	width:1.6rem;
 }
 .body_dding>p:nth-child(2){
-	width:1.1rem;
+	width:1.4rem;
 }
 .body_dding>p:nth-child(3){
-	width:2.7rem;
+	width:2rem;
 }
 .text_s>a{text-decoration: none;}
 .text_s>a>div{
 	min-height:0.75rem;
 	box-sizing:border-box;
-	padding:0 0 0 0.2rem;
-	line-height: 0.75rem;
+	padding:0.1rem 0 0.1rem 0.4rem;
+	line-height: 0.45rem;
 	background:#fff;
 	border-bottom:0.02rem solid #c3c3c3;
+    display: flex;
 }
 .text_s>a>div>p{
 	display: inline-block;
 	font-size: 0.2rem;
+    margin: 0;
 	color:#666666;
+    align-self: center;
 }
 .text_s>a>div>p:nth-child(1){
-	width:2.2rem;
+	width:1.6rem;
 }
 .text_s>a>div>p:nth-child(2){
-	width:1.1rem;
+	width:1.4rem;
 }
 .text_s>a>div>p:nth-child(3){
-	width:2.7rem;
+	width:2rem;
 }
 .text_s>a>div>.zanwu{
 	background:#999999;
@@ -148,25 +151,26 @@ body{background:#f3f3f3}
     background:#cd4650;
     color:#fff;
 }
+/*
 @media all and (max-width:360px){
 	.body_dding {
-		padding: 0 0 0 0.2rem;
+		padding: 0;
 		display:flex;
 	}
 	.text_s>a>div>p:nth-child(1) {
-		width: 1.5rem;
+		width: 1.3rem;
 	}
 	.body_dding>p:nth-child(1) {
-		width: 1.5rem;
+		width: 1.3rem;
 	}
 	.text_s>a>div>p:nth-child(3) {
-		width: 2.8rem;
+		width: 2rem;
 	}
 	.text_s>a>div>p:nth-child(2) {
 		width: 0.9rem;
 	}
 	.text_s>a>div {
-		padding: 0 0 0 0.2rem;
+		padding: 0;
 	}
 	.text_s>a>div {
 		line-height: 0.5rem;
@@ -175,4 +179,4 @@ body{background:#f3f3f3}
 	.text_s>a>div>p{
 		align-self: center;
 	}
-}
+}*/

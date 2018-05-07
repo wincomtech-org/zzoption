@@ -42,9 +42,15 @@
 		<foreach name="list" item="vo">
 		<a href="{:url('inquiry_details',['id'=>$vo.id])}">
 			 <div>
-				<p class="auto_br_s">{$vo.code}/{$vo.name}</p>
+				<p class="auto_br_s">
+                    <span>{$vo.code}</span><br>
+                    <span>{$vo.name}</span>
+                 </p>
 				<p>{$vo.money0}元</p>
-				<p>{$vo.month}个月/{$vo.inquiry_time|date='Y-m-d',###}</p>
+				<p>
+                    <span>{$vo.month}个月</span><br>
+                    <span>{$vo.inquiry_time|date='Y-m-d',###}</span>
+                 </p>
 			<in name="vo.status" value="0,2">
 				<p class="zanwu">暂无</p>
 			<else/>
@@ -58,15 +64,6 @@
 </body>
 </html>
 <script>
-	function auto_br_s(){
-		var a=$(window).width();
-		if(a<=360){
-			for(var i=0;i<$(".auto_br_s").length;i++){
-				$($(".auto_br_s")[i]).html($($(".auto_br_s")[i]).html().split("/").join("<br>"));
-			}
-		}
-	}
-	auto_br_s();
     var isshow_s1=false;
     var isshow_s2=false;
     //年份点击

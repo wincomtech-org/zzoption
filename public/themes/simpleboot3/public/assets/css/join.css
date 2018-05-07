@@ -1,10 +1,11 @@
 .j_time{
 	margin: 0 auto;
-	width: 1.06rem;
+	width: 5.69rem;
 	letter-spacing:0;
 	background-color: #e5e5e5;
 	text-align: center;
 	color: #666;
+    padding:0.2rem;
 	border-radius: 0.06rem;
 	margin-top:0.55rem ;
 }
@@ -21,7 +22,7 @@
 .j_center{
 	background-color: white;
 	width: 5.69rem;
-	
+	padding:0.2rem;
 	margin: 0.25rem auto;
 	border-radius: 0.06rem;
 }
