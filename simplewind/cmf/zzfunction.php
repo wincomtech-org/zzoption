@@ -278,14 +278,23 @@ function zz_picid($pic,$pic_old,$type,$id){
     if(!is_file($path.$pic)){
         return 0;
     } 
-    $size=config('pic_'.$type);
-    $pic_new=$type.'/'.$id.'.jpg';
-    //文件为新上传
-    if($pic!=$pic_old){
-        zz_set_image($pic, $pic_new, $size['width'], $size['height'], 6);
-        unlink($path.$pic);
+    //文件未改变
+    if($pic==$pic_old){
+        return $pic;
     }
+    $size=config('pic_'.$type);
+    $pic_new=$type.'/'.$id.'-'.time().'.jpg';
+     
+    $image = \think\Image::open($path.$pic); 
+    $image->thumb($size['width'],  $size['height'],6)->save($path.$pic_new);
+    
+    unlink($path.$pic);
+    if(is_file($path.$pic_old)){
+        unlink($path.$pic_old);
+    } 
+    
     return $pic_new;
+    
 }
 /* 为网址补加http:// */
 function zz_link($link){

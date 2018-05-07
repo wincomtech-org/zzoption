@@ -38,6 +38,7 @@ class InfoController extends UserBaseController
     {
         
         $this->assign('html_title','个人信息');
+        
         return $this->fetch();
         
     }
@@ -62,9 +63,9 @@ class InfoController extends UserBaseController
            
             $destination=$path.$avatar;
             if(move_uploaded_file($file['tmp_name'], $destination)){
-                $avatar=zz_set_image($avatar,$avatar,100,100,6);
+                $avatar=zz_picid($avatar,$user['avatar'],'avatar',$user['id']);
+                
                 if(is_file($path.$avatar)){ 
-                   
                     $user['avatar']=$avatar;
                     Db::name('user')->where('id',$user['id'])->update(['avatar'=>$avatar]);
                     session('user',$user);

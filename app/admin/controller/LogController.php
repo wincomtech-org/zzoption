@@ -40,7 +40,7 @@ class LogController extends AdminbaseController {
            ['name'=>'每日新闻获取日志', 'file'=>'news.log'],
            ['name'=>'每日订单更新日志','file'=>'stockz.log'], 
            ['name'=>'数据库日志','file'=>'sql.log'],
-           ['name'=>'默认日志','file'=>'log.text'],
+           ['name'=>'默认日志','file'=>'log.txt'],
            ['name'=>'日志操作','file'=>'log.log']
        ];
        $this->assign('list',$list);

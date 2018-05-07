@@ -182,37 +182,7 @@ class IndexController extends HomeBaseController
         $this->assign('shop_types',$types);
         return $this->fetch();
     }
-    /* 招商加盟*/
-    public function ajax_join(){
-        set_time_limit(300);
-        $uid=session('user.id');
-        if(empty($uid)){
-            $uid=0;
-        }
-        if(empty($_FILES['pic'])){
-            $this->error('请上传相关证件');
-        }
-        $data=$this->request->param();
-        $file=$_FILES['pic'];
-        
-        if($file['error']==0){
-            if($file['size']>config('avatar_size')){
-                $this->error('文件超出大小限制');
-            }
-            $pic='join/'.$data['tel'].'-'.time().'.jpg';
-            $path=getcwd().'/upload/';
-            
-            $destination=$path.$pic;
-            if(move_uploaded_file($file['tmp_name'], $destination)){
-               
-                
-            }else{
-                $this->error('文件上传失败');
-            }
-        }else{
-            $this->error('文件传输失败');
-        }
-    }
+     
     /* 招商加盟*/
     public function join_do(){
         set_time_limit(300);
