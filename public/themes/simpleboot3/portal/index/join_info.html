@@ -1,6 +1,4 @@
  <include file="public@head" />
-	 
-	<script src="__TMPL__/public/assets/js/join_details.js"></script>
 	<link rel="stylesheet" href="__TMPL__/public/assets/css/join_details.css">
 </head>
 <body>
@@ -44,20 +42,86 @@
 <script type="text/javascript">
 	var click=0;
 	$('#join_form').submit(function() {
+        
 		if(click==1){ 
  			return false;
  		 }
-		 var type=parseInt($('.red_sssu .web_type').val());
-		 if(type>0){
-			 $('#web_type').val(type); 
-	 		 click=1; 
-	 		 return true;
-		 }else{
-			 msg('请选择代理类型');
-			 
-			 return false;
-		 }
-		 
- 		 
+        var company=$.trim($("input[name='company']").val());
+        var uname=$.trim($("input[name='uname']").val());
+        var tel=$.trim($("input[name='tel']").val());
+        var license=$.trim($("input[name='file']").val());
+        var type=parseInt($('.red_sssu .web_type').val());
+        var text=$.trim($("textarea[name='dsc']").val());
+//        console.log;
+        if(company==''){
+            msg("请填写公司名称");
+            return false;
+        }else if(company.length<2){
+            msg("公司名称最少为两个汉字或字母");
+            return false;
+        }
+        if(uname==''){
+            msg("请填写姓名");
+            return false;
+        }else if(!is_username(uname)){
+           msg("请填写真实姓名");
+           return false;
+        }
+        if(tel==''){
+            msg("请填写手机号");
+            return false;
+        }else if(!is_mobile(tel)){
+             msg("请填写正确手机号码");
+            return false;
+        }
+        if(license==''){
+            msg("请上传营业执照");
+            return false;
+        }
+        if(text==''){
+            msg("请输入想说的话");
+            return false;
+        }else if(text.length<5){
+            msg("请输入想说的话，最少五个字");
+            return false;
+        }
+        if(type>0){
+            $('#web_type').val(type); 
+            click=1; 
+            return true;
+        }else{
+            msg('请选择代理类型');
+            return false;
+        }
+        
+	});
+    $(".text_area>textarea").val("")
+//	实现上传照片预览功能
+	$("#filed").change(function(){
+		var leixing=this.files[0].type.split("/")[0];
+		var daxiao=this.files[0].size/1000;
+		var url = null;  
+            if (window.createObjcectURL != undefined) {  
+                url = window.createOjcectURL(this.files[0]);  
+            } else if (window.URL != undefined) {  
+                url = window.URL.createObjectURL(this.files[0]);  
+            } else if (window.webkitURL != undefined) {  
+                url = window.webkitURL.createObjectURL(this.files[0]);  
+            }
+		if(leixing==="image"){
+			//为图片格式
+		}else{
+			//不是图片格式
+			msg("请不要上传其他格式文件！");
+			return;
+		}
+		if(daxiao>2048){
+			msg("请上传小于2M的照片！");
+			return;
+		}
+		$(".shangchuan>label>img").attr("src",url).css("display","block");
+	});
+	$(".guyuan_sty>p").click(function(){
+		$(this).addClass("red_sssu").siblings("p").removeClass("red_sssu");
 	});
 </script>

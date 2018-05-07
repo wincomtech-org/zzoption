@@ -39,6 +39,7 @@ function msg(text,fun=false,isbtn=false,html='',url=''){
     });
 	$(".bt_js2").click(function(){
 		clearInterval(timer_s);
+        clearInterval(timer_s_s2);
         if(fun!==false){
             fun();
         }
@@ -111,6 +112,10 @@ function is_idcard(str){
 }
 function isSms(str){
     var reg=/^\d{4}$/;
+    return reg.test(str);
+}
+function special_character(str){
+    var reg=/[@#\$%\^&\*]+/g;
     return reg.test(str);
 }
         

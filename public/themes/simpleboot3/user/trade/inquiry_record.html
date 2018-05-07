@@ -10,13 +10,13 @@
 	</div>
 	<div class="div_ding">
 		<div class="div_spoi gio_opl_s1">
-			<span>年份<neq name="year" value="0">-{$year}</neq></span>
-			<span></span>
+			<span class="nei_text">年份<neq name="year" value="0">-{$year}</neq></span>
+			<span class="bottom_jian"></span>
 		</div>
-		<span></span>
+		<span class="bottom_jian"></span>
 		<div class="div_spoi gio_opl_s2">
-			<span>状态<neq name="status" value="-1">-{$order_status[$status]}</neq></span>
-			<span></span>
+            <span class="bottom_jian"></span>
+			<span class="nei_text">状态<neq name="status" value="-1">-{$order_status[$status]}</neq></span>
 		</div>
         <div class="show_dis1 aireb_1">
          <a href="{:url('user/trade/inquiry_record',['year'=>0,'status'=>$status])}">所有</a> 
