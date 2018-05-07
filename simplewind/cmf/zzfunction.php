@@ -144,10 +144,12 @@ function zz_shop($shop){
             header("Location:http://www.".$website);
             exit;
         } 
+        cmf_log('$shop[website]1'.$shop['website']);
         if($shop['website']==$website){
             $shop=$shop0;
         }else{
             $shop['website']=str_replace('.'.$website, '', $shop['website']);
+            cmf_log('$shop[website]2'.$shop['website']);
             $shop=$m_shop->where('website',$shop['website'])->find();
         }
     }else{
@@ -288,7 +290,7 @@ function zz_picid($pic,$pic_old,$type,$id){
 /* 为网址补加http:// */
 function zz_link($link){
     //处理网址，补加http://
-    $exp='/^(http|ftp|https):\/\/([\w.]+\/?)\S*/';
+    $exp='/^(http|ftp|https):\/\//';
     if(preg_match($exp, $link)==0){
         $link='http://'.$link;
     }
