@@ -219,14 +219,14 @@ class TradeController extends UserBaseController
         //循环得到各股票的实时数据
         $codes='';
         foreach($list as $k=>$v){
-            $codes.=',s_'.$v['code0']; 
+            $codes.='s_'.$v['code0'].','; 
         }
+         
         if(!empty($codes)){
-            $stock=new Stock();
-            $codes=substr($codes, 1);
+            $stock=new Stock(); 
             $prices=$stock->getPrice($codes);
         }
-        
+       
         foreach($list as $k=>$v){
             $price=empty($prices['s_'.$v['code0']])?null:$prices['s_'.$v['code0']];
             $tmp[]=[
@@ -239,7 +239,7 @@ class TradeController extends UserBaseController
                 'percent'=>$price['percent'],
             ];
         }
-        
+       
         $this->assign('list',$tmp);
         $this->assign('html_title','自选');
         return $this->fetch();

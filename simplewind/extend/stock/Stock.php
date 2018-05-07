@@ -28,6 +28,7 @@ class Stock
     public function getPrice($code = 's_sh600000,s_sh600006')
     {
         $data = $this->getStockBase($code);
+     
         $tmp  = [];
         foreach ($data as $row) {
             $tmp[$row[0]] = [
@@ -74,14 +75,21 @@ class Stock
     {
         // $code = 's_sh000001';
         // $code = 's_sh000001,s_sz399001,s_sz399006';
-        $url = 'http://hq.sinajs.cn/list=' . $code;
+        $code=trim($code);
+        $url = 'http://hq.sinajs.cn/list='.$code;
 
         $content = cmf_curl_get($url);
+     
         $content = iconv('GBK', 'UTF-8//IGNORE', $content);
+       
         $content = cmf_strip_chars($content, "\r\n");
+       
         $content = trim($content, ';');
+      
         // dump($content);die;
         $data = explode(';', $content);
+       
+      
         // dump($data);die;
         $pattern = '/(?<==").*?(?=")/ism';
         $post    = [];
