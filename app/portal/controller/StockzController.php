@@ -77,6 +77,8 @@ class StockzController extends HomeBaseController
         8=>'行权过期', */
         //      is_old是否过期，0正常，1过期,2可以行权，3即将过期
         $m_order=Db::name('order');
+         
+        
        $count=[];
         $m_user=Db::name('user');
         //清除密码锁定
@@ -115,14 +117,16 @@ class StockzController extends HomeBaseController
                 'uid'=>$v['uid'],
                 'money'=>$v['money1'],
                 'status'=>1,
-                'type'=>2,
+                'type'=>1,
                 'time'=>$time1,
                 'insert_time'=>$time1,
                 'dsc'=>zz_msg_dsc($v).'买入失败，退款',
-            ];
-            $money=bcadd($v['umoney'],$v['money1'],2);
-            $m_user->where('id',$v['uid'])->update(['money'=>$money]);
+            ]; 
+            //自增 
+            $m_user->where('id',$v['uid'])->setInc('money',$v['money1']);
+           
         }
+        
         Db::name('money')->insertAll($data_money);
         //系统消息
         $data_msg=[
@@ -147,7 +151,8 @@ class StockzController extends HomeBaseController
         }
         //获取可行权的天数限制，要买入后超过指定天数才能行权
         $day=config('sell_day');
-        $time0=$time;
+        
+        $time0=$time+86400;
        
         while($day){ 
             $tmp=$m_day->where('time',$time0)->find();
@@ -156,19 +161,27 @@ class StockzController extends HomeBaseController
                 $day--;
             }
         }
-        
+      
         //      is_old是否过期，0正常，1过期,2可以行权，3即将过期
        
-        //持仓中，且buy_time时间大于最后时间的才能行权
+        //持仓中，且buy_time时间<=最后时间的才能行权
         
         $where=[
             'status'=>['eq',4],
             'is_old'=>['eq',0],
-            'buy_time'=>['egt',$time0], 
+            'buy_time'=>['elt',$time0], 
         ];
         $count['sell_old']=$m_order->where($where)->update(['is_old'=>2,'time'=>$time1]);
       
         cmf_log($txt.'检查结束，更新订单可行权'.$count['sell_old'].'个',$this->log);
+        
+        //行权成功的更新为行权结束
+        $where=[
+            'status'=>['eq',7], 
+        ];
+        $count['sell_end']=$m_order->where($where)->update(['status'=>8,'time'=>$time1]);
+        
+        cmf_log($txt.'检查结束，更新订单终结'.$count['sell_end'].'个',$this->log);
         exit($txt.'检查结束');
     }
     
@@ -207,7 +220,7 @@ class StockzController extends HomeBaseController
                 $day--; 
             }
         }
-        
+       
         //      is_old是否过期，0正常，1过期,2可以行权，3即将过期
         $m_order=Db::name('order');
         //持仓中，end_time<=相加后的时间
@@ -278,7 +291,7 @@ class StockzController extends HomeBaseController
                 $day--; 
             }
         }
-        
+       
         //      is_old是否过期，0正常，1过期,2可以行权，3即将过期
         $m_order=Db::name('order');
         //持仓中，end_time<=相加后的时间
@@ -368,12 +381,16 @@ class StockzController extends HomeBaseController
             'status'=>['eq',4],
             'is_old'=>['eq',4], 
         ];
-        $count_old=$m_order->where($where)->update(['status'=>6,'time'=>$time1]);
+        $data_update=[
+            'status'=>6,
+            'time'=>$time1,
+            'sell_time'=>$time,
+        ];
+        $count_old=$m_order->where($where)->update($data_update);
         $m_order->commit();
         cmf_log($txt.'检查结束，处理订单'.$count_old.'个',$this->log);
         exit($txt.'检查结束');
     }
     
-     
    
 }

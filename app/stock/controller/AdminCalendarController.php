@@ -22,20 +22,22 @@ class AdminCalendarController extends AdminBaseController
     public function index()
     {
         $year  = $this->request->param('ddlYear', date('Y'), 'intval');
-        $month = $this->request->param('ddlMonth', date('n'), 'intval');
-        // $day   = date('j');
-
+        $month= $this->request->param('ddlMonth', date('n'), 'intval');
+        
+       
         $util   = new Calendar();
         $years  = array(2018); //年份选择自定义
         $months = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12); //月份数组
 
         $start         = mktime(0, 0, 0, $month, 1, $year);
         $end           = strtotime('+1 month -1 day', $start);
+       
         $where['time'] = [['>= time', $start], ['<= time', $end]];
         // 'id,type,is_trade,time'
         $cals  = Db::name('stock_calendar')->where($where)->select()->toArray();
         $draws = $util->draws($cals);
-
+       
+       
         $this->assign('year', $year);
         $this->assign('years', $years);
         $this->assign('month', $month);

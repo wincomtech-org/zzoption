@@ -331,7 +331,8 @@ class ShopController extends AdminBaseController
             'website'=>$data0['website'],
             'type'=>intval($data0['type']),
             'rate'=>$data0['rate'],
-            'fid'=>$shop0['id']
+            'fid'=>$shop0['id'],
+            'code'=>0,
         ];
         if($shop0['type']>1 || $shop0['type']>$data['type']){
             $this->error('只能添加比自己级别低的分站');

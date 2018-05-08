@@ -113,12 +113,12 @@ class Dy
         // todo 可选: 上行短信扩展码, 扩展码字段控制在7位或以下，无特殊需求用户请忽略此字段
         // $params["SmsUpExtendCodeJson"] = json_encode(array("90997","90998"));
 
-
+      
         // *** 需用户填写部分结束, 以下代码若无必要无需更改 ***
         $params["PhoneNumberJson"] = json_encode($params["PhoneNumberJson"], JSON_UNESCAPED_UNICODE);
         $params["SignNameJson"] = json_encode($params["SignNameJson"], JSON_UNESCAPED_UNICODE);
-
-        if(!empty($params["SmsUpExtendCodeJson"] && is_array($params["SmsUpExtendCodeJson"]))) {
+      
+        if(!empty($params["SmsUpExtendCodeJson"]) && is_array($params["SmsUpExtendCodeJson"])) {
             $params["SmsUpExtendCodeJson"] = json_encode($params["SmsUpExtendCodeJson"], JSON_UNESCAPED_UNICODE);
         }
 
@@ -171,9 +171,9 @@ class Dy
             foreach ($tp as $row) {
                 $tparr[] = [
                     'code'  => isset($code)?$code:'1',
-                    'name'  => isset($tp['name'])?$tp['name']:'2',
-                    'indent'=> isset($tp['indent'])?$tp['indent']:'3',
-                    'content'=>isset($tp['content'])?$tp['content']:'4',
+                    'name'  => isset($row['name'])?$row['name']:'2',
+                    'indent'=> isset($row['indent'])?$row['indent']:'3',
+                    'content'=>isset($row['content'])?$row['content']:'4',
                 ];
             }
         }

@@ -40,6 +40,12 @@
 				</div>
 			</div>
 			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">持仓时间</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  value="<eq name='info.status' value='4'>{$info.have_time|date='Y-m-d H:i',###}<else/>--</eq>" readonly /> 
+				</div>
+			</div>
+			<div class="form-group fleft">
 				<label class="col-sm-2 control-label">最后更新时间</label>
 				<div class="col-md-6 col-sm-10">
 					<input type="text" class="form-control"  value="{$info.time|date='Y-m-d H:i',###}" readonly /> 
@@ -79,17 +85,16 @@
 				</div>
 			</div>
 			<div style="clear:both"></div>
-			<div class="form-group fleft">
+			<div class="form-group">
 				<label class="col-sm-2 control-label">买入状态状态 ({$is_old[$info.is_old]})</label>
 				<div class="col-md-6 col-sm-10">
-				 	<input type="radio" name="status" value="3" <eq name="info.status" value="3">checked</eq> required/>已付款
-				 
-					 <input type="radio" name="status" value="4" <eq name="info.status" value="4">checked</eq> required/>持仓中
-					 <input type="radio" name="status" value="5" <eq name="info.status" value="5">checked</eq> required/>买入失败
-				 
+				<foreach name="order_status" item="vo">
+					<input type="radio" name="status" value="{$key}" <if condition="$key eq $info.status">checked</if> />
+					{$vo}
+				</foreach>
 				</div>
 			</div>
-			<div style="clear:both"></div>
+			 
 			 <div class="form-group ">
 				<label class="col-sm-2 control-label">备注</label>
 				<div class="col-md-6 col-sm-10">
@@ -107,9 +112,9 @@
 					<a class="btn btn-default" href="{:url('index')}">{:lang('BACK')}</a>
 					&nbsp;&nbsp;&nbsp;
 				<eq name="info.status" value="4">
-				<eq name="info.is_old" value="0">
+				<neq name="info.is_old" value="1">
 					<a class="js-ajax-delete" data-msg="确认代行权吗？" href="{:url('admin_sell',['id'=>$info.id])}">管理员行权</a>
-				</eq>
+				</neq>
 				</eq>
 				</div>
 			</div>

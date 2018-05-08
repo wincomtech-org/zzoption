@@ -40,9 +40,21 @@
 				</div>
 			</div>
 			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">持仓时间</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  value="{$info.have_time|date='Y-m-d H:i',###}" readonly /> 
+				</div>
+			</div>
+			<div class="form-group fleft">
 				<label class="col-sm-2 control-label">行权时间</label>
 				<div class="col-md-6 col-sm-10">
 					<input type="text" class="form-control"  value="{$info.sell_time|date='Y-m-d H:i',###}" readonly /> 
+				</div>
+			</div>
+			<div class="form-group fleft">
+				<label class="col-sm-2 control-label">卖出时间</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  value="<eq name='info.status' value='4'>{$info.out_time|date='Y-m-d H:i',###}<else/>--</eq>" readonly /> 
 				</div>
 			</div>
 			<div class="form-group fleft">
@@ -102,23 +114,24 @@
 				</div>	
 			</eq>
 			<div style="clear:both"></div>
-			<div class="form-group fleft">
-				<label class="col-sm-2 control-label">行权状态 ({$is_old[$info.is_old]})</label>
-				<div class="col-md-6 col-sm-10">
-				<input type="radio" name="status" value="4" <eq name="info.status" value="4">checked</eq>  />持仓中
-				 	<input type="radio" name="status" value="6" <eq name="info.status" value="6">checked</eq>  />行权中
-				   <input type="radio" name="status" value="7" <eq name="info.status" value="7">checked</eq>  />行权成功
-					 <input type="radio" name="status" value="8" <eq name="info.status" value="8">checked</eq>  disabled/>行权过期
-				 
-				</div>
-			</div>
-			<div class="form-group fleft">
+			<div class="form-group ">
 				<label class="col-sm-2 control-label">期末价格</label>
 				<div class="col-md-6 col-sm-10">
 					<input type="number" step="0.0001" min="0.0001"  class="form-control" name="price2_0" value="{$info.price2_0}"  /> 
 				</div>
 			</div>
-			<div style="clear:both"></div>
+			<div class="form-group ">
+				<label class="col-sm-2 control-label">行权状态 ({$is_old[$info.is_old]})</label>
+				<div class="col-md-6 col-sm-10">
+				<foreach name="order_status" item="vo">
+					<input type="radio" name="status" value="{$key}" <if condition="$key eq $info.status">checked</if>  <eq name="info.status" value="8">disabled</eq>  />
+					{$vo}
+				</foreach>
+				 
+				</div>
+			</div>
+			
+		 
 			 <div class="form-group ">
 				<label class="col-sm-2 control-label">备注</label>
 				<div class="col-md-6 col-sm-10">

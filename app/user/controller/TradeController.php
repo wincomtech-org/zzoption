@@ -221,12 +221,12 @@ class TradeController extends UserBaseController
         foreach($list as $k=>$v){
             $codes.='s_'.$v['code0'].','; 
         }
-         
+        
         if(!empty($codes)){
             $stock=new Stock(); 
             $prices=$stock->getPrice($codes);
         }
-       
+        
         foreach($list as $k=>$v){
             $price=empty($prices['s_'.$v['code0']])?null:$prices['s_'.$v['code0']];
             $tmp[]=[

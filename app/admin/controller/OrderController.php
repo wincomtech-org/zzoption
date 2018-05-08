@@ -52,6 +52,7 @@ class OrderController extends AdminBaseController
      */
     public function index()
     { 
+        
         $m=$this->m;
         $shop=session('shop');
         if($shop['id']==1){
@@ -121,6 +122,8 @@ class OrderController extends AdminBaseController
         if(empty($info)){
             $this->error('此订单不存在');
         }
+        $order_status=$this->order_status;
+        $tmp_status=[];
         //当前价格和浮盈
        
         $stock=new \stock\Stock();
@@ -130,15 +133,29 @@ class OrderController extends AdminBaseController
         $edit='edit_inquiry';
         if($info['status']<3){
             $edit='edit_inquiry';
+            $tmp_status[0]=$order_status[0];
+            $tmp_status[1]=$order_status[1];
+            $tmp_status[3]=$order_status[2];
+           
         }elseif($info['status']<6){
             $edit='edit_buy';
+            $tmp_status[3]=$order_status[3];
+            $tmp_status[4]=$order_status[4];
+            $tmp_status[5]=$order_status[5];
+           
         }else{
             $edit='edit_sell';
+            $tmp_status[4]=$order_status[4];
+            
+            $tmp_status[6]=$order_status[6];
+            $tmp_status[7]=$order_status[7];
+            $tmp_status[8]=$order_status[8];
+            
             if($info['status']==6 && !empty($info['price2_tmp'])){
                 $info['money2_tmp']=zz_get_money($info['price1_0'], $info['price2_tmp'], $info['money0']);
             }
         }
-       
+        $this->assign('order_status',$tmp_status);
         $this->assign('info',$info); 
         return $this->fetch($edit);
     }
@@ -287,7 +304,7 @@ class OrderController extends AdminBaseController
         
         Db::startTrans();
         
-        $m->where('id',$data['id'])->update($data_order);
+       
         //若选择买入失败则用户付款会返还用户余额，若由失败改为持仓中会从余额中扣款，余额不足则失败
         $m_user=Db::name('user');
         $user=$m_user->where('id',$info['uid'])->find();
@@ -300,7 +317,8 @@ class OrderController extends AdminBaseController
         }else{
             $dsc.='买入失败';
         }
-        
+        //更新订单
+        $m->where('id',$data['id'])->update($data_order);
         if($info['status']<5 && $data_order['status']==5){
             //退款
             $money_tmp=$info['money1'];
