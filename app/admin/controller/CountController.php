@@ -278,10 +278,12 @@ class CountController extends AdminBaseController
        $list=Db::name('shop')
        ->field('s.id,s.name,s.rate,s.type,s.status,s.code,s.fid,sum(o.money1) as moneys,count(o.id) as counts')
        ->alias('s')
-       ->join('order o','s.id=o.shop','left')
+       ->join('order o','s.id=o.shop')
+       ->group('o.shop')
        ->where($where)
-       ->order('s.fid asc,s.id asc')
+       ->order('s.fpath asc')
        ->select();
+       
        //"385985.00"
        //计算上下级提成
        $tmp=[];
@@ -303,7 +305,7 @@ class CountController extends AdminBaseController
                $tmp[$v['id']]['moneys1']=bcmul($v['moneys'],$v['rate'],2);
            }
            $count['moneys1']+=$tmp[$v['id']]['moneys1'];
-           $count['moneys3']+=$count['moneys1'];
+          
            //分站子站的提成
            $tmp[$v['id']]['moneys2']=0; 
            $tmp[$v['id']]['moneys3']=$tmp[$v['id']]['moneys1'];
@@ -314,10 +316,10 @@ class CountController extends AdminBaseController
                $tmp[$v['fid']]['moneys2']+=$money_sub;
                $tmp[$v['fid']]['moneys3']+=$money_sub;
                $count['moneys2']+=$money_sub;
-               $count['moneys3']+=$money_sub;
+               
            }
        }
-        
+       $count['moneys3']=$count['moneys1'];
         $this->assign('shop_status',config('shop_status'));
         $this->assign('shop_types',config('shop_types'));
         $this->assign('data',$data);

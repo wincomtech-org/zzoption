@@ -121,14 +121,12 @@ function zz_msgs($data){
             'name'=>$v['uname'],
             'indent'=>$data['title'],
         ];
+        
     } 
     $sms=new \sms\Dy();
+    //批量短信一个号码只能发一次，重复的不发
     $result=$sms->batchSms($mobiles,$sms_type,$data_sms);
-    cmf_log('短信'.$sms_type.'发送开始');
-    foreach($result as $k=>$v){
-        cmf_log($k.'--'.$v);
-    }
-    cmf_log('短信'.$data['mobile'].'发送结束');
+     
     return Db::name('msg')->insertAll($data_msg);
     
 }
@@ -174,7 +172,7 @@ function zz_shop($shop){
             $tmp['rate']=$shop['rate'];
             $tmp['code']=$shop['code'];
             $tmp['website']=$shop['website'];
-            
+            $tmp['fpath']=$shop['fpath'];
             $shop=$tmp;
             break;
     } 

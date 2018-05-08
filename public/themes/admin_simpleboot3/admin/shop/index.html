@@ -47,7 +47,7 @@
 						<th>提成</th> 
 						<th>分站类型</th>  
 						<th>分站状态</th>  
-						<th>上级分站id</th>  
+						<th>分站从属</th>  
 						<th>最后更新时间</th>
 						 
 						<th>操作</th>
@@ -65,12 +65,12 @@
 					    <td>{$vo.rate}</td>
 						<td>{$shop_type[$vo.type]}</td> 
 						<td>{$shop_status[$vo.status]}</td>
-						<td>{$vo.fid}</td>  
+						<td>{$vo.fpath}</td>  
 						<td>{$vo.time|date='Y-m-d H:i',###}</td>  
 						<td>
 						<a href="{:url('edit',['id'=>$vo.id])}">查看编辑</a>
 						&nbsp;&nbsp;&nbsp;
-						<a href="{:url('set',['id'=>$vo.id])}">管理下级</a>
+						<a href="{:url('set',['id'=>$vo.id])}">分站设置</a>
 						 
 						</td> 
 					</tr>

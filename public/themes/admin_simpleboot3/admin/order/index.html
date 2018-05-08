@@ -67,12 +67,12 @@
 						<td><in name="vo.status" value="0,2">--<else/>￥{$vo.money1}</in></td> 
 						<td><lt name="vo.status" value="3">--<else/>{$vo.buy_time|date='Y-m-d H:i',###}</lt></td> 
 						<td><lt name="vo.status" value="6">--<else/>{$vo.sell_time|date='Y-m-d H:i',###}</lt></td>
-					 
+					  <td>{$vo.sname}</td>
 						<td>
 						{$order_status[$vo.status]}|{$is_old[$vo.is_old]}
 						 
 						</td>
-						 <td>{$vo.sname}</td>
+						
 						 <td><a href="{:url('edit',['id'=>$vo.id])}">查看详情</a></td> 
 					</tr>
 					</foreach>

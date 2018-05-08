@@ -81,7 +81,7 @@ class ShopController extends AdminBaseController
             $ids[]=$shopid;
             $where['id']=['in',$ids];
         }
-        $list= $m->where($where)->whereOr($whereOr)->order('fid asc,id asc')->paginate(10);
+        $list= $m->where($where)->whereOr($whereOr)->order('fpath asc,id asc')->paginate(10);
       
         // 获取分页显示
         $page = $list->appends($data)->render(); 
@@ -346,7 +346,12 @@ class ShopController extends AdminBaseController
         }
         $id=$m->insertGetId($data);
         $code=$id+10000;
-        $m->where('id',$id)->update(['code'=>$code]);
+        $data_update=[
+            'code'=>$code,
+            'fpath'=>$shop0['fpath'].'-'.$id, 
+        ];
+        
+        $m->where('id',$id)->update($data_update);
         $data_action=[
             'aid'=>session('ADMIN_ID'),
             'type'=>'shop',
