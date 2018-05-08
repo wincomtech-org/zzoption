@@ -142,12 +142,12 @@ function zz_shop($shop){
             header("Location:http://www.".$website);
             exit;
         } 
-        cmf_log('$shop[website]1'.$shop['website']);
+       
         if($shop['website']==$website){
             $shop=$shop0;
         }else{
             $shop['website']=str_replace('.'.$website, '', $shop['website']);
-            cmf_log('$shop[website]2'.$shop['website']);
+           
             $shop=$m_shop->where('website',$shop['website'])->find();
         }
     }else{

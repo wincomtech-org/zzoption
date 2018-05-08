@@ -37,21 +37,21 @@
 		i=12;
 		//volist name="users" id="vo" offset="0" length='12'
 		//12月数据显示到第11月，第一个月的数据显示到第2个月，第一个月的位置显示了总数据，改为offset=0
-		<volist name="users" id="vo" offset="0" length='12'>
+		<volist name="users" id="vo" offset="1" length='12'>
 			i--;
 			user1[i]='{$vo}';
 			console.log(i+'ii'+user1[i]);
 		</volist>
 		var order1=new Array(12);
 		i=12;
-		<volist name="count1.order" id="vo" offset="0" length='12'>
+		<volist name="count1.order" id="vo" offset="1" length='12'>
 			i--;
 			order1[i]='{$vo}';
 		</volist>
 		
 		var money1=new Array(12);
 		i=12;
-		<volist name="count1.money" id="vo" offset="0" length='12'>
+		<volist name="count1.money" id="vo" offset="1" length='12'>
 			i--;
 			money1[i]='{$vo}';
 		</volist>

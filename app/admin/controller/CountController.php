@@ -63,8 +63,10 @@ class CountController extends AdminBaseController
         
         
         $times[13]=$time;
-        
-        
+        //总订单，总用户
+        $users[0]=0;
+        $count1['order'][0]=0;
+        $count1['money'][0]=0;
         //计算前12个月每月的数据
         for($i=12;$i>0;$i--){
             
@@ -80,15 +82,16 @@ class CountController extends AdminBaseController
             $times[$i]=strtotime($stime);
             $where_user['create_time']=['between',[$times[$i],$times[$i+1]]]; 
             $users[$i]=$m_user->where($where_user)->count();
-             
+            $users[0]+=$users[$i];
             // 买入期权
             $where_order['have_time']=array('between',array($times[$i],$times[$i+1]));
             $count1['order'][$i]=$m1->where($where_order)->count();
-            $count1['money'][$i]=$m1->where($where_order)->sum('money2');
+            $count1['money'][$i]=$m1->where($where_order)->sum('money1');
             if(empty($count1['money'][$i])){
                 $count1['money'][$i]=0;
             }
-             
+            $count1['order'][0]+= $count1['order'][$i];
+            $count1['money'][0]+= $count1['money'][$i];
             
             
             $mon--;
@@ -99,7 +102,7 @@ class CountController extends AdminBaseController
         }
       
         //总订单，总用户
-        $where_user['create_time']=['between',[$times[1],$times[13]]]; 
+       /*  $where_user['create_time']=['between',[$times[1],$times[13]]]; 
         $users[0]=$m_user->where($where_user)->count();
         
         $where_order['have_time']=array('between',array($times[1],$times[13]));
@@ -107,11 +110,11 @@ class CountController extends AdminBaseController
         $count1['money'][0]=$m1->where($where_order)->sum('money2');
         if(empty($count1['money'][0])){
             $count1['money'][0]=0;
-        }
+        } */
          
         $this->assign('labels',$labels);
         $this->assign('count1',$count1);
-       
+        
         $this->assign('users',$users);
         return $this->fetch();
     }
@@ -198,7 +201,7 @@ class CountController extends AdminBaseController
             7 => '行权结束',
             8 => '行权过期', */
         //已付款，未结束
-        $where['status']=['in',[3,4,6]]; 
+        $where['status']=['in',[4,6]]; 
         $count['buy_count']=$m1->where($where)->count();
         $count['buy_money']=$m1->where($where)->sum('money1');
         //用户数
