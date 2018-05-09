@@ -75,10 +75,13 @@ class Stock
         // $code = 's_sh000001';
         // $code = 's_sh000001,s_sz399001,s_sz399006';
         $code=trim($code);
+        if(!strpos($code,',')){
+            $code=$code.',';
+        }
         $url = 'http://hq.sinajs.cn/list='.$code;
-        cmf_log($url);
+      
         $content = cmf_curl_get($url);
-        cmf_log($content);
+      
         $content = iconv('GBK', 'UTF-8//IGNORE', $content);
        
         $content = cmf_strip_chars($content, "\r\n");
@@ -97,17 +100,12 @@ class Stock
             foreach ($data as $key => $val) {
                 preg_match($pattern, $val, $arr);
                 if (!empty($arr[0])) {
-                    $tmp = explode(',', $arr[0]);
-                    // $tmpNums= array_push($tmp,$codes[$key]);
+                    $tmp = explode(',', $arr[0]); 
                     $post[] = array_merge([$codes[$key]], $tmp);
                 }
             }
         }
-        // dump($post);die;
-
-        // $m->insertAll($post);
-        // model('StockIndice')->isUpdate(true)->saveAll($post);
-
+       
         return $post;
     }
 
