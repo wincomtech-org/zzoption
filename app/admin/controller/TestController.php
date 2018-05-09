@@ -33,7 +33,7 @@ class TestController extends AdminBaseController
     public function index()
     { 
         $m=Db::name('order');
-        $id=22;
+        $id=1;
         $info=$m->where('id',$id)->find();
         if(empty($info)){
             $this->error('此订单不存在');
@@ -48,6 +48,8 @@ class TestController extends AdminBaseController
         $info['price2_tmp']=$price['price'];
         dump($prices);
         dump($info);
+        $prices=$stock->getPrice('s_'.$info['code0'].',');
+        dump($prices);
         exit;
     }
      
