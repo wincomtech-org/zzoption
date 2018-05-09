@@ -179,6 +179,8 @@ class OrderController extends AdminBaseController
         $m=$this->m;
         
         $data=$this->request->param();
+       
+        
         $where=['id'=>$data['id']];
         $info=$m->where($where)->find();
        
@@ -188,14 +190,20 @@ class OrderController extends AdminBaseController
         if($info['status']>2 || $info['is_old']==1){
             $this->error('不能修改订单询价信息');
         }
+        
+       
         $data_order=[
             'status'=>$data['status'],
             'money1'=>round($data['money1'],2),
             'price1'=>round($data['price1_0'],2),
-            'price1_0'=>$data['price1_0'],
+            'price1_0'=>round($data['price1_0'],4),
             'time'=>time(),
             'dsc'=>$data['dsc'],
         ];
+        if($data_order['price1_0']!=$data['price1_0'] || $data_order['money1']!=$data['money1']){
+            $this->error('金额输入错误，价格最多4位小数，权利金最多2位小数');
+        }
+       
         $statuss=$this->order_status;
         
         $data_action=[
@@ -405,7 +413,9 @@ class OrderController extends AdminBaseController
             'time'=>time(),
             'dsc'=>$data['dsc'],
         ];
-       
+        if($data_order['price2_0']!=$data['price2_0']){
+            $this->error('金额输入错误，价格最多4位小数');
+        }
         $statuss=$this->order_status;
         
         $data_action=[
