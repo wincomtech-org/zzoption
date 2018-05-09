@@ -57,7 +57,7 @@
 // 提交
  
 $('.sp_red').click(function(){
-	var obj=$(this);
+	 
 	if(click==0){
 		click=1;
 	}else{
@@ -75,9 +75,9 @@ $('.sp_red').click(function(){
         	msg(data.msg,false,false,false,data.url);
         	click=0;
         },
-        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
-        	click=0; 
+        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){ 
         	msg('服务器连接失败',false,false,event.responseText);
+        	click=0; 
         }
     });
     } 

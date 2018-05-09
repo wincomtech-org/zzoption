@@ -87,7 +87,7 @@
 
 </html>
 <script type="text/javascript">
-	var click=0;
+	 
 	function previewFile() {
 		if(click==0){
  			click=1;
@@ -120,16 +120,12 @@
  			"data":fordata,
  			"dataType":"json",
  			"error":function(){
- 				alert('服务器连接失败'); 
+ 				msg('服务器连接失败'); 
  				click=0;
  			},
  			"success":function(data){
- 				 
- 				if(data.code==1){
-            		 location.href=data.url; 
-            	}else{ 
-            		alert(data.msg);
-            	}
+ 				msg(data.msg);
+            	
  				click=0;
  			}
  		});

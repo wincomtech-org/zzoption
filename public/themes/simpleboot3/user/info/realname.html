@@ -48,15 +48,18 @@
 // 提交
  
 $('button').click(function(){
-	var obj=$(this);
-	var text=['提交','正在提交'];
+	if(click==0){
+		click=1;
+	}else{
+		return false;
+	} 
 	var name=$.trim($('input[name=uname]').val());
  	var idcard=$.trim($('input[name=idcard]').val());
 	var bank=$.trim($('input[name=bank]').val());
-	if(!is_username(name)){msg("请正确输入姓名！");return false;}
-	if(!is_idcard(idcard)){msg("请正确输入身份证号码！");return false}
-	if(!is_bankCard(bank)){msg("请正确输入您的银行卡号！");return false}
-    button_click(obj,1,text[1]);
+	if(!is_username(name)){msg("请正确输入姓名！");click=0;return false;}
+	if(!is_idcard(idcard)){msg("请正确输入身份证号码！");click=0;return false}
+	if(!is_bankCard(bank)){msg("请正确输入您的银行卡号！");click=0;return false}
+	
     var sub_s=function(){
         $.ajax({
         type: 'POST',
@@ -67,15 +70,14 @@ $('button').click(function(){
         	if(data.code==1){
 				//返回上一页并刷新
 				self.location=data.url;
-			}else{
-				 button_click(obj,0,text[0]);
-				 
+			}else{ 
 				msg(data.msg);
+				click=0;
 			}
         },
-        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
-      	    button_click(obj,0,text[0]);
+        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){ 
         	msg('服务器连接失败',false,false,event.responseText);
+        	click=0;
         }
     });
     }
