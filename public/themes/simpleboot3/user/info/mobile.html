@@ -1,19 +1,14 @@
 <include file="public@head" />
-  
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
-	 
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
 	</head>
-		 
 	<body>
 		<div class="point">
 			<div class="alltop">
 				<div class="top">
 					<a href="{:url('info')}">
-						<div class="t_left">
-
-						</div>
+						<div class="t_left"></div>
 					</a>
 					<div class="t_right">
 						<span>{$html_title}</span>
@@ -21,7 +16,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="name">
 			<div class="myname">
 				<input type="text" name="tel" id="" value="" placeholder="请输入新手机号" />
@@ -38,59 +32,46 @@
 				<input type="text" name="psw1" id="" value="" placeholder="请输入密码" />
 			</div>
 		</div>
-		 
 		<div class="n_button">
 			<a href="">
 				<button type="button" id="mobile_btn">提交</button>
 			</a>
 		</div>
 	</body>
-
 </html>
 <script>
- 
  function ghj_klo(){ 
 	var tel=$.trim($('input[name=tel]').val()); 
-  
-   	if(tel=='' || is_mobile(tel) == false){ 
+    if(tel=='' || is_mobile(tel) == false){ 
    		msg('请先填写正确的手机号码');
   		return false;
 	   }
-	   //====================
-	   down_s($("#sms_btn"),ghj_klo);
-	   //=====================
    	$.ajax({
            type: 'POST',
            url: "{:url('user/register/sendmsg')}",
            dataType: 'json',
            data:{'tel':tel,'type':'mobile'},
            success: function(data){ 
-        	if(data.code==1){
-        		msg('发送成功'); 
-                    //settime();
-           	}else{  
-           		msg(data.msg); 
-           	} 
+                if(data.code==1){
+                    msg('发送成功'); 
+                    down_s($("#sms_btn"),ghj_klo);
+                }else{  
+                    msg(data.msg); 
+                } 
            },
            error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
-         	 
-          	msg('服务器连接失败',false,false,event.responseText);
+           msg('服务器连接失败',false,false,event.responseText);
           }
        }); 
    	return false;  
 }
-
- $('#sms_btn').click(ghj_klo);
- 
+$('#sms_btn').click(ghj_klo);
   // 找回密码表单验证
 $('#mobile_btn').click(function(){
    	var tel=$.trim($('input[name=tel]').val());
- 
-	var code=$.trim($('input[name=sms]').val());
+    var code=$.trim($('input[name=sms]').val());
 	var psw1=$.trim($('input[name=psw1]').val());
- 
- 
-     if(tel == '' || is_mobile(tel) == false){
+    if(tel == '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
         msg('提示：请输入正确手机号');
          return false;
@@ -112,5 +93,4 @@ $('#mobile_btn').click(function(){
     msg("确认更换手机号为"+tel+"吗？",sub_phon,true)
    	return false;
   });
-  
 </script>

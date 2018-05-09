@@ -1,14 +1,10 @@
-html,body,p,ul,ol{margin:0;padding:0;margin:auto;font-family: 微软雅黑;}
-body{font-size:0.2rem}
-img{vertical-align: top;}
-ol,ul{list-style: none}
- input::-webkit-input-placeholder{ color:#9f9f9f;text-align: center}
-html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
 .header{
-	margin:0.03rem 0 0.1rem 0;
+	margin:0.03rem 0 0 0;
 	width:100%;
 	height:0.88rem;
 	position: relative;
+    background:#fff;
+    padding-bottom:0.1rem;
 }
 .header>div:nth-child(1){
 	width:5.8rem;
@@ -17,7 +13,8 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	top:0;bottom:0;
 	margin: auto;
 	margin-left:0.4rem;
-	background:#f3f3f3;border-radius:.3rem;;
+	background:#f3f3f3;
+    border-radius:.3rem;;
 }
 .header>div:nth-child(1)>input{
 	position: absolute;
@@ -74,7 +71,6 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 /*轮播开始*/
 /*================*/
 .body_s>.imgs{
-/*	width:100vw;*/
 	overflow: hidden;
 	position: relative;
 }
@@ -120,7 +116,6 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	margin-bottom: 0.1rem;
 	background:#fff;
 }
-
 .body_s>.func{
 	width:100%;
 	height:1.95rem;
@@ -193,7 +188,6 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 .body_s>.zhishu>div>p:nth-child(3){
 	font-size: 0.2rem;
 }
-
 /*创业板指下指数字体颜色*/
 .body_s>.zhishu>div:nth-child(1)>p:nth-child(2){
 	color:#009ee7;
@@ -247,18 +241,9 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	margin-top:0;
 }
 .body_s>.xydan>div>div:nth-child(2)>div>div{
-/*
-	box-sizing: border-box;
-	padding-top: 0.1rem;
-*/
 	height:1rem;
 	padding:auto 0;
 }
-/*
-.body_s>.xydan>div>div:nth-child(2)>div:nth-child(1){
-	display: block;
-}
-*/
 .body_s>.xydan>div>div:nth-child(2)>div>div>p:nth-child(1){
 	font-size:.23rem;
 	margin-bottom:  .05rem;
@@ -395,7 +380,7 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	max-height:3.5rem;
 	background:rgba(255, 255, 255,1);
 	position: absolute;
-	top:0.8rem;
+	top:0.75rem;
 	left:-0.4rem;
 	border-bottom:0.02rem solid #f3f3f3;
 	overflow: scroll;
@@ -407,6 +392,3 @@ html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0,
 	border-top:0.02rem solid #f3f3f3;
 	box-sizing: border-box;
 }
-
-
-

@@ -9,16 +9,13 @@
 	border-radius: 0.06rem;
 	margin-top:0.55rem ;
 }
-
 .j_img{
 	background-image: url(../img/jion.png);
 	width: 5.69rem;
 	height: 3.22rem;
 	background-size: cover;
 	border-radius: 0.06rem 0.06rem 0 0;
-	
 }
-
 .j_center{
 	background-color: white;
 	width: 5.69rem;
@@ -26,30 +23,24 @@
 	margin: 0.25rem auto;
 	border-radius: 0.06rem;
 }
-
 .j_txt{
    width: 85%;
-   
    padding: 0.34rem 0.46rem;
 }
-
 .j_txt_t{
 	font-size: 0.30rem;
 	color: #333;
 }
-
 .j_txt_b{
 	line-height:0.35rem ;
 	font-size: 0.22rem;
 	padding-top: 0.15rem;
 	color: #666666;
 }
-
 .j_button{
 	margin: 0.7rem auto;
 	width: 3.56rem;
 }
-
 .j_button button{
 	font-size: 0.28rem;
 	width: 3.56rem;

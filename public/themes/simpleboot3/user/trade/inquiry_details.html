@@ -1,5 +1,5 @@
 <include file="public@head"/>
-	<link rel="stylesheet" href="__TMPL__/public/assets/css/inquiry_record_details.css">
+<link rel="stylesheet" href="__TMPL__/public/assets/css/inquiry_record_details.css">
 </head>
 <body>
 	<div class="nav">
@@ -35,7 +35,6 @@
 		<else/>
 			<span>/</span>
 		</gt>
-			
 		<else/>
 			<span>/</span>
 			<span>/</span> 
@@ -47,12 +46,10 @@
 		<gt name="order.status" value="5">
 			<span>期末价</span>
 			<span>实际盈利</span>
-			
 		<else/>
 			<span>当前价</span>
 			<span>预计盈利</span>
 		</gt>
-			 
 		</div>
 		<div class="div2">
 			<span>{$order.price1}元</span>
@@ -64,12 +61,9 @@
 	<div class="wenxin">
 		<p>温馨提示：预计盈利不代表实际盈利，以实际成交价格为准</p>
 		<div>
-		 
-			<bottom>{$order.status_name}</bottom> 
-	 
+			<button>{$order.status_name}</button>
 		</div>
 	</div>
-
 </body>
 </html>
  

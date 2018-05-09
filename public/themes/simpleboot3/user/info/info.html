@@ -1,15 +1,8 @@
 <include file="public@head" />
-<link rel="stylesheet" type="text/css"
-	href="__TMPL__/public/assets/css/user.css" />
-<link rel="stylesheet" type="text/css"
-	href="__TMPL__/public/assets/css/point.css" />
-<link rel="stylesheet" type="text/css"
-	href="__TMPL__/public/assets/css/top.css" />
-
-
-
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/user.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
 </head>
-
 <body style="background: #fff">
 	<div class="point">
 		<div class="alltop">
@@ -23,7 +16,6 @@
 			</div>
 		</div>
 	</div>
-
 	<label for="file" class="alluser">
 		<div class="user">
 			<div class="">
@@ -31,20 +23,15 @@
 				<!--file 隐藏起来  触发onchange事件-->
 				<input type="file" name="file" accept="image/*" id="file"
 					style="display: none;" onchange="previewFile()" />
-
 			</div>
-
 			<div class="u_user">
 				<img src="{:cmf_get_image_url($user.avatar)}" id="userImg" />
 			</div>
-
 			<div class="u_text">
 				<span>头像</span>
 			</div>
-
 		</div>
 	</label>
-
 	<div class="top_c"></div>
 	<a href="{:url('user/info/realname')}">
 		<div class="alluser" style="color: #333333">
@@ -84,10 +71,8 @@
 		</div>
 	</a>
 </body>
-
 </html>
 <script type="text/javascript">
-	 
 	function previewFile() {
 		if(click==0){
  			click=1;
@@ -100,7 +85,6 @@
 		reader.onloadend = function() {
 			preview.src = reader.result;
 		}
-
 		if (file) {
 			reader.readAsDataURL(file); 
 		} else {
@@ -110,7 +94,6 @@
 		//组装表单数据
  		var fordata=new FormData();
  		fordata.append("avatar1",file);
- 		 
  		//ajax
  		$.ajax({
  			"url":"{:url('user/info/ajax_avatar')}",
@@ -125,7 +108,6 @@
  			},
  			"success":function(data){
  				msg(data.msg);
-            	
  				click=0;
  			}
  		});

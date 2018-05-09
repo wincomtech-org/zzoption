@@ -1,5 +1,5 @@
 <include file="public@head"/>
-	<link rel="stylesheet" href="__TMPL__/public/assets/css/login.css">
+<link rel="stylesheet" href="__TMPL__/public/assets/css/login.css">
 </head>
 <body>
 	<div class="one">
@@ -51,24 +51,18 @@ function  gggy_s(){
         msg('请输入正确的机构码');
         return false;
 	}
-	//=======================
-//	down_s($("#sms"),gggy_s);
-	//=======================
    	$.ajax({
            type: 'POST',
            url: "{:url('user/register/sendmsg')}",
            dataType: 'json',
            data:{'tel':tel},
            success: function(data){ 
-        	if(data.code==1){
-                msg('发送成功'); 
-                down_s($("#sms"),gggy_s);
-					//settime();
-				
-           	}else{  
-				   msg(data.msg); 
-//				   console.log(3);   
-           	} 
+                if(data.code==1){
+                    msg('发送成功'); 
+                    down_s($("#sms"),gggy_s);
+                }else{  
+                       msg(data.msg);  
+                } 
            },
            error: function(){
 			   msg('服务器连接失败');
@@ -83,7 +77,6 @@ $('.tijiao').click(function(){
  	var password=$.trim($('input[name=psw]').val()); 
  	var tel=$.trim($('input[name=tel]').val());
  	var sms=$.trim($('input[name=sms]').val());
-   
      if(tel== '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
          msg('提示：请输入正确手机号');
@@ -97,9 +90,6 @@ $('.tijiao').click(function(){
          msg('短信验证码错误');
          return false;
      }  
-
-
-
      $.post("{:url('user/register/ajax_register')}",
  		 {'code':code,'password':password,'tel':tel,'sms':sms},
  		 function(data){  
@@ -112,5 +102,4 @@ $('.tijiao').click(function(){
  	});
  	return false;
  });
-    
 </script>

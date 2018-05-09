@@ -1,25 +1,19 @@
 <include file="public@head" />
-	 
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
-
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/mynews.css" />
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
-	</head>
-
-	<body>
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/mynews.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+</head>
+<body>
 		<div class="point">
 			<div class="alltop">
 				<div class="top">
-						<div class="t_left">
-
-						</div>
+						<div class="t_left"></div>
 					<div class="t_right">
 						<span>{$html_title}</span>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<div class="my">
 		<foreach name="list" item="vo">
 			<a href="{:url('user/msg/lists',['type'=>$key])}">
@@ -33,10 +27,8 @@
                     <span id="new_p_s" class="<eq name='vo.noread' value='1'>show_s</eq>"></span>
 				</div>
 			</a>
-		</foreach>	
-			 
+		</foreach>
 		</div>
-
 	</body>
 	<script>
 		$(".t_left").click(function(){

@@ -3,34 +3,24 @@
 	background-color:#fff;
 	border-bottom: 0.02rem solid #F3F3F3;
 }
-
 .user{
 	width: 85%;
 	margin: 0 auto;
 	padding: 0.31rem 0;
-	
 }
-
 .u_text{
 	padding: 0.15rem 0;
 	width: 50%;
 	font-size: 0.3rem;
 }
-
 .u_user img{
-	
-	
 	width: 0.8rem;
 	height: 0.8rem;
-	
 }
-
 .u_user {
 	float: right;
 	margin-right: 0.36rem;
-	
 }
-
 .u_tip{
 	background-image: url(../img/tip1.png);
 	float: right;
@@ -39,7 +29,6 @@
 	height: 0.30rem;
 	background-size: cover;
 }
-
 .u_text_r{
 	float: right;
 	font-size: 0.28rem;
@@ -47,7 +36,6 @@
 	margin-right: 0.36rem;
 	margin-top: 0.15rem;
 }
-
 .u_text_r1{
 	float: right;
 	font-size: 0.28rem;
@@ -55,7 +43,6 @@
 	margin-right: 0.53rem;
 	margin-top: 0.15rem;
 }
-
 .u_mess{
 	width: 85%;
 	margin: 0 auto;

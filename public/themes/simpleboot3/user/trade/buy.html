@@ -36,34 +36,24 @@
 					 	<input type="hidden" class="id" value="{$vo.id}"/>
 					<eq name="vo.status" value="1">
 						 <span class="sp_red">买入</span> 
-					
 					<else/>
 						<span class="">{$order_status[$vo.status]}</span>
 					</eq>
-					 
 					</div>
 				</foreach>
 				</div>
-				
 			</div>
-			 
-		 
 		</div>
 	</div>
-	
 <include file="public@foot"/>
 <script>
- 
 // 提交
- 
 $('.sp_red').click(function(){
-	 
 	if(click==0){
 		click=1;
 	}else{
 		return false;
 	}
- 
 	var id=$('.sp_red').siblings('.id').val();
     var by_s=function(){ 
         $.ajax({
@@ -82,7 +72,6 @@ $('.sp_red').click(function(){
     });
     } 
 	msg('确认买入吗？',by_s,true);
-        
 	return false;
  });
 </script>

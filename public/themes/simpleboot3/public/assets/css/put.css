@@ -2,20 +2,15 @@
 	width: 40%;
 	margin: 0.48rem auto;
 	text-align: center;
-	
 }
-
 .p_c{
 	width: 100%;
-	
 }
-
 .p_top{
 	font-size: 0.29rem;
 	color: #999;
 	width: 100%;
 }
-
 .p_botm{
 	width: 100%;
 	font-size: 0.3rem;
@@ -23,29 +18,18 @@
 	color: #cd4650;
 	font-weight: 600;
 }
-
 .putbottom{
 	width: 59%;
 	margin:0 auto;
 	height: 0.5rem;
 	padding-top:  0.27rem;
 }
-
 .put_btn {
 	float: left;
-	
 }
-
 #p_l{
 	margin-right: 0.58rem;
 }
-/*
-
-#p_r button{
-	background-color: #C3C3C3;
-}
-*/
-
 .put_btn button{
 	height: 0.5rem;
     width: 1.86rem;

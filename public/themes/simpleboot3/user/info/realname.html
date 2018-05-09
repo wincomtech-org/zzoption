@@ -1,15 +1,14 @@
 <include file="public@head" />
-  		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
-	 	<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
-	</head>
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/point.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/realname.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/top.css" />
+</head>
 <body>
 	<div class="point">
 		<div class="alltop">
 			<div class="top">
 				<a href="{:url('info')}">
 					<div class="t_left">
-
 					</div>
 				</a>
 				<div class="t_right">
@@ -18,7 +17,6 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="name">
 		<div class="myname">
 			<input type="text" name="uname" id="" value="{$user.user_nickname}" placeholder="请输入姓名" />
@@ -33,20 +31,16 @@
 		<div class="myname">
 			<input type="text" name="bank" id="" value="{$user.bank_card}" placeholder="请输入银行卡号" />
 		</div>
-
 	</div>
-
 	<div class="n_button">
 		<a href="javascript:void(0);">
 			<button type="button">提交</button>
 		</a>
 	</div>
 </body>
-
 </html>
 <script>
 // 提交
- 
 $('button').click(function(){
 	if(click==0){
 		click=1;
@@ -59,7 +53,6 @@ $('button').click(function(){
 	if(!is_username(name)){msg("请正确输入姓名！");click=0;return false;}
 	if(!is_idcard(idcard)){msg("请正确输入身份证号码！");click=0;return false}
 	if(!is_bankCard(bank)){msg("请正确输入您的银行卡号！");click=0;return false}
-	
     var sub_s=function(){
         $.ajax({
         type: 'POST',

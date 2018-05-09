@@ -1,16 +1,12 @@
 <include file="public@head"/>
-	<link rel="stylesheet" href="__TMPL__/public/assets/css/top.css">
-	 
-	</head>
-
-	<body>
+<link rel="stylesheet" href="__TMPL__/public/assets/css/top.css">
+</head>
+<body>
 		<div class="point">
 			<div class="alltop">
 				<div class="top">
 					<a href="{:url('login')}">
-						<div class="t_left">
-
-						</div>
+						<div class="t_left"></div>
 					</a>
 					<div class="t_right">
 						<span>找回密码</span>
@@ -18,14 +14,12 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="top_c"></div>
 		<div class="allcenter">
 			<div class="center">
 				<div class="center_c">
 					<div class="c_1" id="c_c">
 						<div class="c_img" id="img1">
-
 						</div>
 						<div class="c_right">
 							<input type="text" name="tel" id="" value="" placeholder="请输入手机号">
@@ -35,33 +29,26 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="center_c">
 					<div class="c_2" id="c_c1">
 						<div class="c_img" id="img2">
-
 						</div>
 						<div class="c_right1">
 							<input type="text" name="sms" id="" value="" placeholder="请输入验证码">
 						</div>
 					</div>
 				</div>
-
 				<div class="center_c">
 					<div class="c_2" id="c_c">
-						<div class="c_img" id="img3">
-
-						</div>
+						<div class="c_img" id="img3"></div>
 						<div class="c_right">
 							<input type="text" name="psw1" id="" value="" placeholder="请输入新密码">
 						</div>
 					</div>
 				</div>
-
 				<div class="center_c">
 					<div class="c_2" id="c_c1">
 						<div class="c_img" id="img4">
-
 						</div>
 						<div class="c_right1">
 							<input type="text" name="psw2" id="" value="" placeholder="请确认新密码">
@@ -70,27 +57,20 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="bottom">
 			<div class="b_button">
 				<button type="button" id="psw_btn">提交</button>
 			</div>
 		</div>
-
 	</body>
-
 </html>
 <script>
 function time_d(){ 
 	var tel=$.trim($('input[name=tel]').val()); 
-  
    	if(tel=='' || is_mobile(tel) == false){ 
    		msg('请先填写正确的手机号码');
   		return false;
 	}
-	//=========================	
-//	  down_s($("#sms_btn"),time_d);
-	//========================
    	$.ajax({
            type: 'POST',
            url: "{:url('user/register/sendmsg')}",
@@ -100,28 +80,23 @@ function time_d(){
         	if(data.code==1){
         		msg('发送成功'); 
                 down_s($("#sms_btn"),time_d);
-                    //settime();
            	}else{  
            		msg(data.msg); 
            	} 
            },
            error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
-         	 
           	msg('服务器连接失败',false,false,event.responseText);
           }
        }); 
    	return false;  
 }
  $('#sms_btn').click(time_d);
- 
   // 找回密码表单验证
 $('#psw_btn').click(function(){
    	var tel=$.trim($('input[name=tel]').val());
- 
 	var code=$.trim($('input[name=sms]').val());
 	var psw1=$.trim($('input[name=psw1]').val());
 	var psw2=$.trim($('input[name=psw2]').val());
- 
      if(tel == '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
         msg('提示：请输入正确手机号');
@@ -145,5 +120,4 @@ $('#psw_btn').click(function(){
     	});
    	return false;
   });
-  
 </script>

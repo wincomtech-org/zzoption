@@ -5,7 +5,6 @@ $(window).resize(function(){
     var a=$(window).width();
     $("html").css("font-size",a/7.5+"px");
 });
-
 function msg(text,fun=false,isbtn=false,html='',url=''){
 //第一个参数为弹框显示的文本，
 //第二个参数为一个函数，点击确认之后执行的函数，不执行传递false即可；
@@ -36,7 +35,6 @@ function msg(text,fun=false,isbtn=false,html='',url=''){
     $(".bt_js1").click(function(){
         click=0;
         $(".show_box").fadeOut().remove();
-        
     });
 	$(".bt_js2").click(function(){
 		clearInterval(timer_s);
@@ -52,27 +50,6 @@ function msg(text,fun=false,isbtn=false,html='',url=''){
 	if(html!=''){
 		$('body').append(html);
 	}
-}
-function button_click(obj,action=1,text='',type=1){
-    if(action==1){
-            obj.prop('disabled','disabled');
-            click=1;
-            if(text==''){
-                text='正在提交';
-            }
-    }else{
-            obj.prop('disabled',false);
-            click=0;
-            if(text==''){
-                text='提交';
-            }
-    } 
-    if(type=1){
-            obj.text(text);
-    }else{
-            obj.val(text);
-    }
-    
 }
 //短信计时函数
 function down_s(element,fun){

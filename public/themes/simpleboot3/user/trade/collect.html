@@ -1,6 +1,5 @@
 <include file="public@head" />
-  
-		<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/transaction.css" />
  <script type="text/javascript" src="__TMPL__/public/assets/js/transaction.js"></script>
 </head>
 <body>
@@ -10,30 +9,15 @@
 		<a href="{:url('portal/guide/help')}"></a>
 	</div>
 <!--	切换栏-->
-    
 	<div class="body_s">
-		 <include file="public@trade_nav" />
-       
-        
+        <include file="public@trade_nav" />
         <div class="header_syhu">
             <div class="ghnhd_lkhf">
                 <input class="hnvb_lkdju input1" type="text" placeholder="输入股票代码，添加自选">
-<!--                <span class="hbg_poi"></span>-->
             </div>
-            <div class="botton_input ghyop_sd">
-                   
+            <div class="botton_input ghyop_sd">   
             </div>
-<!--
-            <div class="gl_khs">
-                <a href="jsvascript:void(0)">
-                    管理
-                </a>
-            </div>
--->
 	    </div>
-        
-        
-        
 		<div class="show_g">
  <!--			买入-->
 			<div style="display:block" class="shows_4">
@@ -43,16 +27,13 @@
 					<span>涨跌幅</span>
 				</div>
 				<div id="shuju_ji">
-				 
 <!--					改变的数据-->
- 
 				<foreach name="list" item="vo">
 					 <div class="sub_ss_jk">
 					 	<span>
                             <span>{$vo.code}</span><br>
                             <span>{$vo.name}</span>
                         </span>
-					 
 						<span>{$vo.price|default='--'}元</span>
 						<span>{$vo.percent|default='--'}%</span>
 						<span class="btn_sd1 <eq name='vo.status' value='1'>sp_red</eq>">询价</span>
@@ -62,18 +43,12 @@
 					   <input class="status" type="hidden" value="{$vo.status}"/>
 					</div>
 				</foreach>
- 
- 
 				</div>
-				
-
 			</div>
 		</div>
 	</div>
-	
 <include file="public@foot"/>
-
-  <include file="public@stock_search"/>
+<include file="public@stock_search"/>
 <script>
  var url_delete="{:url('user/trade/collect_delete')}";
 //删除
@@ -88,26 +63,20 @@
 				$div.remove();
 			}else{
 				msg(data.msg,false,false,false,data.url);
-				 
 			}
 		},'json');
         }
- 
         msg("确定要删除吗？",zhixing,true);
-        
     });
 // 提交
   var transcation_url="{:url('portal/index/transcation')}";
  $(document).on("click",".sp_red",function(){
- 
 	 var status=$(this).siblings('.status').val();
 	 if(status!='1'){
 		 return false;
 	 }
 	 var code0=$(this).siblings('.code0').val();
-	 
 	 transcation_url=transcation_url+'&code0='+code0; 
-	location.href=transcation_url;
-	 
+	 location.href=transcation_url;
  });
 </script>

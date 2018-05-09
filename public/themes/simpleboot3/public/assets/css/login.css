@@ -1,11 +1,5 @@
-html,body,p,ul,ol{margin:0;padding:0;margin:auto;font-family: 微软雅黑;}
-body{font-size:0.2rem}
-img{vertical-align: top;}
-ol,ul{list-style: none}
- input::-webkit-input-placeholder{ color:#9f9f9f;font-size:0.3rem;letter-spacing: 0.02rem;}
-html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
 body{padding-bottom: 1rem;}
-a{text-decoration: none;font-size:0.24rem;letter-spacing: 0.02rem;}
+a{letter-spacing: 0.02rem;}
 .one{
 	height:1rem;
 	background:url(../img/left_jiantou.png) 0.5rem center no-repeat;

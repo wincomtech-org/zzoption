@@ -46,16 +46,14 @@
 	<div class="wenxin">
 		<p>温馨提示：预计盈利不代表实际盈利，以实际成交价格为准</p>
 		<div>
-		 
 		<eq name="order.status" value="4">
 			<gt name="order.is_old" value="1">
-			<bottom class="tijiao">行权</bottom>
+			<button class="tijiao">行权</button>
 			<else/>
-			<bottom>持仓中</bottom> 
+			<button>持仓中</button> 
 			</gt>
-			 
 		<else/>
-			<bottom>行权中</bottom> 
+			<button>行权中</button> 
 		</eq>
 		</div>
 	</div>
@@ -64,34 +62,29 @@
 </html>
 <script>
 var id="{$order.id}";
- 
 $('.tijiao').click(function(){
-	 var obj=$(this);
-	 var text=['行权','正在提交'];
-	 if(!confirm('确认行权吗?')){
-		 return false;
-	 }
-	 
-    button_click(obj,1,text[1]);
-  
+	if(click==0){
+		click=1;
+	}else{
+		return false;
+	}
    $.ajax({
        type: 'POST',
        url: "{:url('user/trade/ajax_sell')}",
        dataType: 'json',
        data: {'id':id},
        success: function(data){ 
-       	if(data.code==1){
+       	    click=0;
+           if(data.code==1){
 				//返回上一页并刷新
 				self.location=data.url;
 			}else{
-				button_click(obj,0,text[0]); 
 				msg(data.msg);
 			}
        },
        error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
-     	    
-       	 button_click(obj,0,text[0]);
-       	msg('服务器连接失败',event.responseText);
+     	    click=0;  
+       	    msg('服务器连接失败',event.responseText);
        }
    });
 	return false;

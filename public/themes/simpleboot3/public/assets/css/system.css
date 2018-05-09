@@ -1,6 +1,6 @@
 .allsystem{
 	width: 100%;
-	height: 1.2rem;
+    background:#fff;
 	margin: 0 auto;
 }
 .system{
@@ -9,26 +9,22 @@
 	margin: 0 auto;
 	
 }
-
 .public{
 	margin-bottom: 0.1rem;
 	height: 0.5rem;
 }
-
 .public1{
 	float: left;
 	font-size: 0.30rem;
 	width: 60%;
 	
 }
-
 .time{
 	float: right;
 	
 	margin-right: 0.63rem;
 	color: #999999;
 }
-
 .s_mess{
 	font-size: 0.25rem;
 	color: #666;
@@ -53,8 +49,3 @@
 	width:100%;
 	height:100%;
 }
-
-
-
-
-

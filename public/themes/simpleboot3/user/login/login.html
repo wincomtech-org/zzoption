@@ -1,5 +1,5 @@
 <include file="public@head"/>
-	<link rel="stylesheet" href="__TMPL__/public/assets/css/login.css">
+<link rel="stylesheet" href="__TMPL__/public/assets/css/login.css">
 </head>
 <body>
 	<div class="one">
@@ -25,10 +25,8 @@
 </html>
 <script>
 $('.tijiao').click(function(){
- 	 
  	var password=$.trim($('input[name=psw]').val()); 
  	var tel=$.trim($('input[name=tel]').val());
-  
     if(tel== '' || is_mobile(tel) == false){
          $('input[name="tel"]').focus();
          msg('提示：请输入正确手机号');
@@ -38,11 +36,8 @@ $('.tijiao').click(function(){
          msg('提示：请输入6~20位字母数字组合密码');
          return false;
      } 
-      
-    
  	$('.tijiao').prop('disabled','disabled');
     $('.tijiao').val('正在登录');
-   
     $.ajax({
         type: 'POST',
         url: "{:url('user/login/ajax_login')}",
@@ -59,10 +54,8 @@ $('.tijiao').click(function(){
 			}
         },
         error: function(event, XMLHttpRequest, ajaxOptions, thrownError){
-      	 
         	$('.tijiao').prop('disabled',false);
 			$('.tijiao').val('登录');
-        	 
         	msg('服务器连接失败',false,false,event.responseText);
         }
     });

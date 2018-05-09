@@ -1,7 +1,5 @@
 <include file="public@head" />
-  
-	<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/inquiry_record.css" />
-	 
+<link rel="stylesheet" type="text/css" href="__TMPL__/public/assets/css/inquiry_record.css" /> 
 </head>
 <body>
 	<div class="nav">
@@ -38,7 +36,6 @@
 		<p>权利金</p>
 	</div>
 	<div class="text_s">
-		 
 		<foreach name="list" item="vo">
 		<a href="{:url('inquiry_details',['id'=>$vo.id])}">
 			 <div>
@@ -59,7 +56,6 @@
 			</div>
 		</a>
 		</foreach>
-		 
 	</div>
 </body>
 </html>
@@ -80,11 +76,9 @@
             isshow_s2=!isshow_s2;
         }
     })//年份下面的a点击事件
-        
     $(".aireb_1>a").click(function(){
         console.log($(this).html());
     })
-    
     //月份点击
     $(".gio_opl_s2").click(function(e){
         isshow_s2=!isshow_s2;
@@ -100,11 +94,9 @@
         }
     });
     //月份下面的a点击事件
-    
      $(".aireb_2>a").click(function(){
         console.log($(this).html());
-    })
-    
+    });
      //点击其他任何地方弹框消失
     $(document).click(function(){
         if(isshow_s2){

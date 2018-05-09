@@ -1,38 +1,20 @@
-html,body,p,ul,ol{margin:0;padding:0;margin:auto;font-family: 微软雅黑;}
-body{font-size:0.2rem;letter-spacing:0.05rem;}
-img{vertical-align: top;}
-ol,ul{list-style: none}
-input{outline:none;border:none;}
-html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
-
-a{
-	text-decoration: none;
-}
-
 .point{
 	width: 100%;
 	background-color: white;
 	border-bottom: 0.02rem solid #f3f3f3;
 }
-
 .alltop{
 	text-align: center;
 	width: 88%;
 	height: 0.86rem;
 	margin: 0 auto;
 	
-}	
-
-.top{
-/*	padding: 0.24rem 0;*/
 }
-
 .top_c{
 	width: 100%;
 	height: 0.1rem;
 	background-color: #f3f3f3;
 }
-
 .t_left{
    float: left;
    margin-top: 0.26rem;
@@ -41,19 +23,9 @@ a{
    background-image:url(../img/tip.png) ;
    background-size: cover;
 }
-
-
-
 .c_img{
 	float: left;
 }
-
-
-
-.t_left{
-	
-}
-
 .t_right{
 	float: left;
 	font-size: 0.37rem;
@@ -64,44 +36,33 @@ a{
 	font-weight: 600;
 	line-height: 0.86rem;
 }
-
 .c_right{
 	float: left;
 	margin-left: 0.40rem;
 }
-
 .c_right1{
 	float: left;
 	margin-left: 0.35rem;
 }
-
 .c_right1 input{
 	font-size: 0.27rem;
 	letter-spacing:0.05rem;
 	height: 0.4rem;
-	
 	border: none;
 }
-
 .c_right input{
 	font-size: 0.27rem;
 	letter-spacing:0.05rem;
 	height: 0.4rem;
-	
 	border: none;
-	/*color: #999;*/
 }
-
 #c_c{
 	margin-left: 0.23rem;
 	height: 0.9rem;
-	
 }
-
 #c_c1{
 	margin-left: 0.21rem;
 	height: 0.9rem;
-	
 }
 #new_dx{
 	width:60%;
@@ -119,62 +80,47 @@ a{
 	letter-spacing: 0.02rem;
 	float: right;
 }
-
 .c_2{
 	margin-top: 0.41rem;
 }
-
 .center_c{
     width: 100%;
 	border-bottom: 0.02rem solid #c3c3c3;
 }
-
 .center{
 	width: 85%;
-	
 	margin: 0 auto;
 	margin-top: 0.53rem;
-	
 }
-
 #img1{
 	background-image: url(../img/phone.png);
 	background-size: cover;
 	width:0.29rem;
     height: 0.39rem;
 }
-
 #img2{
-	
 	background-image: url(../img/test.png);
 	background-size: cover;
 	width:0.37rem;
     height: 0.41rem;
 }
-
 #img3{
-	
 	background-image: url(../img/newpass.png);
 	background-size: cover;
 	width:0.33rem;
     height: 0.37rem;
 }
-
 #img4{
-	
 	background-image: url(../img/key.png);
 	background-size: cover;
 	width:0.35rem;
     height: 0.31rem;
 }
-
-
 .b_button{
 	width: 60%;
 	height: 0.78rem;
 	margin: 0 auto;
 }
-
 button{
 	background-color: #cd4650;
 	color: white;
@@ -183,7 +129,6 @@ button{
 	outline: none;
 	border-radius: 0.06rem;
 }
-
 .b_button button{
 	width: 100%;
 	height: 100%;
@@ -191,10 +136,8 @@ button{
 	font-size: 0.39rem;
 	letter-spacing:0.05rem;
 }
-
 .bottom{
 	margin-top: 1.24rem;
 	width: 100%;
-	
 	height: 0.78rem;
 }
