@@ -130,6 +130,7 @@ class OrderController extends AdminBaseController
         $prices=$stock->getPrice('s_'.$info['code0']);
         $price=empty($prices['s_'.$info['code0']])?null:$prices['s_'.$info['code0']];
         $info['price2_tmp']=$price['price'];
+      
         $edit='edit_inquiry';
         if($info['status']<3){
             $edit='edit_inquiry';

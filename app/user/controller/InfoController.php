@@ -69,7 +69,7 @@ class InfoController extends UserBaseController
                     $user['avatar']=$avatar;
                     Db::name('user')->where('id',$user['id'])->update(['avatar'=>$avatar]);
                     session('user',$user);
-                    $this->success('上传成功',url('user/info/info'));
+                    $this->success('头像修改成功','');
                 }else{
                     $this->error('头像修改失败');
                 }

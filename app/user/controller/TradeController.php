@@ -54,7 +54,8 @@ class TradeController extends UserBaseController
         if(empty($order)){
             $this->error('询价信息不存在');
         }
-        if($order['status']!=1){
+       
+        if($order['status']!=1){ 
             $this->error('数据错误，请刷新');
         }
         if($order['is_old']!=0){
@@ -64,6 +65,7 @@ class TradeController extends UserBaseController
             session('user',null);
             $this->error('这不是你的信息','/');
         }
+       
         $m_user=Db::name('user');
         $user=$m_user->where('id',$uid)->find();
         if($user['is_name']==0){
@@ -98,6 +100,7 @@ class TradeController extends UserBaseController
         ];
         Db::name('money')->insert($data_money);
         $m->commit();
+        sleep(2);
         $this->success('已提交，等待后台处理',url('buy'));
         
     }
@@ -353,8 +356,10 @@ class TradeController extends UserBaseController
         $time=time();
         $day=strtotime(date('Y-m-d',$time));
         $tmp=$time-$day;
-        if($tmp<600 || $tmp>86390){
-            $this->error('非交易时间');
+        //9,30,,15,30
+        //早上9点到网上18点
+        if($tmp<32400 || $tmp>64800){
+            $this->error('非交易时间，9点到18点接受订单');
         }
     }
      
