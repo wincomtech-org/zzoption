@@ -50,6 +50,8 @@ class TestController extends AdminBaseController
         dump($info);
         $prices=$stock->getPrice('s_'.$info['code0'].',');
         dump($prices);
+        $prices=$stock->getPrice('s_sz300369,s_sz600271');
+        dump($prices);
         exit;
     }
      
