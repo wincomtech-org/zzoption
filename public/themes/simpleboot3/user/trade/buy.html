@@ -66,8 +66,8 @@
 var text=['买入','正在买入'];
 $('.sp_red').click(function(){
 	var obj=$(this);
-    var by_s=function(){
-        var id=$('.sp_red').siblings('.id').val();
+	var id=$('.sp_red').siblings('.id').val();
+    var by_s=function(){ 
         $.ajax({
         type: 'POST',
         url: "{:url('user/trade/ajax_buy')}",
@@ -84,7 +84,9 @@ $('.sp_red').click(function(){
         }
     });
     }
-	   msg('确认买入吗？',by_s)
+    
+  
+	   msg('确认买入吗？',by_s,true);
         
 	return false;
  });

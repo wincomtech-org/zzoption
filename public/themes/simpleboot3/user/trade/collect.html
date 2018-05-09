@@ -92,12 +92,12 @@
 			}
 		},'json');
         }
-//        zhixing();
+ 
         msg("确定要删除吗？",zhixing,true);
         
     });
 // 提交
- 
+  var transcation_url="{:url('portal/index/transcation')}";
  $(document).on("click",".sp_red",function(){
  
 	 var status=$(this).siblings('.status').val();
@@ -105,10 +105,9 @@
 		 return false;
 	 }
 	 var code0=$(this).siblings('.code0').val();
-	 var url="{:url('portal/index/transcation')}";
 	 
-	url=url+'&code0='+code0; 
-	location.href=url;
+	 transcation_url=transcation_url+'&code0='+code0; 
+	location.href=transcation_url;
 	 
  });
 </script>
