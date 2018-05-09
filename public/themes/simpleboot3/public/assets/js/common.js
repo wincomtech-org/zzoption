@@ -1,4 +1,5 @@
 var a=$(window).width();
+var click=0;
 $("html").css("font-size",a/7.5+"px");
 $(window).resize(function(){
     var a=$(window).width();
@@ -33,7 +34,7 @@ function msg(text,fun=false,isbtn=false,html='',url=''){
        $(".uhn_s").remove();
     };
     $(".bt_js1").click(function(){
-        
+        click=0;
         $(".show_box").fadeOut().remove();
         
     });
@@ -55,11 +56,13 @@ function msg(text,fun=false,isbtn=false,html='',url=''){
 function button_click(obj,action=1,text='',type=1){
     if(action==1){
             obj.prop('disabled','disabled');
+            click=1;
             if(text==''){
                 text='正在提交';
             }
     }else{
             obj.prop('disabled',false);
+            click=0;
             if(text==''){
                 text='提交';
             }
