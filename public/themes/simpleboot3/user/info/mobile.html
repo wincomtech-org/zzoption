@@ -53,7 +53,6 @@
            data:{'tel':tel,'type':'mobile'},
            success: function(data){ 
                 if(data.code==1){
-                    msg('发送成功'); 
                     down_s($("#sms_btn"),ghj_klo);
                 }else{  
                     msg(data.msg); 
